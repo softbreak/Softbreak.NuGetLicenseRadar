@@ -9,7 +9,7 @@ $solution = Join-Path $repo 'Softbreak.NuGetLicenseRadar.slnx'
 $project = Join-Path $repo 'Softbreak.LicenseRadar.Cli\Softbreak.LicenseRadar.Cli.csproj'
 $localSource = Join-Path $repo '.local-test\packages'
 $toolId = 'Softbreak.NuGetLicenseRadar'
-$toolVersion = '0.1.0'
+$toolVersion = '0.1.1'
 
 function Invoke-DotNet {
     param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
