@@ -178,7 +178,11 @@ public class ConsoleReportRendererTests
         var console = AnsiConsole.Create(new AnsiConsoleSettings
         {
             Out = new AnsiConsoleOutput(stringWriter),
-            ColorSystem = ColorSystemSupport.NoColors
+            ColorSystem = ColorSystemSupport.NoColors,
+            Ansi = AnsiSupport.No,
+            // Reproduce GitHub Actions CI enrichment, regardless of where tests run.
+            EnvironmentVariables = new Dictionary<string, string> { ["GITHUB_ACTIONS"] = "true" },
+            Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
         });
         console.Profile.Width = 120;
 
@@ -191,9 +195,11 @@ public class ConsoleReportRendererTests
             null
         );
 
+        Assert.False(console.Profile.Capabilities.Ansi);
         renderer.Render("C:\\test\\packages.lock.json", [p], [r]);
 
         string output = stringWriter.ToString();
+        Assert.Contains("Softbreak NuGet License Radar", output);
         Assert.DoesNotContain("\u001b[", output);
     }
 
