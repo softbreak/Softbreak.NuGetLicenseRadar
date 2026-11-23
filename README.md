@@ -25,7 +25,6 @@ license-radar scan .
 
 Kaynak kodu indirmeniz, Visual Studio açmanız, `Install-Local.ps1` çalıştırmanız veya `packages.lock.json` dosyasını elle aramanız gerekmez.
 
-> **Yayın hazırlığı:** `0.1.0` NuGet.org'da görünene kadar bu kurulum komutu kullanılamaz. Kaynak koddan izole doğrulama yapmak için `scripts/Test-Release.ps1` betiği kullanılabilir. Bu betik NuGet.org üzerinde yayın yapmaz.
 
 ### Sık kullanılan komutlar
 
@@ -101,7 +100,7 @@ dotnet run --project Softbreak.LicenseRadar.Cli -- scan .
 
 Solution iki proje içerir: `Softbreak.LicenseRadar.Cli` ve `Softbreak.LicenseRadar.Tests`. Kaynak klasörü üzerinden yerel kurulum betiği `scripts/Install-Local.ps1` yalnızca geliştirme ve test senaryoları içindir; **son kullanıcı kurulumu için gerekmez**.
 
-Yerel `0.1.0` yayın adayı testi: Windows üzerinde `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1` komutunu çalıştırın. Betik testleri, paket metadata’sını ve izole araç kurulumunu denetler; NuGet.org üzerinde yayın yapmaz.
+Windows'ta Release testlerini, NuGet paket metadata'sını ve global araç kurulumunu değiştirmeyen izole kurulumu doğrulamak için `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1` komutunu çalıştırın. Betik NuGet.org'a yayın yapmaz.
 
 ## Sınırlamalar, gizlilik ve güvenlik
 
