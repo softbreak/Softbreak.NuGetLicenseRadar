@@ -10,7 +10,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>license-radar</ToolCommandName>
     <PackageId>Softbreak.NuGetLicenseRadar</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
 
     <Title>Softbreak NuGet License Radar</Title>
     <Authors>Softbreak</Authors>
@@ -20,9 +20,8 @@
     <PackageTags>nuget license license-scanner dotnet-tool dotnet10 cli</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>0.1.0: First stable release. Multi-project dependency discovery, evidence-based license text signals, readable Spectre.Console reports, optional JSON v1 output.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.1.1: Fix NuGet packages.lock.json parsing for multi-project solutions. Project references without resolved package versions are skipped; malformed package entries now produce contextual errors.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
-    <!-- Target repository. Make it publicly accessible before NuGet.org publication. -->
     <RepositoryUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</RepositoryUrl>
     <PackageProjectUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</PackageProjectUrl>
   </PropertyGroup>
