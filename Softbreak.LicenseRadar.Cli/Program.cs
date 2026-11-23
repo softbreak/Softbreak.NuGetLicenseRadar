@@ -170,7 +170,9 @@ IAnsiConsole reportConsole = Console.IsOutputRedirected ||
         // NoColors disables colors, but bold/underline can still emit ANSI codes.
         // Redirected output and NO_COLOR must stay plain text.
         ColorSystem = ColorSystemSupport.NoColors,
-        Ansi = AnsiSupport.No
+        Ansi = AnsiSupport.No,
+        // GitHub Actions enrichment can switch ANSI back on, even if explicitly disabled.
+        Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
     })
     : AnsiConsole.Console;
 new ConsoleReportRenderer(reportConsole).Render(targetPath, discovery.Projects, packages, reviewResults, isVerbose);
