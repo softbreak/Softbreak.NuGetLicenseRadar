@@ -178,7 +178,8 @@ public class ConsoleReportRendererTests
         var console = AnsiConsole.Create(new AnsiConsoleSettings
         {
             Out = new AnsiConsoleOutput(stringWriter),
-            ColorSystem = ColorSystemSupport.NoColors
+            ColorSystem = ColorSystemSupport.NoColors,
+            Ansi = AnsiSupport.No
         });
         console.Profile.Width = 120;
 
