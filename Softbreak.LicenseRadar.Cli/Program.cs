@@ -167,7 +167,10 @@ IAnsiConsole reportConsole = Console.IsOutputRedirected ||
     ? AnsiConsole.Create(new AnsiConsoleSettings
     {
         Out = new AnsiConsoleOutput(Console.Out),
-        ColorSystem = ColorSystemSupport.NoColors
+        // NoColors disables colors, but bold/underline can still emit ANSI codes.
+        // Redirected output and NO_COLOR must stay plain text.
+        ColorSystem = ColorSystemSupport.NoColors,
+        Ansi = AnsiSupport.No
     })
     : AnsiConsole.Console;
 new ConsoleReportRenderer(reportConsole).Render(targetPath, discovery.Projects, packages, reviewResults, isVerbose);
