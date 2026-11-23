@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Softbreak.LicenseRadar.Cli/Softbreak.LicenseRadar.Cli.csproj" />
+  <Project Path="Softbreak.LicenseRadar.Tests/Softbreak.LicenseRadar.Tests.csproj" Id="4fd0efa4-eb9c-4bc2-a684-443aa5aa0ee9" />
+</Solution>

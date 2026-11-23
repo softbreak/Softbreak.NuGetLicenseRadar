@@ -1,0 +1,36 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-pack:
+    name: Build, test and pack (.NET 10)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Softbreak.NuGetLicenseRadar.slnx
+
+      - name: Build (Release)
+        run: dotnet build Softbreak.NuGetLicenseRadar.slnx --configuration Release --no-restore
+
+      - name: Test (Release)
+        run: dotnet test Softbreak.NuGetLicenseRadar.slnx --configuration Release --no-build --no-restore
+
+      - name: Pack tool (no publish)
+        run: dotnet pack Softbreak.LicenseRadar.Cli/Softbreak.LicenseRadar.Cli.csproj --configuration Release --no-restore --output artifacts/nuget

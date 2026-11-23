@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "AutoMapper": {
+        "type": "Direct",
+        "requested": "[15.0.0, )",
+        "resolved": "15.0.0",
+        "contentHash": "dummy"
+      },
+      "MediatR": {
+        "type": "Direct",
+        "requested": "[13.0.0, )",
+        "resolved": "13.0.0",
+        "contentHash": "dummy"
+      },
+      "FluentAssertions": {
+        "type": "Direct",
+        "requested": "[8.0.0, )",
+        "resolved": "8.0.0",
+        "contentHash": "dummy"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+# Softbreak NuGet License Radar
+# GitHub deposuna yalnizca kaynak kod, testler ve dokumantasyon girer.
+
+# .NET derleme ve yayin ciktilari
+**/bin/
+**/obj/
+**/publish/
+artifacts/
+dist/
+
+# IDE ve kullaniciya ozel dosyalar
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.sln.docstates
+*.DotSettings.user
+
+# Test / coverage ciktilari (test kaynaklari ve fixtures HARIC)
+**/TestResults/
+**/coverage/
+*.trx
+*.coverage
+*.coveragexml
+coverage.cobertura.xml
+
+# Yerel kabul testleri ve NuGet paket ciktilari
+.local-test/
+*.nupkg
+*.snupkg
+test-compat-out.json
+acceptance-*.json
+
+# Gecici ve isletim sistemi dosyalari
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Yerel yapilandirma ve gizli anahtarlar
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+*.pem
+*.snk
+*.pubxml.user
+secrets.json
+
+# BILEREK TAKIP EDILENLER:
+# README.md, LICENSE, CHANGELOG.md, .github/workflows/,
+# scripts/, tests/fixtures/, Softbreak.LicenseRadar.Tests/,
+# Softbreak.LicenseRadar.Cli/ ve *.slnx
