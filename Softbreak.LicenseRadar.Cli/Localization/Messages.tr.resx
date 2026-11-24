@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Cli.InvalidArguments" xml:space="preserve"><value>Hata: {0}</value></data>
+  <data name="Cli.Usage" xml:space="preserve"><value>Kullanım: license-radar scan [dizin-veya-proje] [--output &lt;dosya.json&gt;] [--verbose]</value></data>
+  <data name="Cli.InvalidOutputPath" xml:space="preserve"><value>Hata: JSON çıktı yolu geçersiz: {0}</value></data>
+  <data name="Cli.OutputExists" xml:space="preserve"><value>Hata: JSON çıktı dosyası zaten mevcut.</value></data>
+  <data name="Cli.UnreadablePath" xml:space="preserve"><value>Hata: Hedef yol okunamadı: {0}</value></data>
+  <data name="Cli.Error" xml:space="preserve"><value>Hata: {0}</value></data>
+  <data name="Cli.Suggestion" xml:space="preserve"><value>Öneri: {0}</value></data>
+  <data name="Cli.UnreadableDependencies" xml:space="preserve"><value>Hata: '{0}' bağımlılıkları okunamadı: {1}</value></data>
+  <data name="Cli.ReportWriteFailure" xml:space="preserve"><value>Hata: JSON raporu yazılamadı: {0}</value></data>
+  <data name="Cli.ReportSaved" xml:space="preserve"><value>JSON raporu kaydedildi: {0}</value></data>
+  <data name="Cli.Scanning" xml:space="preserve"><value>Paket lisansları taranıyor...</value></data>
+  <data name="Cli.OutputDuplicate" xml:space="preserve"><value>--output birden fazla kez verilemez.</value></data>
+  <data name="Cli.OutputRequired" xml:space="preserve"><value>--output için bir dosya yolu gerekli.</value></data>
+  <data name="Cli.UnknownOption" xml:space="preserve"><value>Bilinmeyen seçenek: {0}</value></data>
+  <data name="Cli.MultiplePaths" xml:space="preserve"><value>Birden fazla hedef yolu verilemez.</value></data>
+  <data name="Cli.MissingTarget" xml:space="preserve"><value>Taranacak bir proje, lock dosyası veya klasör yolu belirtilmelidir.</value></data>
+  <data name="Cli.Help" xml:space="preserve"><value>Softbreak NuGet License Radar
+-----------------------------
+Tek komutla NuGet lisanslarını inceleyin: license-radar scan .
+
+KULLANIM:
+  license-radar scan [hedef-yol] [seçenekler]
+  license-radar &lt;dosya-veya-klasör-yolu&gt; [seçenekler]  (eski kullanım)
+
+AÇIKLAMA:
+  .NET projelerindeki NuGet bağımlılıklarını otomatik keşfeder, lisans
+  dosyalarını ve bildirimlerini inceleyerek kanıta dayalı lisanslama
+  sinyalleri (karşılıklı lisans, alternatif sözleşme, ücretli ticari) üretir.
+
+ARGÜMANLAR:
+  scan [hedef]                Belirtilen klasör, proje (.csproj) veya solution (.sln)
+                              içindeki bağımlılıkları keşfeder (varsayılan: .)
+  &lt;dosya-yolu&gt;                Doğrudan packages.lock.json veya project.assets.json yolu
+
+SEÇENEKLER:
+  -o, --output &lt;dosya.json&gt;   Tarama sonucunu v1 JSON formatında kaydeder.
+  -v, --verbose               Tüm paketleri ve kanıt ayrıntılarını gösterir.
+  -h, --help                  Bu yardım açıklamasını görüntüler.
+
+ÖRNEKLER:
+  license-radar scan .
+  license-radar scan ./src/MyProject
+  license-radar scan . --output lisans-raporu.json
+  license-radar scan . --verbose
+  license-radar ./packages.lock.json --output rapor.json
+
+NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value></data>
+  <data name="Renderer.Target" xml:space="preserve"><value>Hedef:</value></data>
+  <data name="Renderer.Project" xml:space="preserve"><value>Proje:</value></data>
+  <data name="Renderer.ProjectsDiscovered" xml:space="preserve"><value>{0} proje keşfedildi · Lock: {1} · Assets: {2}</value></data>
+  <data name="Renderer.AssetsNote" xml:space="preserve"><value>Not: project.assets.json son restore sırasında çözümlenen bağımlılıkları yansıtır.</value></data>
+  <data name="Renderer.Total" xml:space="preserve"><value>Toplam: {0}</value></data>
+  <data name="Renderer.Direct" xml:space="preserve"><value>Doğrudan: {0}</value></data>
+  <data name="Renderer.Transitive" xml:space="preserve"><value>Dolaylı: {0}</value></data>
+  <data name="Renderer.ReviewCount" xml:space="preserve"><value>İnceleme gerekli: {0}</value></data>
+  <data name="Renderer.UnknownCount" xml:space="preserve"><value>Doğrulanamadı: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.QueryFailures" xml:space="preserve"><value>Sorgu hatası: {0}</value></data>
+  <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(doğrulanamayan sonuçlara dahildir)</value></data>
+  <data name="Renderer.ReviewTable" xml:space="preserve"><value>İnceleme Gerektiren Paketler ({0})</value></data>
+  <data name="Renderer.PackageVersion" xml:space="preserve"><value>Paket / sürüm</value></data>
+  <data name="Renderer.Reason" xml:space="preserve"><value>Neden</value></data>
+  <data name="Renderer.ReviewDetails" xml:space="preserve"><value>İnceleme gerekçeleri</value></data>
+  <data name="Renderer.LicenseFile" xml:space="preserve"><value>Lisans dosyası:</value></data>
+  <data name="Renderer.Unknown" xml:space="preserve"><value>Bilinmiyor</value></data>
+  <data name="Renderer.FileRead" xml:space="preserve"><value>Dosya okuma:</value></data>
+  <data name="Renderer.Error" xml:space="preserve"><value>Hata:</value></data>
+  <data name="Renderer.Evidence" xml:space="preserve"><value>Kanıt ({0}):</value></data>
+  <data name="Renderer.Link" xml:space="preserve"><value>Bağlantı:</value></data>
+  <data name="Renderer.Source" xml:space="preserve"><value>Kaynak:</value></data>
+  <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>{0} ek inceleme gerekçesi için --verbose kullanın.</value></data>
+  <data name="Renderer.UnknownTable" xml:space="preserve"><value>Doğrulanamayan Paketler ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Metadata Seviyesinde İncelenen Paketler ({0})</value></data>
+  <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>Lisans bildirimi</value></data>
+  <data name="Renderer.NoDeclaration" xml:space="preserve"><value>Bildirim yok</value></data>
+  <data name="Renderer.MetadataWarning" xml:space="preserve"><value>Metadata bulunması, kullanım için hukuki onay anlamına gelmez.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>Diğer {0} pakette lisans metadata'sı bulundu; hukuki uygunluk doğrulanmadı.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>Özel bir inceleme sinyali bulunmadı; bu sonuç hukuki onay anlamına gelmez.</value></data>
+  <data name="Renderer.Next1" xml:space="preserve"><value>Sonraki adım: İlgili lisans metnini ve kullanım koşullarınızı karşılaştırın;</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>gerekirse üreticinin resmî koşullarını doğrulayın. Satın alma kararı otomatik verilmez.</value></data>
+  <data name="Renderer.Hint" xml:space="preserve"><value>Ayrıntılar için komutunuza [bold]--verbose[/], JSON raporu için [bold]--output rapor.json[/] ekleyin.</value></data>
+  <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>Lisans dosyası</value></data>
+  <data name="Renderer.SpecialReview" xml:space="preserve"><value>Özel inceleme</value></data>
+  <data name="Renderer.Reciprocal" xml:space="preserve"><value>Karşılıklı lisans</value></data>
+  <data name="Renderer.Alternative" xml:space="preserve"><value>Alternatif sözleşme</value></data>
+  <data name="Renderer.PaidCommercial" xml:space="preserve"><value>Ücretli ticari lisans ifadesi</value></data>
+  <data name="Renderer.TextSignal" xml:space="preserve"><value>Lisans metni sinyali</value></data>
+  <data name="Renderer.HttpFailure" xml:space="preserve"><value>HTTP bağlantı hatası</value></data>
+  <data name="Renderer.Timeout" xml:space="preserve"><value>Zaman aşımı</value></data>
+  <data name="Renderer.InvalidMetadata" xml:space="preserve"><value>Geçersiz metadata</value></data>
+  <data name="Renderer.InvalidIdentity" xml:space="preserve"><value>Geçersiz paket kimliği</value></data>
+  <data name="Renderer.UnverifiedQuery" xml:space="preserve"><value>Lisans sorgusu doğrulanamadı</value></data>
+</root>
