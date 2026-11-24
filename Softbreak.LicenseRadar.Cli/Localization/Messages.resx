@@ -159,4 +159,19 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="NuGet.Timeout" xml:space="preserve"><value>The Nupkg archive download timed out.</value></data>
   <data name="NuGet.DownloadFailure" xml:space="preserve"><value>Unable to download the Nupkg archive: {0}</value></data>
   <data name="NuGet.StreamFailure" xml:space="preserve"><value>Unable to read the Nupkg stream: {0}</value></data>
+  <data name="Cli.HelpTip" xml:space="preserve"><value>For help: license-radar --help</value></data>
+  <data name="Change.Duplicate" xml:space="preserve"><value>Unable to match multiple records for the same package and framework.</value></data>
+  <data name="Change.Version" xml:space="preserve"><value>The package version changed; this alone does not mean the license declaration changed.</value></data>
+  <data name="Change.InfoAdded" xml:space="preserve"><value>A license declaration was found in the new scan.</value></data>
+  <data name="Change.InfoRemoved" xml:space="preserve"><value>A license declaration existed previously, but the new scan reports Missing.</value></data>
+  <data name="Change.Type" xml:space="preserve"><value>License declaration type changed.</value></data>
+  <data name="Change.Value" xml:space="preserve"><value>License declaration value changed.</value></data>
+  <data name="Change.Added" xml:space="preserve"><value>The dependency was found in the new scan.</value></data>
+  <data name="Change.Removed" xml:space="preserve"><value>The dependency was not found in the new scan.</value></data>
+  <data name="Change.Unavailable" xml:space="preserve"><value>The license declaration query result could not be compared.</value></data>
+  <data name="Change.PreviousStatus" xml:space="preserve"><value>Previous query status: {0}.</value></data>
+  <data name="Change.CurrentStatus" xml:space="preserve"><value>Current query status: {0}.</value></data>
+  <data name="Change.PreviousMissing" xml:space="preserve"><value>No license declaration evidence in the previous scan.</value></data>
+  <data name="Change.CurrentMissing" xml:space="preserve"><value>No license declaration evidence in the current scan.</value></data>
+  <data name="Change.NotComparable" xml:space="preserve"><value>The license declaration change could not be compared.</value></data>
 </root>
