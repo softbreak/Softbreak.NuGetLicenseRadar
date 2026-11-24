@@ -56,6 +56,33 @@ public sealed class LockFileReaderTests
         Assert.Equal("8.6.0", centrallyPinned.Version);
     }
 
+    [Theory]
+    [InlineData("net6.0")]
+    [InlineData("net7.0")]
+    [InlineData("net8.0")]
+    [InlineData("net9.0")]
+    [InlineData("net10.0")]
+    public void Read_FrameworkSpecificLockfile_IncludesPackageButSkipsProjectReference(string framework)
+    {
+        string json = $"""
+            {
+              "version": 2,
+              "dependencies": {
+                "{{framework}}": {
+                  "Demo.Core": { "type": "Project" },
+                  "Demo.Dependency": { "type": "Direct", "resolved": "2.3.4" }
+                }
+              }
+            }
+            """;
+
+        PackageDependency package = Assert.Single(ReadJson(json));
+        Assert.Equal("Demo.Dependency", package.Name);
+        Assert.Equal("2.3.4", package.Version);
+        Assert.Equal(framework, package.Framework);
+        Assert.Equal("Direct", package.Type);
+    }
+
     [Fact]
     public void Read_ProjectOnly_ReturnsNoPackages()
     {
