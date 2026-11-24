@@ -8,7 +8,7 @@ public sealed class NuGetLicenseDeclarationParser
 {
     public NuGetLicenseDeclaration Parse(string xml)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(xml);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(xml);
 
         XDocument document = XDocument.Parse(xml);
 

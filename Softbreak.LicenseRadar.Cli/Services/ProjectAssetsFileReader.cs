@@ -7,7 +7,7 @@ public sealed class ProjectAssetsFileReader
 {
     public IReadOnlyList<PackageDependency> Read(string filePath)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(filePath);
 
         if (!File.Exists(filePath))
         {
@@ -20,7 +20,7 @@ public sealed class ProjectAssetsFileReader
 
     public IReadOnlyList<PackageDependency> Parse(string json)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(json);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(json);
 
         using var document = JsonDocument.Parse(json);
         JsonElement root = document.RootElement;

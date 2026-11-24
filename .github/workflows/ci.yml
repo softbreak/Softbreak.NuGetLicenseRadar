@@ -12,16 +12,21 @@ permissions:
 
 jobs:
   build-test-pack:
-    name: Build, test and pack (.NET 10)
+    name: Build, test and pack (.NET 6–10)
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup .NET 10
+      - name: Setup .NET 6–10 runtimes and SDKs
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
+            9.0.x
+            10.0.x
 
       - name: Restore
         run: dotnet restore Softbreak.NuGetLicenseRadar.slnx
@@ -34,3 +39,7 @@ jobs:
 
       - name: Pack tool (no publish)
         run: dotnet pack Softbreak.LicenseRadar.Cli/Softbreak.LicenseRadar.Cli.csproj --configuration Release --no-restore --output artifacts/nuget
+
+      - name: Verify .NET 6–10 isolated tool installs and scans
+        shell: pwsh
+        run: ./scripts/Test-MultiFramework-Tool.ps1 -PackageDirectory artifacts/nuget -Version 0.2.0

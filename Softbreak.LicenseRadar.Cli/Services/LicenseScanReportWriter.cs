@@ -66,7 +66,7 @@ public sealed class LicenseScanReportWriter
         IEnumerable<LicenseDeclarationReviewResult> scanResults,
         DateTimeOffset scannedAtUtc)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(outputPath);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(outputPath);
 
         string fullPath = Path.GetFullPath(outputPath);
         if (File.Exists(fullPath))

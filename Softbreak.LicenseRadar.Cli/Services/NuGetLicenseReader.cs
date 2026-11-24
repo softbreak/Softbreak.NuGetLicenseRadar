@@ -371,10 +371,10 @@ public sealed class NuGetLicenseReader
     {
         return !string.IsNullOrEmpty(packageId) &&
             packageId.Length <= 100 &&
-            char.IsAsciiLetterOrDigit(packageId[0]) &&
-            char.IsAsciiLetterOrDigit(packageId[^1]) &&
+            IsAsciiLetterOrDigit(packageId[0]) &&
+            IsAsciiLetterOrDigit(packageId[^1]) &&
             packageId.All(character =>
-                char.IsAsciiLetterOrDigit(character) ||
+                IsAsciiLetterOrDigit(character) ||
                 character is '.' or '-' or '_');
     }
 
@@ -384,7 +384,14 @@ public sealed class NuGetLicenseReader
             version.Length <= 256 &&
             NuGetVersion.TryParse(version, out _) &&
             version.All(character =>
-                char.IsAsciiLetterOrDigit(character) ||
+                IsAsciiLetterOrDigit(character) ||
                 character is '.' or '-' or '+');
     }
+    // Char.IsAsciiLetterOrDigit was added in .NET 7; preserve exact ASCII-only
+    // package identity and version validation on .NET 6.
+    private static bool IsAsciiLetterOrDigit(char value) =>
+        (value >= 'A' && value <= 'Z') ||
+        (value >= 'a' && value <= 'z') ||
+        (value >= '0' && value <= '9');
+
 }

@@ -40,7 +40,7 @@ public sealed class ConsoleReportRenderer
         IReadOnlyList<LicenseDeclarationReviewResult> reviewResults,
         bool isVerbose)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(targetPath);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(targetPath);
         ArgumentNullException.ThrowIfNull(projects);
         ArgumentNullException.ThrowIfNull(packages);
         ArgumentNullException.ThrowIfNull(reviewResults);
