@@ -14,6 +14,7 @@ if (!TryParseCommandLine(
     out string targetPath,
     out string? outputPathArgument,
     out bool isVerbose,
+    out bool recursive,
     out bool showHelp,
     out string? argumentError))
 {
@@ -60,7 +61,13 @@ var locator = new ProjectDependencyLocator();
 DiscoveryResult discovery;
 try
 {
-    discovery = locator.Discover(targetPath);
+    if (recursive && File.Exists(targetPath))
+    {
+        Console.Error.WriteLine(L.Get("Locator.RecursiveDirectory"));
+        Environment.ExitCode = 2;
+        return;
+    }
+    discovery = locator.Discover(targetPath, recursive);
 }
 catch (Exception exception) when (
     exception is ArgumentException or
@@ -77,11 +84,15 @@ catch (Exception exception) when (
 
 if (!discovery.IsSuccess)
 {
-    Console.Error.WriteLine(L.Format("Cli.Error", discovery.ErrorMessage));
-    if (!string.IsNullOrWhiteSpace(discovery.SuggestedSolution))
+    bool plain = Console.IsErrorRedirected || Environment.GetEnvironmentVariable("NO_COLOR") is not null;
+    var errorConsole = AnsiConsole.Create(new AnsiConsoleSettings
     {
-        Console.Error.WriteLine(L.Format("Cli.Suggestion", discovery.SuggestedSolution));
-    }
+        Out = new AnsiConsoleOutput(Console.Error),
+        ColorSystem = plain ? ColorSystemSupport.NoColors : ColorSystemSupport.Detect,
+        Ansi = plain ? AnsiSupport.No : AnsiSupport.Detect,
+        Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
+    });
+    new DiscoveryErrorRenderer(errorConsole).Render(targetPath, discovery, recursive);
     Environment.ExitCode = 1;
     return;
 }
@@ -136,14 +147,15 @@ var reviewResults = new List<LicenseDeclarationReviewResult>();
 bool isInteractive = !Console.IsOutputRedirected &&
     Environment.GetEnvironmentVariable("NO_COLOR") is null;
 
-if (isInteractive)
+if (isInteractive && packages.Count > 0)
 {
     await AnsiConsole.Status()
         .Spinner(Spinner.Known.Dots)
-        .StartAsync(L.Get("Cli.Scanning"), async _ =>
+        .StartAsync(L.Get("Cli.Scanning"), async context =>
         {
             foreach (var package in packages)
             {
+                context.Status(Markup.Escape(L.Format("Cli.ScanProgress", reviewResults.Count + 1, packages.Count, package.Name, package.Version)));
                 LicenseDeclarationReviewResult result =
                     await scanService.ScanAsync(package);
 
@@ -176,7 +188,7 @@ IAnsiConsole reportConsole = Console.IsOutputRedirected ||
         Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
     })
     : AnsiConsole.Console;
-new ConsoleReportRenderer(reportConsole).Render(targetPath, discovery.Projects, packages, reviewResults, isVerbose);
+new ConsoleReportRenderer(reportConsole).Render(discovery.SolutionPath ?? targetPath, discovery.Projects, packages, reviewResults, isVerbose, discovery.SolutionPath is not null);
 
 if (outputPath is not null)
 {
@@ -207,12 +219,14 @@ static bool TryParseCommandLine(
     out string targetPath,
     out string? outputPath,
     out bool isVerbose,
+    out bool recursive,
     out bool showHelp,
     out string? error)
 {
     targetPath = string.Empty;
     outputPath = null;
     isVerbose = false;
+    recursive = false;
     showHelp = false;
     error = null;
 
@@ -228,6 +242,12 @@ static bool TryParseCommandLine(
         {
             showHelp = true;
             return true;
+        }
+
+        if (arg.Equals("--recursive", StringComparison.OrdinalIgnoreCase))
+        {
+            recursive = true;
+            continue;
         }
 
         if (arg.Equals("--verbose", StringComparison.OrdinalIgnoreCase) ||

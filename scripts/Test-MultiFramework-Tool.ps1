@@ -2,7 +2,7 @@
 [CmdletBinding()]
 param(
     [string]$PackageDirectory = 'artifacts/nuget',
-    [string]$Version = '0.2.0'
+    [string]$Version = '0.3.0'
 )
 $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path

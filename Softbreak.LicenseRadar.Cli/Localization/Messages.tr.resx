@@ -41,6 +41,7 @@ ARGÜMANLAR:
 SEÇENEKLER:
   -o, --output &lt;dosya.json&gt;   Tarama sonucunu v1 JSON formatında kaydeder.
   -v, --verbose               Tüm paketleri ve kanıt ayrıntılarını gösterir.
+  --recursive                Solution seçmeden dizin ağacını tarar.
   -h, --help                  Bu yardım açıklamasını görüntüler.
 
 ÖRNEKLER:
@@ -60,7 +61,7 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.Transitive" xml:space="preserve"><value>Dolaylı: {0}</value></data>
   <data name="Renderer.ReviewCount" xml:space="preserve"><value>İnceleme gerekli: {0}</value></data>
   <data name="Renderer.UnknownCount" xml:space="preserve"><value>Doğrulanamadı: {0}</value></data>
-  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Lisans beyanı mevcut: {0}</value></data>
   <data name="Renderer.QueryFailures" xml:space="preserve"><value>Sorgu hatası: {0}</value></data>
   <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(doğrulanamayan sonuçlara dahildir)</value></data>
   <data name="Renderer.ReviewTable" xml:space="preserve"><value>İnceleme Gerektiren Paketler ({0})</value></data>
@@ -76,14 +77,14 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.Source" xml:space="preserve"><value>Kaynak:</value></data>
   <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>{0} ek inceleme gerekçesi için --verbose kullanın.</value></data>
   <data name="Renderer.UnknownTable" xml:space="preserve"><value>Doğrulanamayan Paketler ({0})</value></data>
-  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Metadata Seviyesinde İncelenen Paketler ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Lisans Beyanı Bulunan Paketler ({0})</value></data>
   <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>Lisans bildirimi</value></data>
   <data name="Renderer.NoDeclaration" xml:space="preserve"><value>Bildirim yok</value></data>
   <data name="Renderer.MetadataWarning" xml:space="preserve"><value>Metadata bulunması, kullanım için hukuki onay anlamına gelmez.</value></data>
-  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>Diğer {0} pakette lisans metadata'sı bulundu; hukuki uygunluk doğrulanmadı.</value></data>
-  <data name="Renderer.NoSignals" xml:space="preserve"><value>Özel bir inceleme sinyali bulunmadı; bu sonuç hukuki onay anlamına gelmez.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>Diğer {0} pakette lisans beyanı bulundu.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>Özel bir inceleme sinyali bulunmadı.</value></data>
   <data name="Renderer.Next1" xml:space="preserve"><value>Sonraki adım: İlgili lisans metnini ve kullanım koşullarınızı karşılaştırın;</value></data>
-  <data name="Renderer.Next2" xml:space="preserve"><value>gerekirse üreticinin resmî koşullarını doğrulayın. Satın alma kararı otomatik verilmez.</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>Gerekirse üreticinin resmî koşullarını doğrulayın.</value></data>
   <data name="Renderer.Hint" xml:space="preserve"><value>Ayrıntılar için komutunuza [bold]--verbose[/], JSON raporu için [bold]--output rapor.json[/] ekleyin.</value></data>
   <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>Lisans dosyası</value></data>
   <data name="Renderer.SpecialReview" xml:space="preserve"><value>Özel inceleme</value></data>
@@ -124,7 +125,7 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Locator.NotRestored" xml:space="preserve"><value>'{0}' projesinde ne 'packages.lock.json' ne de 'obj/project.assets.json' bulunamadı. Proje henüz restore edilmemiş.</value></data>
   <data name="Locator.Unsupported" xml:space="preserve"><value>Desteklenmeyen dosya türü: '{0}'. Lütfen bir proje (.csproj), solution (.sln/.slnx), packages.lock.json veya klasör belirtin.</value></data>
   <data name="Locator.UnrestoredCount" xml:space="preserve"><value>{0} .NET projesi restore edilmemiş veya bağımlılık verileri bulunamadı: {1}. Eksik projeler sessizce atlanmayacak.</value></data>
-  <data name="Locator.RestoreHint" xml:space="preserve"><value>Solution klasöründe 'dotnet restore --use-lock-file' çalıştırıp taramayı yeniden başlatın.</value></data>
+  <data name="Locator.RestoreHint" xml:space="preserve"><value>Eksik projeleri ayrı ayrı dotnet restore ile restore edin. Lock dosyası istiyorsanız dotnet restore --use-lock-file kullanın; ardından taramayı tekrarlayın.</value></data>
   <data name="Locator.AllUnrestored" xml:space="preserve"><value>{0} adet .NET projesi bulundu ancak hiçbirinde 'packages.lock.json' veya 'obj/project.assets.json' mevcut değil. Projeler henüz restore edilmemiş.</value></data>
   <data name="Locator.EmptyDirectory" xml:space="preserve"><value>'{0}' dizininde herhangi bir .NET projesi veya bağımlılık dosyası ('packages.lock.json' / 'obj/project.assets.json') bulunamadı.</value></data>
   <data name="Locator.ScanHint" xml:space="preserve"><value>Taramak istediğiniz .NET projesinin veya solution'ın bulunduğu klasöre geçip 'license-radar scan .' komutunu çalıştırın.</value></data>
@@ -175,4 +176,28 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Change.PreviousMissing" xml:space="preserve"><value>Önceki taramada lisans beyanı kanıtı yok.</value></data>
   <data name="Change.CurrentMissing" xml:space="preserve"><value>Yeni taramada lisans beyanı kanıtı yok.</value></data>
   <data name="Change.NotComparable" xml:space="preserve"><value>Lisans bildirimi değişikliği karşılaştırılamadı.</value></data>
+  <data name="Locator.MultipleSolutions" xml:space="preserve"><value>Birden fazla solution bulundu: {0}</value></data>
+  <data name="Locator.ChooseSolution" xml:space="preserve"><value>Açıkça bir .sln veya .slnx yolu belirtin.</value></data>
+  <data name="Locator.EmptySolution" xml:space="preserve"><value>Solution içinde desteklenen C# projesi yok: {0}</value></data>
+  <data name="Locator.InvalidSolution" xml:space="preserve"><value>Solution okunamadı: {0}</value></data>
+  <data name="Locator.SolutionRestoreHint" xml:space="preserve"><value>Eksik proje yollarını kontrol edin ve seçilen solution için restore çalıştırın.</value></data>
+  <data name="Locator.RecursiveDirectory" xml:space="preserve"><value>--recursive için dizin hedefi gerekir.</value></data>
+  <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
+  <data name="Renderer.SolutionScope" xml:space="preserve"><value>Kapsam: Yalnızca solution üyesi C# projeleri</value></data>
+  <data name="Renderer.PathScope" xml:space="preserve"><value>Kapsam: Belirtilen yol / dizin ağacı</value></data>
+  <data name="Renderer.LicensePage" xml:space="preserve"><value>NuGet lisans sayfası</value></data>
+  <data name="Renderer.PackagePage" xml:space="preserve"><value>NuGet paket sayfası</value></data>
+  <data name="Renderer.Purpose" xml:space="preserve"><value>İncelenmesi gereken lisans koşullarını belirleyin.</value></data>
+  <data name="Renderer.Overview" xml:space="preserve"><value>Tarama özeti</value></data>
+  <data name="Renderer.CountBasis" xml:space="preserve"><value>Sayılar paket/sürüm/framework kayıtlarını gösterir; benzersiz paket adı sayısı değildir.</value></data>
+  <data name="Renderer.References" xml:space="preserve"><value>Lisans ve paket bağlantıları</value></data>
+  <data name="Renderer.Actions" xml:space="preserve"><value>Nasıl devam etmeli?</value></data>
+  <data name="Renderer.Disclaimer" xml:space="preserve"><value>Bu rapor hukuki onay veya satın alma önerisi değildir.</value></data>
+  <data name="Cli.ScanProgress" xml:space="preserve"><value>Taranıyor {0}/{1}: {2} {3}</value></data>
+  <data name="Renderer.RecursiveScope" xml:space="preserve"><value>Kapsam: Recursive dizin taraması</value></data>
+  <data name="Renderer.ScanFailed" xml:space="preserve"><value>Tarama tamamlanamadı</value></data>
+  <data name="Renderer.DiscoveryCounts" xml:space="preserve"><value>{0} proje keşfedildi · {1} hazır · {2} eksik</value></data>
+  <data name="Renderer.MissingDependencies" xml:space="preserve"><value>Eksik bağımlılık verileri veya proje dosyaları</value></data>
+  <data name="Renderer.NoPartialScan" xml:space="preserve"><value>Eksik projeler atlanmadı; lisans taraması yapılmadı.</value></data>
+  <data name="Renderer.TrySolution" xml:space="preserve"><value>Dizinde tek solution varsa yalnızca üyelerini taramak için --recursive seçeneğini kaldırın.</value></data>
 </root>

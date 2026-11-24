@@ -40,6 +40,7 @@ ARGUMENTS:
 OPTIONS:
   -o, --output &lt;file.json&gt;    Save results using JSON schema version 1.
   -v, --verbose               Show all packages and detailed evidence.
+  --recursive                Scan directory tree without selecting a solution.
   -h, --help                  Display this help.
 
 EXAMPLES:
@@ -59,7 +60,7 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.Transitive" xml:space="preserve"><value>Transitive: {0}</value></data>
   <data name="Renderer.ReviewCount" xml:space="preserve"><value>Review required: {0}</value></data>
   <data name="Renderer.UnknownCount" xml:space="preserve"><value>Unknown: {0}</value></data>
-  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>License declaration found: {0}</value></data>
   <data name="Renderer.QueryFailures" xml:space="preserve"><value>Query failures: {0}</value></data>
   <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(included in unknown results)</value></data>
   <data name="Renderer.ReviewTable" xml:space="preserve"><value>Packages Requiring Review ({0})</value></data>
@@ -75,14 +76,14 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.Source" xml:space="preserve"><value>Source:</value></data>
   <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>Use --verbose to view {0} additional review reasons.</value></data>
   <data name="Renderer.UnknownTable" xml:space="preserve"><value>Unverified Packages ({0})</value></data>
-  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages Reviewed by Metadata ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages with License Declarations ({0})</value></data>
   <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>License declaration</value></data>
   <data name="Renderer.NoDeclaration" xml:space="preserve"><value>No declaration</value></data>
   <data name="Renderer.MetadataWarning" xml:space="preserve"><value>License metadata does not establish legal permission to use the package.</value></data>
-  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License metadata was found for {0} other packages; legal compliance was not verified.</value></data>
-  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found; this is not legal clearance.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License declarations were found for {0} other packages.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found.</value></data>
   <data name="Renderer.Next1" xml:space="preserve"><value>Next step: Compare the license terms with your intended use;</value></data>
-  <data name="Renderer.Next2" xml:space="preserve"><value>verify the publisher's official terms if needed. No purchase decision is made automatically.</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>Verify the publisher's official terms if needed.</value></data>
   <data name="Renderer.Hint" xml:space="preserve"><value>Use [bold]--verbose[/] for details or [bold]--output report.json[/] to save JSON.</value></data>
   <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>License file</value></data>
   <data name="Renderer.SpecialReview" xml:space="preserve"><value>Special review</value></data>
@@ -123,7 +124,7 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Locator.NotRestored" xml:space="preserve"><value>Neither 'packages.lock.json' nor 'obj/project.assets.json' was found for project '{0}'. The project has not been restored.</value></data>
   <data name="Locator.Unsupported" xml:space="preserve"><value>Unsupported file type: '{0}'. Specify a project (.csproj), solution (.sln/.slnx), packages.lock.json, or directory.</value></data>
   <data name="Locator.UnrestoredCount" xml:space="preserve"><value>{0} .NET projects have not been restored or their dependency data is missing: {1}. Missing projects will not be silently skipped.</value></data>
-  <data name="Locator.RestoreHint" xml:space="preserve"><value>Run 'dotnet restore --use-lock-file' in the solution directory, then scan again.</value></data>
+  <data name="Locator.RestoreHint" xml:space="preserve"><value>Restore each missing project explicitly with dotnet restore, or use dotnet restore --use-lock-file if lock files are desired; then scan again.</value></data>
   <data name="Locator.AllUnrestored" xml:space="preserve"><value>Found {0} .NET projects, but none contains 'packages.lock.json' or 'obj/project.assets.json'. Projects have not been restored.</value></data>
   <data name="Locator.EmptyDirectory" xml:space="preserve"><value>No .NET project or dependency file ('packages.lock.json' / 'obj/project.assets.json') was found in '{0}'.</value></data>
   <data name="Locator.ScanHint" xml:space="preserve"><value>Go to the directory containing the .NET project or solution and run 'license-radar scan .'.</value></data>
@@ -174,4 +175,28 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Change.PreviousMissing" xml:space="preserve"><value>No license declaration evidence in the previous scan.</value></data>
   <data name="Change.CurrentMissing" xml:space="preserve"><value>No license declaration evidence in the current scan.</value></data>
   <data name="Change.NotComparable" xml:space="preserve"><value>The license declaration change could not be compared.</value></data>
+  <data name="Locator.MultipleSolutions" xml:space="preserve"><value>Multiple solutions found: {0}</value></data>
+  <data name="Locator.ChooseSolution" xml:space="preserve"><value>Specify an explicit .sln or .slnx path.</value></data>
+  <data name="Locator.EmptySolution" xml:space="preserve"><value>No supported C# projects in solution: {0}</value></data>
+  <data name="Locator.InvalidSolution" xml:space="preserve"><value>Cannot read solution: {0}</value></data>
+  <data name="Locator.SolutionRestoreHint" xml:space="preserve"><value>Check missing project paths and restore the selected solution.</value></data>
+  <data name="Locator.RecursiveDirectory" xml:space="preserve"><value>--recursive requires a directory target.</value></data>
+  <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
+  <data name="Renderer.SolutionScope" xml:space="preserve"><value>Scope: C# solution members only</value></data>
+  <data name="Renderer.PathScope" xml:space="preserve"><value>Scope: Explicit path / directory tree</value></data>
+  <data name="Renderer.LicensePage" xml:space="preserve"><value>NuGet license page</value></data>
+  <data name="Renderer.PackagePage" xml:space="preserve"><value>NuGet package page</value></data>
+  <data name="Renderer.Purpose" xml:space="preserve"><value>Find license terms that need a closer look.</value></data>
+  <data name="Renderer.Overview" xml:space="preserve"><value>Scan summary</value></data>
+  <data name="Renderer.CountBasis" xml:space="preserve"><value>Counts are package/version/framework records, not unique package names.</value></data>
+  <data name="Renderer.References" xml:space="preserve"><value>License and package references</value></data>
+  <data name="Renderer.Actions" xml:space="preserve"><value>What to do next</value></data>
+  <data name="Renderer.Disclaimer" xml:space="preserve"><value>This report is not legal clearance or a purchase recommendation.</value></data>
+  <data name="Cli.ScanProgress" xml:space="preserve"><value>Scanning {0}/{1}: {2} {3}</value></data>
+  <data name="Renderer.RecursiveScope" xml:space="preserve"><value>Scope: Recursive directory scan</value></data>
+  <data name="Renderer.ScanFailed" xml:space="preserve"><value>Scan could not be completed</value></data>
+  <data name="Renderer.DiscoveryCounts" xml:space="preserve"><value>{0} projects found · {1} ready · {2} missing</value></data>
+  <data name="Renderer.MissingDependencies" xml:space="preserve"><value>Missing dependency data or project files</value></data>
+  <data name="Renderer.NoPartialScan" xml:space="preserve"><value>No partial scan was performed.</value></data>
+  <data name="Renderer.TrySolution" xml:space="preserve"><value>To scan solution members instead, omit --recursive if the directory contains one solution.</value></data>
 </root>

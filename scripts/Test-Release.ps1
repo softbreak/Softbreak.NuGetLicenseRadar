@@ -1,4 +1,4 @@
-﻿# .NET Tool 0.2.0 yayın adayı için izole, global kuruluma dokunmayan Windows ön doğrulaması.
+﻿# .NET Tool 0.3.0 yayın adayı için izole, global kuruluma dokunmayan Windows ön doğrulaması.
 # Yalnızca dotnet test/pack ve geçici --tool-path install yapar. NuGet.org'a yüklemez.
 [CmdletBinding()]
 param()
@@ -8,7 +8,7 @@ $repo = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $solution = Join-Path $repo 'Softbreak.NuGetLicenseRadar.slnx'
 $project = Join-Path $repo 'Softbreak.LicenseRadar.Cli\Softbreak.LicenseRadar.Cli.csproj'
 $toolId = 'Softbreak.NuGetLicenseRadar'
-$version = '0.2.0'
+$version = '0.3.0'
 $work = Join-Path $repo ('.local-test\release-' + [guid]::NewGuid().ToString('N'))
 $packageDir = Join-Path $work 'packages'
 $toolDir = Join-Path $work 'tool'
@@ -42,7 +42,7 @@ Write-Host '[1/4] Release testleri...' -ForegroundColor Cyan
 Invoke-DotNet restore $solution
 Invoke-DotNet test $solution '--configuration' 'Release' '--framework' 'net10.0' '--no-restore'
 
-Write-Host '[2/4] 0.2.0 NuGet Tool paketleniyor...' -ForegroundColor Cyan
+Write-Host '[2/4] 0.3.0 NuGet Tool paketleniyor...' -ForegroundColor Cyan
 Invoke-DotNet pack $project '--configuration' 'Release' '--output' $packageDir '--no-restore'
 if (-not (Test-Path -LiteralPath $package)) {
     throw ('PACKAGE_NOT_FOUND: {0}' -f $package)
@@ -98,7 +98,7 @@ if ($LASTEXITCODE -ne 0) { throw 'HELP_COMMAND_FAILED' }
 
 $hash = (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash
 $summary = @(
-    '=== LICENSE RADAR 0.2.0 RELEASE CANDIDATE ==='
+    '=== LICENSE RADAR 0.3.0 RELEASE CANDIDATE ==='
     'RELEASE_TESTS: PASS'
     'PACK: PASS'
     'METADATA: PASS'

@@ -11,7 +11,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>license-radar</ToolCommandName>
     <PackageId>Softbreak.NuGetLicenseRadar</PackageId>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
 
     <Title>Softbreak NuGet License Radar</Title>
     <Authors>Softbreak</Authors>
@@ -21,7 +21,7 @@
     <PackageTags>nuget license license-scanner dotnet-tool dotnet6 dotnet7 dotnet8 dotnet9 dotnet10 cli</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>0.2.0: Support .NET 6–10 runtimes and automatically localize CLI messages, reports, and review reasons to Turkish or English based on the operating system UI culture. Preserve license evidence and the JSON schema.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.3.0: Solution-aware C# discovery, explicit recursive scans, responsive Spectre.Console reports, version-specific NuGet references, progress feedback and scope-aware restore guidance. Preserves JSON schema v1 and .NET 6–10 runtime compatibility.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</RepositoryUrl>
     <PackageProjectUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</PackageProjectUrl>

@@ -56,9 +56,9 @@ public class CommandLineAcceptanceTests
         Assert.Contains("15.0.0", output);
 
         // Must NOT dump full "Diğer Paketler" table in default mode
-        Assert.DoesNotContain("Metadata Seviyesinde İncelenen Paketler", output);
+        Assert.DoesNotContain("Lisans Beyanı Bulunan Paketler", output);
         // Instead must show summary note pointing to --verbose
-        Assert.Contains("Diğer 1 pakette lisans metadata'sı bulundu", output);
+        Assert.Contains("Diğer 1 pakette lisans beyanı bulundu", output);
         Assert.Contains("--verbose", output);
 
         // Must show Next Steps panel
@@ -95,7 +95,7 @@ public class CommandLineAcceptanceTests
         string output = writer.ToString();
 
         // Must render Diğer Paketler table in verbose mode
-        Assert.Contains("Metadata Seviyesinde İncelenen Paketler", output);
+        Assert.Contains("Lisans Beyanı Bulunan Paketler", output);
         Assert.Contains("Microsoft.Extensions.Logging", output);
     }
 
