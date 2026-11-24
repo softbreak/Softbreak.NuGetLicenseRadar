@@ -61,7 +61,7 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.Transitive" xml:space="preserve"><value>Dolaylı: {0}</value></data>
   <data name="Renderer.ReviewCount" xml:space="preserve"><value>İnceleme gerekli: {0}</value></data>
   <data name="Renderer.UnknownCount" xml:space="preserve"><value>Doğrulanamadı: {0}</value></data>
-  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Lisans beyanı mevcut: {0}</value></data>
   <data name="Renderer.QueryFailures" xml:space="preserve"><value>Sorgu hatası: {0}</value></data>
   <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(doğrulanamayan sonuçlara dahildir)</value></data>
   <data name="Renderer.ReviewTable" xml:space="preserve"><value>İnceleme Gerektiren Paketler ({0})</value></data>
@@ -77,14 +77,14 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.Source" xml:space="preserve"><value>Kaynak:</value></data>
   <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>{0} ek inceleme gerekçesi için --verbose kullanın.</value></data>
   <data name="Renderer.UnknownTable" xml:space="preserve"><value>Doğrulanamayan Paketler ({0})</value></data>
-  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Metadata Seviyesinde İncelenen Paketler ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Lisans Beyanı Bulunan Paketler ({0})</value></data>
   <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>Lisans bildirimi</value></data>
   <data name="Renderer.NoDeclaration" xml:space="preserve"><value>Bildirim yok</value></data>
   <data name="Renderer.MetadataWarning" xml:space="preserve"><value>Metadata bulunması, kullanım için hukuki onay anlamına gelmez.</value></data>
-  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>Diğer {0} pakette lisans metadata'sı bulundu; hukuki uygunluk doğrulanmadı.</value></data>
-  <data name="Renderer.NoSignals" xml:space="preserve"><value>Özel bir inceleme sinyali bulunmadı; bu sonuç hukuki onay anlamına gelmez.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>Diğer {0} pakette lisans beyanı bulundu.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>Özel bir inceleme sinyali bulunmadı.</value></data>
   <data name="Renderer.Next1" xml:space="preserve"><value>Sonraki adım: İlgili lisans metnini ve kullanım koşullarınızı karşılaştırın;</value></data>
-  <data name="Renderer.Next2" xml:space="preserve"><value>gerekirse üreticinin resmî koşullarını doğrulayın. Satın alma kararı otomatik verilmez.</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>Gerekirse üreticinin resmî koşullarını doğrulayın.</value></data>
   <data name="Renderer.Hint" xml:space="preserve"><value>Ayrıntılar için komutunuza [bold]--verbose[/], JSON raporu için [bold]--output rapor.json[/] ekleyin.</value></data>
   <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>Lisans dosyası</value></data>
   <data name="Renderer.SpecialReview" xml:space="preserve"><value>Özel inceleme</value></data>

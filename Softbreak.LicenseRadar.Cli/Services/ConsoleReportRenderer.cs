@@ -265,7 +265,7 @@ public sealed class ConsoleReportRenderer
         if (_console.Profile.Width < 80)
         {
             RenderCompactList(L.Format("Renderer.MetadataTable", items.Count), items, item => Markup.Escape(DeclarationLabel(item)));
-            _console.MarkupLine($"[grey]{L.Get("Renderer.MetadataWarning")}[/]");
+    
             return;
         }
         var table = new Table

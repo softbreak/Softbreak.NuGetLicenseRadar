@@ -34,11 +34,11 @@ public class ConsoleReportExperienceTests
         Assert.Contains("Toplam: 152", text);
         Assert.Contains("İnceleme gerekli: 1", text);
         Assert.Contains("Doğrulanamadı: 1", text);
-        Assert.Contains("Metadata: 150", text);
+        Assert.Contains("Lisans beyanı mevcut: 150", text);
         Assert.Contains("Fractions 7.3.0", text);
         Assert.Contains("xunit.abstractions 2.0.3", text);
         Assert.Contains("NuGet metadata'sında lisans beyanı bulunamadı", text);
-        Assert.Contains("Diğer 150 pakette lisans metadata'sı bulundu", text);
+        Assert.Contains("Diğer 150 pakette lisans beyanı bulundu", text);
         Assert.DoesNotContain("Diğer 151 paket", text);
         Assert.DoesNotContain("Library.1 1.0.0", text);
         Assert.False(text.Contains("ticari lisans temin edin", StringComparison.OrdinalIgnoreCase));
@@ -61,7 +61,7 @@ public class ConsoleReportExperienceTests
         Assert.Contains("Network.Package 2.0.0", text);
         Assert.Contains("Zaman aşımı", text);
         Assert.Contains("NuGet yanıt vermedi", text);
-        Assert.DoesNotContain("Diğer 1 pakette lisans metadata'sı bulundu", text);
+        Assert.DoesNotContain("Diğer 1 pakette lisans beyanı bulundu", text);
     }
 
     [Fact]

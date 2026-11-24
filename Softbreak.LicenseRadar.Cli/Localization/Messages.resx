@@ -60,7 +60,7 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.Transitive" xml:space="preserve"><value>Transitive: {0}</value></data>
   <data name="Renderer.ReviewCount" xml:space="preserve"><value>Review required: {0}</value></data>
   <data name="Renderer.UnknownCount" xml:space="preserve"><value>Unknown: {0}</value></data>
-  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>License declaration found: {0}</value></data>
   <data name="Renderer.QueryFailures" xml:space="preserve"><value>Query failures: {0}</value></data>
   <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(included in unknown results)</value></data>
   <data name="Renderer.ReviewTable" xml:space="preserve"><value>Packages Requiring Review ({0})</value></data>
@@ -76,14 +76,14 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.Source" xml:space="preserve"><value>Source:</value></data>
   <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>Use --verbose to view {0} additional review reasons.</value></data>
   <data name="Renderer.UnknownTable" xml:space="preserve"><value>Unverified Packages ({0})</value></data>
-  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages Reviewed by Metadata ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages with License Declarations ({0})</value></data>
   <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>License declaration</value></data>
   <data name="Renderer.NoDeclaration" xml:space="preserve"><value>No declaration</value></data>
   <data name="Renderer.MetadataWarning" xml:space="preserve"><value>License metadata does not establish legal permission to use the package.</value></data>
-  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License metadata was found for {0} other packages; legal compliance was not verified.</value></data>
-  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found; this is not legal clearance.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License declarations were found for {0} other packages.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found.</value></data>
   <data name="Renderer.Next1" xml:space="preserve"><value>Next step: Compare the license terms with your intended use;</value></data>
-  <data name="Renderer.Next2" xml:space="preserve"><value>verify the publisher's official terms if needed. No purchase decision is made automatically.</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>Verify the publisher's official terms if needed.</value></data>
   <data name="Renderer.Hint" xml:space="preserve"><value>Use [bold]--verbose[/] for details or [bold]--output report.json[/] to save JSON.</value></data>
   <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>License file</value></data>
   <data name="Renderer.SpecialReview" xml:space="preserve"><value>Special review</value></data>

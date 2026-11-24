@@ -126,7 +126,7 @@ public class ConsoleReportRendererTests
         Assert.Contains("https://opensource.org/license/rpl-1-5/", output);
         Assert.Contains("https://docs.automapper.io/en/stable/15.0-Upgrade-Guide.html", output);
 
-        Assert.Contains("Metadata Seviyesinde İncelenen Paketler", output);
+        Assert.Contains("Lisans Beyanı Bulunan Paketler", output);
         Assert.Contains("Microsoft.Extensions.Logging", output);
         Assert.Contains("MIT", output);
     }
