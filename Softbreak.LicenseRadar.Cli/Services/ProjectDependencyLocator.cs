@@ -34,7 +34,7 @@ public sealed class ProjectDependencyLocator
 
     public DiscoveryResult Discover(string targetPath)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(targetPath);
+        ArgumentGuards.ThrowIfNullOrWhiteSpace(targetPath);
 
         string fullPath = Path.GetFullPath(targetPath);
 
