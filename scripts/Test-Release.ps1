@@ -39,7 +39,8 @@ if ($LASTEXITCODE -ne 0 -or -not (@($sdkList | Select-String '^10\.')).Count) {
 
 New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
 Write-Host '[1/4] Release testleri...' -ForegroundColor Cyan
-Invoke-DotNet test $solution '--configuration' 'Release' '--framework' 'net10.0'
+Invoke-DotNet restore $solution
+Invoke-DotNet test $solution '--configuration' 'Release' '--framework' 'net10.0' '--no-restore'
 
 Write-Host '[2/4] 0.2.0 NuGet Tool paketleniyor...' -ForegroundColor Cyan
 Invoke-DotNet pack $project '--configuration' 'Release' '--output' $packageDir '--no-restore'
