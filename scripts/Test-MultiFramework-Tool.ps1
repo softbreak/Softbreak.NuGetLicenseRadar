@@ -46,7 +46,9 @@ try {
         & $exe --help | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "TOOL_HELP_FAILED: $framework" }
 
-        $lock = Join-Path $work ("fixture-" + $framework + ".json")
+        $fixtureDir = Join-Path $work ("fixture-" + $framework)
+        New-Item -ItemType Directory -Force -Path $fixtureDir | Out-Null
+        $lock = Join-Path $fixtureDir 'packages.lock.json'
         $lockJson = '{"version":2,"dependencies":{"' + $framework + '":{"Sample.Project":{"type":"Project"}}}}'
         [IO.File]::WriteAllText($lock, $lockJson, [Text.UTF8Encoding]::new($false))
         $output = & $exe scan $lock
