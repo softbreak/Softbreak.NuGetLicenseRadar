@@ -145,7 +145,8 @@ public class ConsoleReportExperienceTests
         Assert.Contains("https://www.nuget.org/packages/Vendor.Pkg/1.2.3/License", text);
         Assert.Contains("https://www.nuget.org/packages/Unknown.Pkg/2.0.0", text);
         Assert.DoesNotContain("https://www.nuget.org/packages/Unknown.Pkg/2.0.0/License", text);
-        Assert.DoesNotContain("\u001b", text);
+        // ESC is ignorable in some culture-sensitive string comparisons.
+        Assert.False(text.Contains('\u001b'), "Plain terminal output must not contain an ESC character.");
     }
 
     private static ConsoleReportRenderer CreateRenderer(StringWriter output)
