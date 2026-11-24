@@ -40,6 +40,7 @@ ARGUMENTS:
 OPTIONS:
   -o, --output &lt;file.json&gt;    Save results using JSON schema version 1.
   -v, --verbose               Show all packages and detailed evidence.
+  --recursive                Scan directory tree without selecting a solution.
   -h, --help                  Display this help.
 
 EXAMPLES:
@@ -174,4 +175,12 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Change.PreviousMissing" xml:space="preserve"><value>No license declaration evidence in the previous scan.</value></data>
   <data name="Change.CurrentMissing" xml:space="preserve"><value>No license declaration evidence in the current scan.</value></data>
   <data name="Change.NotComparable" xml:space="preserve"><value>The license declaration change could not be compared.</value></data>
+  <data name="Locator.MultipleSolutions" xml:space="preserve"><value>Multiple solutions found: {0}</value></data>
+  <data name="Locator.ChooseSolution" xml:space="preserve"><value>Specify an explicit .sln or .slnx path.</value></data>
+  <data name="Locator.EmptySolution" xml:space="preserve"><value>No supported C# projects in solution: {0}</value></data>
+  <data name="Locator.InvalidSolution" xml:space="preserve"><value>Cannot read solution: {0}</value></data>
+  <data name="Locator.SolutionRestoreHint" xml:space="preserve"><value>Check missing project paths and restore the selected solution.</value></data>
+  <data name="Locator.RecursiveDirectory" xml:space="preserve"><value>--recursive requires a directory target.</value></data>
+  <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
+  <data name="Renderer.SolutionScope" xml:space="preserve"><value>Scope: C# solution members only</value></data>
 </root>

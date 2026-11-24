@@ -41,6 +41,7 @@ ARGÜMANLAR:
 SEÇENEKLER:
   -o, --output &lt;dosya.json&gt;   Tarama sonucunu v1 JSON formatında kaydeder.
   -v, --verbose               Tüm paketleri ve kanıt ayrıntılarını gösterir.
+  --recursive                Solution seçmeden dizin ağacını tarar.
   -h, --help                  Bu yardım açıklamasını görüntüler.
 
 ÖRNEKLER:
@@ -175,4 +176,12 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Change.PreviousMissing" xml:space="preserve"><value>Önceki taramada lisans beyanı kanıtı yok.</value></data>
   <data name="Change.CurrentMissing" xml:space="preserve"><value>Yeni taramada lisans beyanı kanıtı yok.</value></data>
   <data name="Change.NotComparable" xml:space="preserve"><value>Lisans bildirimi değişikliği karşılaştırılamadı.</value></data>
+  <data name="Locator.MultipleSolutions" xml:space="preserve"><value>Birden fazla solution bulundu: {0}</value></data>
+  <data name="Locator.ChooseSolution" xml:space="preserve"><value>Açıkça bir .sln veya .slnx yolu belirtin.</value></data>
+  <data name="Locator.EmptySolution" xml:space="preserve"><value>Solution içinde desteklenen C# projesi yok: {0}</value></data>
+  <data name="Locator.InvalidSolution" xml:space="preserve"><value>Solution okunamadı: {0}</value></data>
+  <data name="Locator.SolutionRestoreHint" xml:space="preserve"><value>Eksik proje yollarını kontrol edin ve seçilen solution için restore çalıştırın.</value></data>
+  <data name="Locator.RecursiveDirectory" xml:space="preserve"><value>--recursive için dizin hedefi gerekir.</value></data>
+  <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
+  <data name="Renderer.SolutionScope" xml:space="preserve"><value>Kapsam: Yalnızca solution üyesi C# projeleri</value></data>
 </root>

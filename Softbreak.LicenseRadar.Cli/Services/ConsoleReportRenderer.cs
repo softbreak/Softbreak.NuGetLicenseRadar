@@ -39,7 +39,7 @@ public sealed class ConsoleReportRenderer
         IReadOnlyList<DiscoveredProject> projects,
         IReadOnlyList<PackageDependency> packages,
         IReadOnlyList<LicenseDeclarationReviewResult> reviewResults,
-        bool isVerbose)
+        bool isVerbose, bool solutionScope = false)
     {
         ArgumentGuards.ThrowIfNullOrWhiteSpace(targetPath);
         ArgumentNullException.ThrowIfNull(projects);
@@ -56,7 +56,7 @@ public sealed class ConsoleReportRenderer
             .Where(r => r.Status == LicenseReviewStatus.MetadataOnly)
             .ToList();
 
-        RenderHeader(targetPath, projects, isVerbose);
+        RenderHeader(targetPath, projects, isVerbose, solutionScope);
         RenderSummary(packages, reviewResults, reviews.Count, unknown.Count, metadata.Count);
 
         if (reviews.Count > 0)
@@ -88,11 +88,14 @@ public sealed class ConsoleReportRenderer
         RenderNextSteps(reviews.Count, unknown.Count, isVerbose);
     }
 
-    private void RenderHeader(string targetPath, IReadOnlyList<DiscoveredProject> projects, bool isVerbose)
+    private void RenderHeader(string targetPath, IReadOnlyList<DiscoveredProject> projects, bool isVerbose, bool solutionScope)
     {
         _console.WriteLine();
         _console.Write(new Rule("[bold]Softbreak NuGet License Radar[/]") { Justification = Justify.Left });
         _console.MarkupLine($"[grey]{L.Get("Renderer.Target")}[/] {Markup.Escape(targetPath)}");
+
+        if (solutionScope)
+            _console.MarkupLine($"[cyan]{Markup.Escape(L.Get("Renderer.SolutionScope"))}[/]");
 
         if (projects.Count == 1)
         {
@@ -147,13 +150,14 @@ public sealed class ConsoleReportRenderer
             Title = new TableTitle($"[bold yellow]{L.Format("Renderer.ReviewTable", items.Count)}[/]")
         };
         table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.Framework")}[/]");
         table.AddColumn($"[bold]{L.Get("Renderer.Reason")}[/]");
 
         foreach (var item in items)
         {
             var pkg = item.QueryResult.Package;
             table.AddRow(
-                Markup.Escape($"{pkg.Name} {pkg.Version}"),
+                Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"),
                 FormatSignalSummary(item));
         }
 
@@ -169,7 +173,7 @@ public sealed class ConsoleReportRenderer
         foreach (var item in items.Take(limit))
         {
             var pkg = item.QueryResult.Package;
-            _console.MarkupLine($"[yellow]•[/] [bold]{Markup.Escape(pkg.Name)} {Markup.Escape(pkg.Version)}[/]");
+            _console.MarkupLine($"[yellow]•[/] [bold]{Markup.Escape(pkg.Name)} {Markup.Escape(pkg.Version)}[/] [grey]({Markup.Escape(pkg.Framework ?? "-")})[/]");
             _console.MarkupLine($"  [grey]{L.Get("Renderer.Reason")}:[/] {Markup.Escape(item.Reason)}");
 
             var decl = item.QueryResult.Declaration;
@@ -225,6 +229,7 @@ public sealed class ConsoleReportRenderer
             Title = new TableTitle($"[bold]{L.Format("Renderer.UnknownTable", items.Count)}[/]")
         };
         table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.Framework")}[/]");
         table.AddColumn($"[bold]{L.Get("Renderer.Reason")}[/]");
 
         foreach (var item in items)
@@ -233,7 +238,7 @@ public sealed class ConsoleReportRenderer
             string reason = item.QueryResult.Status == LicenseDeclarationQueryStatus.Success
                 ? item.Reason
                 : $"{QueryFailureLabel(item.QueryResult.Status)}: {item.Reason}";
-            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(reason));
+            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(reason));
         }
 
         _console.Write(table);
@@ -248,13 +253,14 @@ public sealed class ConsoleReportRenderer
             Title = new TableTitle($"[bold]{L.Format("Renderer.MetadataTable", items.Count)}[/]")
         };
         table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.Framework")}[/]");
         table.AddColumn($"[bold]{L.Get("Renderer.LicenseDeclaration")}[/]");
         foreach (var item in items)
         {
             var pkg = item.QueryResult.Package;
             var decl = item.QueryResult.Declaration;
             string declaration = decl is null ? L.Get("Renderer.NoDeclaration") : $"{decl.Kind}: {decl.Value}";
-            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(declaration));
+            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(declaration));
         }
         _console.Write(table);
         _console.WriteLine();

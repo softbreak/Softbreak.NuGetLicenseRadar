@@ -20,7 +20,8 @@ public sealed record DiscoveryResult(
     IReadOnlyList<DiscoveredProject> Projects,
     IReadOnlyList<string> UnrestoredProjects,
     string? ErrorMessage = null,
-    string? SuggestedSolution = null
+    string? SuggestedSolution = null,
+    string? SolutionPath = null
 )
 {
     public bool IsSuccess => Projects.Count > 0 && ErrorMessage is null;
@@ -33,7 +34,7 @@ public sealed class ProjectDependencyLocator
         "bin", "obj", ".git", ".vs", ".idea", "node_modules", "TestResults", ".local-test", "artifacts"
     };
 
-    public DiscoveryResult Discover(string targetPath)
+    public DiscoveryResult Discover(string targetPath, bool recursive = false)
     {
         ArgumentGuards.ThrowIfNullOrWhiteSpace(targetPath);
 
@@ -46,6 +47,14 @@ public sealed class ProjectDependencyLocator
 
         if (Directory.Exists(fullPath))
         {
+            if (!recursive)
+            {
+                var solutions = Directory.EnumerateFiles(fullPath)
+                    .Where(SolutionProjectReader.IsSolution).OrderBy(p => p, StringComparer.Ordinal).ToArray();
+                if (solutions.Length == 1) return DiscoverSolution(solutions[0]);
+                if (solutions.Length > 1)
+                    return new DiscoveryResult([], [], L.Format("Locator.MultipleSolutions", string.Join(", ", solutions.Select(Path.GetFileName))), L.Get("Locator.ChooseSolution"));
+            }
             return DiscoverFromDirectory(fullPath);
         }
 
@@ -114,8 +123,7 @@ public sealed class ProjectDependencyLocator
         if (fileName.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
             fileName.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
         {
-            string slnDir = Path.GetDirectoryName(filePath) ?? "";
-            return DiscoverFromDirectory(slnDir);
+            return DiscoverSolution(filePath);
         }
 
         return new DiscoveryResult(
@@ -124,6 +132,36 @@ public sealed class ProjectDependencyLocator
             L.Format("Locator.Unsupported", fileName),
             "license-radar scan ."
         );
+    }
+
+    private static DiscoveryResult DiscoverSolution(string path)
+    {
+        try
+        {
+            var members = SolutionProjectReader.Read(path);
+            if (members.Count == 0)
+                return new DiscoveryResult([], [], L.Format("Locator.EmptySolution", path));
+            var discovered = new List<DiscoveredProject>();
+            var missing = new List<string>();
+            foreach (string member in members)
+            {
+                if (!File.Exists(member))
+                {
+                    missing.Add(member);
+                    continue;
+                }
+                var result = DiscoverFromFile(member);
+                if (result.IsSuccess) discovered.AddRange(result.Projects);
+                else missing.Add(member);
+            }
+            return missing.Count == 0
+                ? new DiscoveryResult(discovered, missing, SolutionPath: path)
+                : new DiscoveryResult(discovered, missing, L.Format("Locator.UnrestoredCount", missing.Count, string.Join(", ", missing)), L.Get("Locator.SolutionRestoreHint"), path);
+        }
+        catch (Exception ex) when (ex is FormatException or System.Xml.XmlException or IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+        {
+            return new DiscoveryResult([], [], L.Format("Locator.InvalidSolution", path), L.Get("Locator.ChooseSolution"));
+        }
     }
 
     private static DiscoveryResult DiscoverFromDirectory(string directoryPath)
