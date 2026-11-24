@@ -64,11 +64,11 @@ public sealed class LockFileReaderTests
     [InlineData("net10.0")]
     public void Read_FrameworkSpecificLockfile_IncludesPackageButSkipsProjectReference(string framework)
     {
-        string json = $"""
+        string template = """
             {
               "version": 2,
               "dependencies": {
-                "{{framework}}": {
+                "__FRAMEWORK__": {
                   "Demo.Core": { "type": "Project" },
                   "Demo.Dependency": { "type": "Direct", "resolved": "2.3.4" }
                 }
@@ -76,6 +76,7 @@ public sealed class LockFileReaderTests
             }
             """;
 
+        string json = template.Replace("__FRAMEWORK__", framework, StringComparison.Ordinal);
         PackageDependency package = Assert.Single(ReadJson(json));
         Assert.Equal("Demo.Dependency", package.Name);
         Assert.Equal("2.3.4", package.Version);
