@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Globalization;
 using System.Resources;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Spectre.Console;
 using Softbreak.LicenseRadar.Cli.Localization;
 using Softbreak.LicenseRadar.Cli.Models;
@@ -39,7 +41,8 @@ public sealed class UiLocalizationTests
         {
             Out = new AnsiConsoleOutput(output),
             ColorSystem = ColorSystemSupport.NoColors,
-            Ansi = AnsiSupport.No
+            Ansi = AnsiSupport.No,
+            Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
         });
         console.Profile.Width = 120;
 
@@ -71,7 +74,7 @@ public sealed class UiLocalizationTests
         Assert.Contains(title, text);
         Assert.Contains(signalLabel, text);
         Assert.Contains(summary, text);
-        Assert.Contains(vendorEvidence, text);
+        Assert.Contains(vendorEvidence, Regex.Replace(text, @"\s+", " "));
         Assert.DoesNotContain("\u001b[", text);
     }
 
@@ -123,8 +126,14 @@ public sealed class UiLocalizationTests
             Assert.Contains("\"packageName\": \"Example.Pkg\"", report);
         }
 
-        Assert.Contains("Lisans dosyası bildirildi", tr);
-        Assert.Contains("A license file was declared", en);
+        using JsonDocument trDocument = JsonDocument.Parse(tr);
+        using JsonDocument enDocument = JsonDocument.Parse(en);
+        string trReason = trDocument.RootElement
+            .GetProperty("packages")[0].GetProperty("reviewReason").GetString()!;
+        string enReason = enDocument.RootElement
+            .GetProperty("packages")[0].GetProperty("reviewReason").GetString()!;
+        Assert.Contains("Lisans dosyası bildirildi", trReason);
+        Assert.Contains("A license file was declared", enReason);
     }
 
     private sealed class UiCultureScope : IDisposable
