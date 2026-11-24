@@ -1,10 +1,14 @@
 # Softbreak NuGet License Radar
 
+**Language / Dil:** 🇬🇧 **English** (this page) · [🇹🇷 Türkçe](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/README.tr.md)
+
 [![CI](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml/badge.svg)](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Softbreak.NuGetLicenseRadar.svg)](https://www.nuget.org/packages/Softbreak.NuGetLicenseRadar)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/LICENSE)
 
 **Identify NuGet dependencies that need a closer look at their license terms.**
+
+*Türkçe:* **NuGet bağımlılıklarınızın lisans koşullarını kontrol edin.** Tam Türkçe kullanım kılavuzu için [README.tr.md](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/README.tr.md) dosyasına geçin.
 
 Softbreak NuGet License Radar is an open-source .NET CLI tool that scans a project's resolved NuGet dependencies, reads package license declarations and available license files, and highlights evidence worth reviewing. It reports findings; it does **not** certify legal compliance or determine whether a commercial license must be purchased.
 
