@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Softbreak.LicenseRadar.Cli.Models;
 
 namespace Softbreak.LicenseRadar.Cli.Services;
@@ -51,8 +52,8 @@ public sealed class ProjectDependencyLocator
         return new DiscoveryResult(
             Array.Empty<DiscoveredProject>(),
             Array.Empty<string>(),
-            $"Belirtilen yol bulunamadı: {targetPath}",
-            "Lütfen geçerli bir klasör veya dosya yolu belirtin."
+            L.Format("Locator.NotFound", targetPath),
+            L.Get("Locator.ValidPath")
         );
     }
 
@@ -105,7 +106,7 @@ public sealed class ProjectDependencyLocator
             return new DiscoveryResult(
                 Array.Empty<DiscoveredProject>(),
                 [projName],
-                $"'{projName}' projesinde ne 'packages.lock.json' ne de 'obj/project.assets.json' bulunamadı. Proje henüz restore edilmemiş.",
+                L.Format("Locator.NotRestored", projName),
                 "dotnet restore --use-lock-file"
             );
         }
@@ -120,7 +121,7 @@ public sealed class ProjectDependencyLocator
         return new DiscoveryResult(
             Array.Empty<DiscoveredProject>(),
             Array.Empty<string>(),
-            $"Desteklenmeyen dosya türü: '{fileName}'. Lütfen bir proje (.csproj), solution (.sln/.slnx), packages.lock.json veya klasör belirtin.",
+            L.Format("Locator.Unsupported", fileName),
             "license-radar scan ."
         );
     }
@@ -164,8 +165,8 @@ public sealed class ProjectDependencyLocator
                 return new DiscoveryResult(
                     discovered,
                     unrestored,
-                    $"{unrestored.Count} .NET projesi restore edilmemiş veya bağımlılık verileri bulunamadı: {string.Join(", ", unrestored)}. Eksik projeler sessizce atlanmayacak.",
-                    "Solution klasöründe 'dotnet restore --use-lock-file' çalıştırıp taramayı yeniden başlatın."
+                    L.Format("Locator.UnrestoredCount", unrestored.Count, string.Join(", ", unrestored)),
+                    L.Get("Locator.RestoreHint")
                 );
             }
 
@@ -177,7 +178,7 @@ public sealed class ProjectDependencyLocator
             return new DiscoveryResult(
                 Array.Empty<DiscoveredProject>(),
                 unrestored,
-                $"{unrestored.Count} adet .NET projesi bulundu ancak hiçbirinde 'packages.lock.json' veya 'obj/project.assets.json' mevcut değil. Projeler henüz restore edilmemiş.",
+                L.Format("Locator.AllUnrestored", unrestored.Count),
                 "dotnet restore --use-lock-file"
             );
         }
@@ -207,8 +208,8 @@ public sealed class ProjectDependencyLocator
         return new DiscoveryResult(
             Array.Empty<DiscoveredProject>(),
             Array.Empty<string>(),
-            $"'{directoryPath}' dizininde herhangi bir .NET projesi veya bağımlılık dosyası ('packages.lock.json' / 'obj/project.assets.json') bulunamadı.",
-            "Taramak istediğiniz .NET projesinin veya solution'ın bulunduğu klasöre geçip 'license-radar scan .' komutunu çalıştırın."
+            L.Format("Locator.EmptyDirectory", directoryPath),
+            L.Get("Locator.ScanHint")
         );
     }
 
