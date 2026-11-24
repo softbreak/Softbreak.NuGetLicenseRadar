@@ -184,4 +184,6 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
   <data name="Renderer.SolutionScope" xml:space="preserve"><value>Scope: C# solution members only</value></data>
   <data name="Renderer.PathScope" xml:space="preserve"><value>Scope: Explicit path / directory tree</value></data>
+  <data name="Renderer.LicensePage" xml:space="preserve"><value>NuGet license page</value></data>
+  <data name="Renderer.PackagePage" xml:space="preserve"><value>NuGet package page</value></data>
 </root>

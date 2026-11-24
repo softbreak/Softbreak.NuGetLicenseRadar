@@ -156,7 +156,7 @@ public sealed class ConsoleReportRenderer
         {
             var pkg = item.QueryResult.Package;
             table.AddRow(
-                Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"),
+                PackageLabel(item), Markup.Escape(pkg.Framework ?? "-"),
                 FormatSignalSummary(item));
         }
 
@@ -207,10 +207,10 @@ public sealed class ConsoleReportRenderer
             string? link = item.EvidenceUrl ?? item.Signals
                 .Select(s => s.EvidenceUrl)
                 .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
-            if (!string.IsNullOrWhiteSpace(link))
-            {
-                _console.MarkupLine($"  [grey]{L.Get("Renderer.Source")}[/] {Markup.Escape(link)}");
-            }
+            if (IsWebLink(link))
+                _console.MarkupLine($"  [grey]{L.Get("Renderer.Source")}[/] {Markup.Escape(link!)}");
+            var (url, license) = PackageReference(item);
+            _console.MarkupLine($"  [grey]{L.Get(license ? "Renderer.LicensePage" : "Renderer.PackagePage")}:[/] {Markup.Escape(url)}");
             _console.WriteLine();
         }
 
@@ -237,7 +237,7 @@ public sealed class ConsoleReportRenderer
             string reason = item.QueryResult.Status == LicenseDeclarationQueryStatus.Success
                 ? item.Reason
                 : $"{QueryFailureLabel(item.QueryResult.Status)}: {item.Reason}";
-            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(reason));
+            table.AddRow(PackageLabel(item), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(reason));
         }
 
         _console.Write(table);
@@ -259,7 +259,7 @@ public sealed class ConsoleReportRenderer
             var pkg = item.QueryResult.Package;
             var decl = item.QueryResult.Declaration;
             string declaration = decl is null ? L.Get("Renderer.NoDeclaration") : $"{decl.Kind}: {decl.Value}";
-            table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(declaration));
+            table.AddRow(PackageLabel(item), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(declaration));
         }
         _console.Write(table);
         _console.WriteLine();
@@ -277,6 +277,31 @@ public sealed class ConsoleReportRenderer
         {
             _console.MarkupLine($"[grey]{L.Get("Renderer.Hint")}[/]");
         }
+    }
+
+    private static bool IsWebLink(string? url) =>
+        Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+        (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp);
+
+    private static (string Url, bool License) PackageReference(LicenseDeclarationReviewResult item)
+    {
+        var package = item.QueryResult.Package;
+        string url = "https://www.nuget.org/packages/" +
+            Uri.EscapeDataString(package.Name) + "/" + Uri.EscapeDataString(package.Version);
+        bool license = item.QueryResult.Declaration is { Kind: LicenseDeclarationKind.File or LicenseDeclarationKind.Expression };
+        return (license ? url + "/License" : url, license);
+    }
+
+    private string PackageLabel(LicenseDeclarationReviewResult item)
+    {
+        var package = item.QueryResult.Package;
+        string label = Markup.Escape($"{package.Name} {package.Version}");
+        var (url, license) = PackageReference(item);
+        // Only use hyperlink markup when the console explicitly supports it.
+        // Plain output retains a copyable URL for every row.
+        return _console.Profile.Capabilities.Links
+            ? $"[link={url}]{label}[/]"
+            : $"{label}\n{Markup.Escape(url)}";
     }
 
     private static string SourceLabel(DependencySourceKind kind) => kind == DependencySourceKind.LockFile
