@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml/badge.svg)](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Softbreak.NuGetLicenseRadar.svg)](https://www.nuget.org/packages/Softbreak.NuGetLicenseRadar)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/LICENSE)
 
 **Identify NuGet dependencies that need a closer look at their license terms.**
 
@@ -116,7 +116,7 @@ Run the CLI from source:
 dotnet run --project Softbreak.LicenseRadar.Cli --framework net10.0 -- scan .
 ```
 
-The [GitHub Actions workflow](.github/workflows/ci.yml) builds, tests, packs, and validates isolated tool installation for .NET 6–10. On Windows, `scripts/Test-Release.ps1` checks the release candidate without modifying globally installed tools or publishing to NuGet.org.
+The [GitHub Actions workflow](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/.github/workflows/ci.yml) builds, tests, packs, and validates isolated tool installation for .NET 6–10. On Windows, `scripts/Test-Release.ps1` checks the release candidate without modifying globally installed tools or publishing to NuGet.org.
 
 ## Contributing
 
@@ -124,6 +124,6 @@ Bug reports, feature requests, and pull requests are welcome. Please [open an is
 
 ## License
 
-Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
+Distributed under the **MIT License**. See [LICENSE](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/blob/main/LICENSE) for details.
 
 The MIT license applies to **this tool**, not to the third-party NuGet packages it scans.
