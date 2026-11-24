@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -10,17 +11,17 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>license-radar</ToolCommandName>
     <PackageId>Softbreak.NuGetLicenseRadar</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
 
     <Title>Softbreak NuGet License Radar</Title>
     <Authors>Softbreak</Authors>
     <Company>Softbreak</Company>
     <Copyright>Copyright (c) 2026 Softbreak</Copyright>
     <Description>Scan .NET projects for NuGet license declarations and evidence-based license text signals. Highlights packages needing review; does not provide legal clearance.</Description>
-    <PackageTags>nuget license license-scanner dotnet-tool dotnet10 cli</PackageTags>
+    <PackageTags>nuget license license-scanner dotnet-tool dotnet6 dotnet7 dotnet8 dotnet9 dotnet10 cli</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>0.1.1: Fix NuGet packages.lock.json parsing for multi-project solutions. Project references without resolved package versions are skipped; malformed package entries now produce contextual errors.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.2.0: Add .NET 6, 7, 8, 9 and 10 runtime compatibility. Multi-targeted .NET tool packaging and project dependency-file support; preserves explicit review and unknown statuses.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</RepositoryUrl>
     <PackageProjectUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</PackageProjectUrl>
@@ -31,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGet.Versioning" Version="7.9.0" />
+    <PackageReference Include="NuGet.Versioning" Version="6.14.3" />
     <PackageReference Include="Spectre.Console" Version="0.57.2" />
   </ItemGroup>
 
