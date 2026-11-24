@@ -1,149 +1,129 @@
 # Softbreak NuGet License Radar
 
-**.NET projenizde hangi NuGet paketlerinin lisans koşullarını ayrıca incelemeniz gerektiğini görün.**
+[![CI](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml/badge.svg)](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/workflows/ci.yml)
+[![NuGet](https://img.shields.io/nuget/v/Softbreak.NuGetLicenseRadar.svg)](https://www.nuget.org/packages/Softbreak.NuGetLicenseRadar)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-License Radar, NuGet bağımlılıklarının lisans bildirimlerini ve paket içindeki lisans dosyalarını inceleyerek **hangi paketlerin ayrıca değerlendirilmesi gerektiğini** kanıtlarıyla gösteren açık kaynak bir .NET komut satırı aracıdır. [Spectre.Console](https://spectreconsole.net/) ile yüzlerce paketi tararken inceleme önceliklerini anlaşılır biçimde sunar.
+**Identify NuGet dependencies that need a closer look at their license terms.**
 
-> [!IMPORTANT]
-> License Radar bir **hukuki uygunluk onay aracı değildir**. `İnceleme gerekli` ücretli lisansın kesin zorunlu olduğunu; `Metadata bulundu` ise ücretsiz kullanım veya hukuki uygunluk anlamına gelmez. Üretici koşullarını kendi kullanım senaryonuz için doğrulayın.
+Softbreak NuGet License Radar is an open-source .NET CLI tool that scans a project's resolved NuGet dependencies, reads package license declarations and available license files, and highlights evidence worth reviewing. It reports findings; it does **not** certify legal compliance or determine whether a commercial license must be purchased.
 
-## Sürümler ve .NET uyumluluğu
+## Features
 
-| Sürüm | NuGet.org durumu | Aracı çalıştırabileceğiniz .NET sürümleri |
-| --- | --- | --- |
-| **0.1.1** | Yayımlanmış mevcut sürüm | .NET 10 |
-| **0.2.0** | **Kaynak kodu `main` üzerinde hazır; NuGet.org yayını bekliyor** | .NET 6, 7, 8, 9 ve 10 |
+- Discover dependencies in .NET projects and directory trees, including direct and transitive packages.
+- Prefer `packages.lock.json`, falling back to `obj/project.assets.json`.
+- Query package metadata and embedded license files from [NuGet.org](https://www.nuget.org/).
+- Highlight license-text signals such as commercial license requirements, reciprocal licenses, and alternative agreements.
+- Show a concise terminal summary, detailed output with `--verbose`, or a machine-readable JSON report.
+- Scan without changing project files, running `dotnet restore`, or uploading source code.
 
-**Önemli:** GitHub'daki `main` artık 0.2.0 kodunu içeriyor; ancak aşağıdaki `dotnet tool install` komutu **NuGet.org'da yayımlanmış sürümü** indirir. 0.2.0 yayımlanana kadar bu komutun .NET 6–9 uyumluluğu sağladığını varsaymayın.
+## Installation
 
-0.2.0 paketi `net6.0;net7.0;net8.0;net9.0;net10.0` için ayrı araç bileşenleri içerir. Aracı çalıştırmak için uygun .NET çalışma zamanı ve araç kurulumunu destekleyen bir .NET SDK gerekir. Kaynak koddan derleme ve katkı geliştirme için **.NET 10 SDK** kullanın.
+Install the latest **published** version from NuGet.org:
 
-> **Destek notu (Kasım 2026):** Microsoft .NET 6, 7, 8 ve 9'un güvenlik ve bakım desteğini sonlandırmıştır. Geriye dönük çalışabilirlik, bu çalışma zamanlarını yeniden desteklenen sürümlere dönüştürmez. Yeni uygulamalarda .NET 10 LTS tercih edin.
-
-**Taranan projeler:** Aracın çalıştığı .NET sürümünden bağımsız olarak .NET 6–10 projelerinin `packages.lock.json` ve `obj/project.assets.json` dosyalarındaki NuGet bağımlılıkları incelenebilir. Tarama için projeyi derlemek gerekmez; araç otomatik `restore` yapmaz. İlk araç kurulumu ve canlı NuGet sorguları internet gerektirir.
-
-## Başlangıç: iki komut
-
-**1. NuGet.org'da bulunan sürümü kurun** (PowerShell, CMD, Terminal):
-
-```sh
+```bash
 dotnet tool install --global Softbreak.NuGetLicenseRadar
 ```
 
-**2. Kendi .NET projenizin klasöründe tarayın:**
+Already installed? Update with:
 
-```sh
+```bash
+dotnet tool update --global Softbreak.NuGetLicenseRadar
+```
+
+Run `license-radar --help` to see available options. If the command is not recognized after installation, restart your terminal and ensure the [.NET global tools directory](https://learn.microsoft.com/dotnet/core/tools/global-tools#install-a-global-tool) is on `PATH`.
+
+### Runtime compatibility and release status
+
+| Version | Availability | Tool runtime |
+| --- | --- | --- |
+| **0.1.1** | Published on NuGet.org | .NET 10 |
+| **0.2.0** | Merged into `main`; **not yet published** | .NET 6, 7, 8, 9, and 10 |
+
+The `main` branch and the NuGet.org package **do not currently represent the same release**. Until 0.2.0 is published, installing from NuGet.org does not provide .NET 6–9 runtime support. The 0.2.0 release candidate has passed the [five-framework CI acceptance suite](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45419708989) and a real-project scan.
+
+The tool can inspect dependency files for .NET 6–10 projects regardless of the runtime used to run the tool. You need a compatible .NET SDK to install a global tool and a suitable runtime to execute it. **.NET 6–9 are out of Microsoft support** as of November 2026; compatibility here does not extend their security support. Use .NET 10 LTS for new projects.
+
+## Quick start
+
+Navigate to your .NET project or solution directory and run:
+
+```bash
 license-radar scan .
 ```
 
-Yayımlanmış araç için kaynak kodu indirmeniz, Visual Studio açmanız, `Install-Local.ps1` çalıştırmanız veya `packages.lock.json` dosyasını elle aramanız gerekmez. **0.2.0 yayımlandıktan sonra** özellikle bu sürümü kurmak için `dotnet tool install --global Softbreak.NuGetLicenseRadar --version 0.2.0` komutunu kullanabilirsiniz. Daha önce araç kurduysanız `install` yerine `update` kullanın.
+You can also target a project file or another directory:
 
-
-### Sık kullanılan komutlar
-
-| Yapmak istediğiniz | Komut |
-| --- | --- |
-| Bulunduğunuz projeyi/klasörü tara | `license-radar scan .` |
-| Başka bir klasörü tara | `license-radar scan "D:\Projects\MyApp"` |
-| Tek `.csproj` dosyasını tara | `license-radar scan .\src\MyApp\MyApp.csproj` |
-| Bütün paketleri ve ayrıntılı kanıtları gör | `license-radar scan . --verbose` |
-| JSON raporu oluştur | `license-radar scan . --output report.json` |
-| Kullanımı öğren | `license-radar --help` |
-
-`--output` **var olan dosyanın üzerine yazmaz**. Aynı hedefe yeniden rapor almak için yeni dosya adı seçin.
-
-### Güncelleme ve kaldırma
-
-```sh
-dotnet tool update --global Softbreak.NuGetLicenseRadar
-dotnet tool uninstall --global Softbreak.NuGetLicenseRadar
+```bash
+license-radar scan ./src/MyApp/MyApp.csproj
+license-radar scan ./src
 ```
 
-`license-radar` komutu kurulumdan sonra bulunamazsa yeni terminal açın. Gerekirse global araçlar klasörünün (`%USERPROFILE%\.dotnet\tools` veya Linux/macOS'ta `$HOME/.dotnet/tools`) `PATH` üzerinde olduğundan emin olun.
+### Command reference
 
-## Gerçek proje örneği: 157 bağımlılık
-
-0.2.0 yayın adayı Windows üzerinde gerçek, çok projeli bir .NET çözümünde çalıştırıldı. Çıktı, 0.1.1 sürümünün aynı projedeki önceki bulgularıyla **birebir örtüştü**:
-
-| Sonuç | Sayı | Açıklama |
-| --- | ---: | --- |
-| Keşfedilen proje | 7 | Yedi `packages.lock.json` dosyası kullanıldı. |
-| Benzersiz NuGet bağımlılığı | **157** | 34 doğrudan, 123 dolaylı bağımlılık. |
-| **İnceleme gerekli** | **1** | FluentAssertions **8.8.0** lisans metninde ücretli ticari lisans ifadesi tespit edildi. |
-| **Doğrulanamadı** | **5** | Paketlerin NuGet metadata'sında lisans beyanı bulunamadı. |
-| **Metadata bulundu** | **151** | Lisans bildirimi mevcut; hukuki uygunluk kararı verilmedi. |
-| Sorgu hatası | **0** | Canlı NuGet sorgularında hata oluşmadı. |
-
-Tespit edilen örnek kanıt: `Any use outside of these parameters requires a paid Commercial License from Xceed.` Bu ifade **o kullanım için kesin ödeme zorunluluğu tespit edildiği anlamına gelmez**; lisans koşullarının ayrıca değerlendirilmesi gerektiğini gösterir.
-
-`Unknown` durumundaki bir paket de otomatik olarak ücretli veya hukuka aykırı sayılmaz.
-
-## Tarama nasıl çalışır?
-
-- İlgili klasördeki `.csproj` dosyalarını bulur; önce `packages.lock.json`, yoksa `obj/project.assets.json` kullanır. Bu dosyalardan hiçbiri olmayan proje varsa kullanıcıya restore önerisi verir; **sessizce restore çalıştırmaz ve proje dosyalarını değiştirmez**.
-- Aynı paket kimliği, sürüm ve hedef framework kombinasyonlarını tekilleştirir.
-- NuGet'in herkese açık paket metadata'sını (`.nuspec`) ve dosya lisansı bildirimi varsa paket içindeki lisans dosyasını `api.nuget.org` üzerinden sorgular. Kaynak kodunuzu sunucuya yüklemez.
-- Metinde karşılıklılık lisansı, alternatif sözleşme veya ücretli ticari lisans ifadeleri gibi **sinyalleri ve kısa kanıtları** belirler. Bunlar nihai hukuki kararlar değildir.
-- Varsayılan ekranda **inceleme gerektiren** ve **doğrulanamayan** paketleri gösterir. `--verbose` tüm bağımlılıkları ve ayrıntılı kanıtları açar.
-
-Bir `.sln` veya `.slnx` dosyası hedeflendiğinde mevcut uygulama çözüm üyelerini ayrıştırmaz; ilgili dosyanın bulunduğu klasör ağacını tarar. `project.assets.json` en son restore işlemini yansıtır; proje sonradan değiştiyse önce restore edilmelidir.
-
-### Durumları yorumlama
-
-| Konsol durumu | Gerçek anlamı |
+| Command | Description |
 | --- | --- |
-| **İnceleme gerekli** (`ReviewRequired`) | Lisans dosyası, metin sinyali veya bilinen inceleme kuralı nedeniyle koşullar ayrıca incelenmeli. |
-| **Doğrulanamadı** (`Unknown`) | Lisans bildirimi eksik, desteklenmeyen türde veya sorgu başarısız. |
-| **Metadata bulundu** (`MetadataOnly`) | Örneğin MIT gibi lisans metadata'sı bulundu; kullanımınıza uygunluk ayrıca doğrulanmadı. |
+| `license-radar scan .` | Scan the current directory. |
+| `license-radar scan <path>` | Scan a project, solution location, lock file, or directory. |
+| `license-radar scan . --verbose` | List all packages and additional evidence. |
+| `license-radar scan . --output report.json` | Write a versioned JSON report. |
+| `license-radar --help` | Display command-line help. |
 
-Sinyal örnekleri: AutoMapper 15 / MediatR 13 lisans metinlerinde RPL 1.5 ve alternatif lisans sözleşmesi; FluentAssertions 8'de kullanım koşullarına bağlı ücretli ticari lisans ifadesi. Algılayıcı tüm olası dilleri, lisans modellerini veya üretici politikalarını kapsamaz.
+The `--output` option **will not overwrite an existing file**. The current JSON schema is version 1.
 
-## JSON raporu
+## Understanding the results
 
-```sh
-license-radar scan . --output license-report.json
-```
+| Status | Meaning |
+| --- | --- |
+| **ReviewRequired** | A license file or text signal warrants a manual review. This does not necessarily mean payment is required. |
+| **Unknown** | The license declaration could not be established or retrieved. This does not imply that the package is paid or noncompliant. |
+| **MetadataOnly** | License metadata was found, but usage rights have not been independently verified. |
 
-JSON şema sürümü **1**'dir. Örneğin `schemaVersion`, `scannedAtUtc` ve `packages` alanlarını içerir; paket kayıtlarında `packageName`, `version`, `reviewStatus`, `reviewReason`, `evidenceUrl` gibi alanlar vardır. Tam lisans metni JSON'a eklenmez. JSON çıktısını başkalarıyla paylaşmadan önce içeriğini gözden geçirin.
+For example, a package's license text may mention a paid commercial license outside specific permitted uses. License Radar reports that wording as **evidence to review**, not a purchase instruction.
 
-## Geliştiriciler için
+## How it works
 
-Kaynak koddan çalıştırmak isteyenler:
+1. Discover project files and their resolved dependency records from `packages.lock.json` or `obj/project.assets.json`.
+2. Deduplicate packages by ID, version, and target framework.
+3. Read available NuGet license declarations and embedded license files.
+4. Evaluate supported text signals and report items that require review or could not be verified.
 
-```sh
+**Important limitations:**
+
+- The scanner does not interpret every license, external vendor agreement, or commercial policy.
+- An `Unknown` result may reflect missing metadata or network failures.
+- `project.assets.json` reflects the last restore; update it yourself if project dependencies have changed.
+- When targeting a `.sln` or `.slnx` file, the tool scans its directory tree rather than parsing solution membership.
+- The tool is not a vulnerability scanner, a policy-enforcement gate, or a substitute for legal advice.
+
+NuGet requests go to `api.nuget.org` for package metadata and license content. **Project source code is not uploaded.**
+
+## Development
+
+Clone the repository and use the **.NET 10 SDK** to build from source:
+
+```bash
+git clone https://github.com/softbreak/Softbreak.NuGetLicenseRadar.git
+cd Softbreak.NuGetLicenseRadar
 dotnet restore Softbreak.NuGetLicenseRadar.slnx
-dotnet test Softbreak.NuGetLicenseRadar.slnx --configuration Release --framework net10.0
+dotnet build Softbreak.NuGetLicenseRadar.slnx -c Release --no-restore
+dotnet test Softbreak.NuGetLicenseRadar.slnx -c Release --no-build --no-restore
+```
+
+Run the CLI from source:
+
+```bash
 dotnet run --project Softbreak.LicenseRadar.Cli --framework net10.0 -- scan .
 ```
 
-Solution iki proje içerir: `Softbreak.LicenseRadar.Cli` ve `Softbreak.LicenseRadar.Tests`. Kaynak klasörü üzerinden yerel kurulum betiği `scripts/Install-Local.ps1` yalnızca geliştirme ve test senaryoları içindir; **son kullanıcı kurulumu için gerekmez**.
+The [GitHub Actions workflow](.github/workflows/ci.yml) builds, tests, packs, and validates isolated tool installation for .NET 6–10. On Windows, `scripts/Test-Release.ps1` checks the release candidate without modifying globally installed tools or publishing to NuGet.org.
 
-### Uyumluluk kabul testleri
+## Contributing
 
-[.NET 6–10 GitHub Actions kabul çalışması](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45419708989) başarılıdır:
+Bug reports, feature requests, and pull requests are welcome. Please [open an issue](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/issues) to discuss larger changes before implementation. Run the relevant tests and describe the intended behavior in your pull request.
 
-- **137 test × 5 hedef framework = 685 başarılı test** (0 başarısız).
-- Beş framework'ün tamamında NuGet Tool paket bileşenleri doğrulandı; izole araç kurulumu, `--help` ve örnek lockfile taraması **5/5 PASS**.
-- Windows üzerinde `scripts/Test-Release.ps1` ile paket manifesti, README, MIT lisansı ve global araç kurulumunu etkilemeyen izole kurulum doğrulandı. Gerçek projedeki 157 bağımlılığın sonuçları önceki sürümle karşılaştırıldı.
+## License
 
-Yerel yayın adayı kontrolü için PowerShell'de:
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1
-```
-
-İzolasyonlu beş framework kabul testi `scripts/Test-MultiFramework-Tool.ps1` içindedir ve GitHub Actions tarafından çalıştırılır. Testlerin geçmesi NuGet.org'a otomatik yayın yapmaz. Sürüm etiketleme ve NuGet.org yüklemesi ayrı bir yayın adımıdır.
-
-## Sınırlamalar, gizlilik ve güvenlik
-
-- Lisans metni sinyal algılaması sınırlı İngilizce örüntülerle çalışır. Üreticinin harici sayfalarındaki bütün sözleşmeler otomatik doğrulanmaz.
-- Lisans dosyaları bulunması ücretli kullanım gerektirmez; lisans ifadesi bulunması da ücretsiz veya uygun kullanım kanıtı değildir.
-- Çok projeli taramalarda hangi paketin hangi projeden geldiğinin bütün ilişkileri raporda tutulmaz.
-- Otomatik restore, CI politika engeli, güvenlik açığı taraması ve eksiksiz SPDX uyumluluk motoru **yoktur**.
-- İnternet gerekir; ağdaki sorunlar `Unknown` olarak raporlanabilir.
-
-## Lisans
-
-**MIT License — Copyright (c) 2026 Softbreak.** Lisans metni kaynak depodaki `LICENSE` dosyasında ve [OSI MIT lisansı sayfasında](https://opensource.org/license/mit) bulunur.
-
-Bu MIT lisansı **License Radar'ın kendi kaynak kodu** içindir; taradığınız NuGet paketlerine herhangi bir lisans hakkı vermez. Güvenlik sorunlarını, özel bilgileri herkese açık paylaşmadan, depo yöneticileriyle iletişime geçerek bildirin.
+The MIT license applies to **this tool**, not to the third-party NuGet packages it scans.
