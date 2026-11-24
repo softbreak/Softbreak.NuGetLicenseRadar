@@ -160,4 +160,19 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="NuGet.Timeout" xml:space="preserve"><value>Nupkg arşivi indirilirken zaman aşımı oluştu.</value></data>
   <data name="NuGet.DownloadFailure" xml:space="preserve"><value>Nupkg arşivi indirilemedi: {0}</value></data>
   <data name="NuGet.StreamFailure" xml:space="preserve"><value>Nupkg akışı okunamadı: {0}</value></data>
+  <data name="Cli.HelpTip" xml:space="preserve"><value>Yardım için: license-radar --help</value></data>
+  <data name="Change.Duplicate" xml:space="preserve"><value>Aynı paket ve framework için birden fazla kayıt bulunduğundan eşleştirme yapılamadı.</value></data>
+  <data name="Change.Version" xml:space="preserve"><value>Paket sürümü değişti; bu tek başına lisans bildiriminin değiştiği anlamına gelmez.</value></data>
+  <data name="Change.InfoAdded" xml:space="preserve"><value>Yeni taramada lisans bildirimi bulundu.</value></data>
+  <data name="Change.InfoRemoved" xml:space="preserve"><value>Önceki lisans bildirimi varken yeni taramada Missing bildirimi bulundu.</value></data>
+  <data name="Change.Type" xml:space="preserve"><value>Lisans bildirimi türü değişti.</value></data>
+  <data name="Change.Value" xml:space="preserve"><value>Lisans bildirimi değeri değişti.</value></data>
+  <data name="Change.Added" xml:space="preserve"><value>Bağımlılık yeni taramada bulundu.</value></data>
+  <data name="Change.Removed" xml:space="preserve"><value>Bağımlılık yeni taramada bulunamadı.</value></data>
+  <data name="Change.Unavailable" xml:space="preserve"><value>Lisans bildirimi sorgu sonucu karşılaştırılamadı.</value></data>
+  <data name="Change.PreviousStatus" xml:space="preserve"><value>Önceki sorgu durumu: {0}.</value></data>
+  <data name="Change.CurrentStatus" xml:space="preserve"><value>Yeni sorgu durumu: {0}.</value></data>
+  <data name="Change.PreviousMissing" xml:space="preserve"><value>Önceki taramada lisans beyanı kanıtı yok.</value></data>
+  <data name="Change.CurrentMissing" xml:space="preserve"><value>Yeni taramada lisans beyanı kanıtı yok.</value></data>
+  <data name="Change.NotComparable" xml:space="preserve"><value>Lisans bildirimi değişikliği karşılaştırılamadı.</value></data>
 </root>
