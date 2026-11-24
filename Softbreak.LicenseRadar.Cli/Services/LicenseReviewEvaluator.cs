@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 ﻿
 using NuGet.Versioning;
 using Softbreak.LicenseRadar.Cli.Models;
@@ -31,7 +32,7 @@ public sealed class LicenseReviewEvaluator
                 return new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.Unknown,
-                    "AutoMapper sürümü değerlendirilemedi.",
+                    L.Get("Review.AutoMapperVersion"),
                     AutoMapperEvidenceUrl
                 );
             }
@@ -44,7 +45,7 @@ public sealed class LicenseReviewEvaluator
                 return new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.Unknown,
-                    "Önizleme sürümünün lisans koşulları ayrıca incelenmeli.",
+                    L.Get("Review.Preview"),
                     AutoMapperEvidenceUrl
                 );
             }
@@ -56,7 +57,7 @@ public sealed class LicenseReviewEvaluator
                 return new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.ReviewRequired,
-                    "AutoMapper 15.0 ve sonrasında lisanslama koşulları değişti. Kullanım koşullarını kontrol edin.",
+                    L.Get("Review.AutoMapper15"),
                     AutoMapperEvidenceUrl
                 );
             }
@@ -69,7 +70,7 @@ public sealed class LicenseReviewEvaluator
                 new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.MetadataOnly,
-                    "Lisans ifadesi bulundu. Kullanım koşulları ayrıca doğrulanmadı.",
+                    L.Get("Review.Expression"),
                     null
                 ),
 
@@ -77,7 +78,7 @@ public sealed class LicenseReviewEvaluator
                 new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.Unknown,
-                    "NuGet metadata'sında lisans ifadesi bulunamadı.",
+                    L.Get("Review.NotFound"),
                     null
                 ),
 
@@ -85,14 +86,14 @@ public sealed class LicenseReviewEvaluator
                 new LicenseReviewResult(
                     licenseResult,
                     LicenseReviewStatus.Unknown,
-                    "Lisans bilgisi sorgulanamadı.",
+                    L.Get("Review.QueryFailed"),
                     null
                 ),
 
             _ => new LicenseReviewResult(
                 licenseResult,
                 LicenseReviewStatus.Unknown,
-                "Bilinmeyen sorgu durumu.",
+                L.Get("Review.UnknownStatus"),
                 null
             )
         };
