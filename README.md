@@ -9,7 +9,11 @@ License Radar, NuGet bağımlılıklarının lisans bildirimlerini ve paket içi
 
 ## Başlangıç: iki komut
 
-**Gereksinimler:** [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (`dotnet tool` komutunu çalıştırabilmek için) ve .NET 10 çalışma zamanı. İlk kurulum ve canlı NuGet lisans sorguları için internet gerekir.
+**Çalıştırma uyumluluğu (v0.2.0 yayın adayı):** `.NET 6, 7, 8, 9 ve 10` çalışma zamanları için ayrı .NET Tool bileşenleri içerir. Bilgisayarda kullanılacak sürüme uygun bir .NET çalışma zamanı ve `dotnet tool` kurulumunu destekleyen .NET SDK bulunmalıdır. Kaynak koddan derleme ve katkı geliştirme için **.NET 10 SDK** kullanın. İlk kurulum ve canlı NuGet lisans sorguları için internet gerekir.
+
+> **Destek notu (Kasım 2026):** Microsoft .NET 6, 7, 8 ve 9 için güvenlik ve bakım desteğini sonlandırdı. Bu sürümlerle uyumluluk sağlamak, Microsoft tarafından desteklendikleri anlamına gelmez. Yeni ve üretim projelerinde .NET 10 LTS önerilir.
+
+**Taranan projeler:** Çalıştırdığınız aracın .NET sürümünden bağımsız olarak, `net6.0`–`net10.0` projelerine ait `packages.lock.json` veya `obj/project.assets.json` bağımlılık kayıtları okunabilir. Araç projeyi yeniden derlemez veya otomatik restore yapmaz.
 
 **1. Bir kez kurun** (PowerShell, CMD, Terminal):
 
@@ -94,13 +98,13 @@ Kaynak koddan çalıştırmak isteyenler:
 
 ```sh
 dotnet restore Softbreak.NuGetLicenseRadar.slnx
-dotnet test Softbreak.NuGetLicenseRadar.slnx --configuration Release
-dotnet run --project Softbreak.LicenseRadar.Cli -- scan .
+dotnet test Softbreak.NuGetLicenseRadar.slnx --configuration Release --framework net10.0
+dotnet run --project Softbreak.LicenseRadar.Cli --framework net10.0 -- scan .
 ```
 
 Solution iki proje içerir: `Softbreak.LicenseRadar.Cli` ve `Softbreak.LicenseRadar.Tests`. Kaynak klasörü üzerinden yerel kurulum betiği `scripts/Install-Local.ps1` yalnızca geliştirme ve test senaryoları içindir; **son kullanıcı kurulumu için gerekmez**.
 
-Windows'ta Release testlerini, NuGet paket metadata'sını ve global araç kurulumunu değiştirmeyen izole kurulumu doğrulamak için `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1` komutunu çalıştırın. Betik NuGet.org'a yayın yapmaz.
+Windows'ta beş çalışma zamanında izole kurulum ve tarama kabul testi, GitHub Actions içinde `scripts/Test-MultiFramework-Tool.ps1` ile yapılır. Yerel sistemde yalnızca kurulu .NET 10 çalışma zamanına bağlı Release testlerini, beş hedef framework'ün paket dosyalarını, NuGet metadata'sını ve global araç kurulumunu değiştirmeyen izole kurulumu doğrulamak için `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1` komutunu çalıştırın. Betik NuGet.org'a yayın yapmaz.
 
 ## Sınırlamalar, gizlilik ve güvenlik
 
