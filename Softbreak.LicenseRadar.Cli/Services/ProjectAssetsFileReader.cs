@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using System.Text.Json;
 using Softbreak.LicenseRadar.Cli.Models;
 
@@ -11,7 +12,7 @@ public sealed class ProjectAssetsFileReader
 
         if (!File.Exists(filePath))
         {
-            throw new FileNotFoundException("project.assets.json dosyası bulunamadı.", filePath);
+            throw new FileNotFoundException(L.Get("Assets.MissingFile"), filePath);
         }
 
         string json = File.ReadAllText(filePath);
@@ -27,7 +28,7 @@ public sealed class ProjectAssetsFileReader
 
         if (!root.TryGetProperty("targets", out JsonElement targetsElement))
         {
-            throw new FormatException("project.assets.json içinde 'targets' bölümü bulunamadı.");
+            throw new FormatException(L.Get("Assets.MissingTargets"));
         }
 
         var directDependenciesByFramework = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
