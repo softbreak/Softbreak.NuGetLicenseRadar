@@ -84,11 +84,15 @@ catch (Exception exception) when (
 
 if (!discovery.IsSuccess)
 {
-    Console.Error.WriteLine(L.Format("Cli.Error", discovery.ErrorMessage));
-    if (!string.IsNullOrWhiteSpace(discovery.SuggestedSolution))
+    bool plain = Console.IsErrorRedirected || Environment.GetEnvironmentVariable("NO_COLOR") is not null;
+    var errorConsole = AnsiConsole.Create(new AnsiConsoleSettings
     {
-        Console.Error.WriteLine(L.Format("Cli.Suggestion", discovery.SuggestedSolution));
-    }
+        Out = new AnsiConsoleOutput(Console.Error),
+        ColorSystem = plain ? ColorSystemSupport.NoColors : ColorSystemSupport.Detect,
+        Ansi = plain ? AnsiSupport.No : AnsiSupport.Detect,
+        Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
+    });
+    new DiscoveryErrorRenderer(errorConsole).Render(targetPath, discovery, recursive);
     Environment.ExitCode = 1;
     return;
 }

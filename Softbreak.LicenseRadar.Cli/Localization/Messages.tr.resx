@@ -125,7 +125,7 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Locator.NotRestored" xml:space="preserve"><value>'{0}' projesinde ne 'packages.lock.json' ne de 'obj/project.assets.json' bulunamadı. Proje henüz restore edilmemiş.</value></data>
   <data name="Locator.Unsupported" xml:space="preserve"><value>Desteklenmeyen dosya türü: '{0}'. Lütfen bir proje (.csproj), solution (.sln/.slnx), packages.lock.json veya klasör belirtin.</value></data>
   <data name="Locator.UnrestoredCount" xml:space="preserve"><value>{0} .NET projesi restore edilmemiş veya bağımlılık verileri bulunamadı: {1}. Eksik projeler sessizce atlanmayacak.</value></data>
-  <data name="Locator.RestoreHint" xml:space="preserve"><value>Solution klasöründe 'dotnet restore --use-lock-file' çalıştırıp taramayı yeniden başlatın.</value></data>
+  <data name="Locator.RestoreHint" xml:space="preserve"><value>Eksik projeleri ayrı ayrı dotnet restore ile restore edin. Lock dosyası istiyorsanız dotnet restore --use-lock-file kullanın; ardından taramayı tekrarlayın.</value></data>
   <data name="Locator.AllUnrestored" xml:space="preserve"><value>{0} adet .NET projesi bulundu ancak hiçbirinde 'packages.lock.json' veya 'obj/project.assets.json' mevcut değil. Projeler henüz restore edilmemiş.</value></data>
   <data name="Locator.EmptyDirectory" xml:space="preserve"><value>'{0}' dizininde herhangi bir .NET projesi veya bağımlılık dosyası ('packages.lock.json' / 'obj/project.assets.json') bulunamadı.</value></data>
   <data name="Locator.ScanHint" xml:space="preserve"><value>Taramak istediğiniz .NET projesinin veya solution'ın bulunduğu klasöre geçip 'license-radar scan .' komutunu çalıştırın.</value></data>
@@ -194,4 +194,10 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.Actions" xml:space="preserve"><value>Nasıl devam etmeli?</value></data>
   <data name="Renderer.Disclaimer" xml:space="preserve"><value>Bu rapor hukuki onay veya satın alma önerisi değildir.</value></data>
   <data name="Cli.ScanProgress" xml:space="preserve"><value>Taranıyor {0}/{1}: {2} {3}</value></data>
+  <data name="Renderer.RecursiveScope" xml:space="preserve"><value>Kapsam: Recursive dizin taraması</value></data>
+  <data name="Renderer.ScanFailed" xml:space="preserve"><value>Tarama tamamlanamadı</value></data>
+  <data name="Renderer.DiscoveryCounts" xml:space="preserve"><value>{0} proje keşfedildi · {1} hazır · {2} eksik</value></data>
+  <data name="Renderer.MissingDependencies" xml:space="preserve"><value>Eksik bağımlılık verileri veya proje dosyaları</value></data>
+  <data name="Renderer.NoPartialScan" xml:space="preserve"><value>Eksik projeler atlanmadı; lisans taraması yapılmadı.</value></data>
+  <data name="Renderer.TrySolution" xml:space="preserve"><value>Dizinde tek solution varsa yalnızca üyelerini taramak için --recursive seçeneğini kaldırın.</value></data>
 </root>

@@ -21,7 +21,8 @@ public sealed record DiscoveryResult(
     IReadOnlyList<string> UnrestoredProjects,
     string? ErrorMessage = null,
     string? SuggestedSolution = null,
-    string? SolutionPath = null
+    string? SolutionPath = null,
+    IReadOnlyList<string>? UnrestoredProjectPaths = null
 )
 {
     public bool IsSuccess => Projects.Count > 0 && ErrorMessage is null;
@@ -173,6 +174,7 @@ public sealed class ProjectDependencyLocator
         {
             var discovered = new List<DiscoveredProject>();
             var unrestored = new List<string>();
+            var unrestoredPaths = new List<string>();
 
             foreach (string csproj in projectFiles)
             {
@@ -194,6 +196,7 @@ public sealed class ProjectDependencyLocator
                 }
 
                 unrestored.Add(projName);
+                unrestoredPaths.Add(csproj);
             }
 
             // A partial scan must not silently appear complete. Do not restore or edit
@@ -204,7 +207,8 @@ public sealed class ProjectDependencyLocator
                     discovered,
                     unrestored,
                     L.Format("Locator.UnrestoredCount", unrestored.Count, string.Join(", ", unrestored)),
-                    L.Get("Locator.RestoreHint")
+                    L.Get("Locator.RestoreHint"),
+                    UnrestoredProjectPaths: unrestoredPaths
                 );
             }
 
