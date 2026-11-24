@@ -21,6 +21,15 @@ Softbreak NuGet License Radar is an open-source .NET CLI tool that scans a proje
 - Show a concise terminal summary, detailed output with `--verbose`, or a machine-readable JSON report.
 - Scan without changing project files, running `dotnet restore`, or uploading source code.
 
+### Language
+
+The CLI automatically follows the operating system's **UI language** (`CultureInfo.CurrentUICulture`):
+
+- **Turkish (`tr-*`)**: Turkish help, scan summaries, review reasons, guidance, and errors.
+- **English (`en-*`)** and other languages: English output (fallback).
+
+No additional language flag is needed. Original third-party license evidence is never translated; JSON property names, schema version, and status codes (`ReviewRequired`, `Unknown`, `MetadataOnly`) remain stable. User-facing `reviewReason` text follows the selected language.
+
 ## Installation
 
 Install the latest **published** version from NuGet.org:
