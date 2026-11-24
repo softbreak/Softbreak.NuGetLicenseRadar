@@ -184,4 +184,5 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Locator.RecursiveDirectory" xml:space="preserve"><value>--recursive için dizin hedefi gerekir.</value></data>
   <data name="Renderer.Framework" xml:space="preserve"><value>Framework</value></data>
   <data name="Renderer.SolutionScope" xml:space="preserve"><value>Kapsam: Yalnızca solution üyesi C# projeleri</value></data>
+  <data name="Renderer.PathScope" xml:space="preserve"><value>Kapsam: Belirtilen yol / dizin ağacı</value></data>
 </root>

@@ -214,6 +214,7 @@ static bool TryParseCommandLine(
     out string targetPath,
     out string? outputPath,
     out bool isVerbose,
+    out bool recursive,
     out bool showHelp,
     out string? error)
 {

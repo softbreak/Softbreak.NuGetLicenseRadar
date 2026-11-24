@@ -94,8 +94,7 @@ public sealed class ConsoleReportRenderer
         _console.Write(new Rule("[bold]Softbreak NuGet License Radar[/]") { Justification = Justify.Left });
         _console.MarkupLine($"[grey]{L.Get("Renderer.Target")}[/] {Markup.Escape(targetPath)}");
 
-        if (solutionScope)
-            _console.MarkupLine($"[cyan]{Markup.Escape(L.Get("Renderer.SolutionScope"))}[/]");
+        _console.MarkupLine($"[cyan]{Markup.Escape(L.Get(solutionScope ? "Renderer.SolutionScope" : "Renderer.PathScope"))}[/]");
 
         if (projects.Count == 1)
         {

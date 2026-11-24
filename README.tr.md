@@ -104,7 +104,7 @@ license-radar scan ./src
 - Bütün lisanslar, üreticilerin harici sözleşmeleri veya ticari politikaları yorumlanamaz.
 - `Unknown` durumu eksik metadata veya ağ hatası nedeniyle oluşabilir.
 - `project.assets.json` son restore işleminin sonucudur; bağımlılıklar değiştiyse restore işlemini kendiniz yapmalısınız.
-- `.sln` veya `.slnx` hedeflendiğinde çözüm üyeleri ayrıştırılmaz; dosyanın bulunduğu klasör ağacı taranır.
+- Bu geliştirme dalında `.sln` / `.slnx` hedefleri veya tek çözüm içeren dizinler yalnızca çözüm üyesi C# projelerini tarar. Birden fazla çözüm varsa açıkça birini belirtin. Çözüm yoksa dizin ağacı taranır. Tüm dizin ağacını taramak için `license-radar scan . --recursive` kullanın (mevcut dizin istisnaları geçerlidir). Kapsam içindeki eksik bağımlılık verileri taramayı durdurur.
 - Araç güvenlik açığı tarayıcısı, zorunlu politika denetimi veya hukuki danışmanlık hizmeti değildir.
 
 NuGet sorguları paket metadata'sı ve lisans içeriği için `api.nuget.org` adresine gönderilir. **Projenizin kaynak kodu yüklenmez.**

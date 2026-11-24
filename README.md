@@ -106,7 +106,7 @@ For example, a package's license text may mention a paid commercial license outs
 - The scanner does not interpret every license, external vendor agreement, or commercial policy.
 - An `Unknown` result may reflect missing metadata or network failures.
 - `project.assets.json` reflects the last restore; update it yourself if project dependencies have changed.
-- When targeting a `.sln` or `.slnx` file, the tool scans its directory tree rather than parsing solution membership.
+- This development branch scans C# solution members for explicit `.sln` / `.slnx` targets or a directory containing exactly one solution. With multiple solutions, specify one explicitly. With no solution, directory discovery remains recursive. Use `license-radar scan . --recursive` to scan the entire directory tree (subject to existing ignored directories). Missing dependency data in scope fails the scan.
 - The tool is not a vulnerability scanner, a policy-enforcement gate, or a substitute for legal advice.
 
 NuGet requests go to `api.nuget.org` for package metadata and license content. **Project source code is not uploaded.**
