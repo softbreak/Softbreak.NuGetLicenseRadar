@@ -248,7 +248,8 @@ public sealed class NuGetLicenseFileReader
             slashPath.StartsWith("/", StringComparison.Ordinal) ||
             Path.IsPathRooted(path) ||
             (slashPath.Length >= 2 &&
-             char.IsAsciiLetter(slashPath[0]) &&
+             ((slashPath[0] >= 'A' && slashPath[0] <= 'Z') ||
+              (slashPath[0] >= 'a' && slashPath[0] <= 'z')) &&
              slashPath[1] == ':'))
         {
             return false;
