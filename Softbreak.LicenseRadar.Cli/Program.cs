@@ -143,14 +143,15 @@ var reviewResults = new List<LicenseDeclarationReviewResult>();
 bool isInteractive = !Console.IsOutputRedirected &&
     Environment.GetEnvironmentVariable("NO_COLOR") is null;
 
-if (isInteractive)
+if (isInteractive && packages.Count > 0)
 {
     await AnsiConsole.Status()
         .Spinner(Spinner.Known.Dots)
-        .StartAsync(L.Get("Cli.Scanning"), async _ =>
+        .StartAsync(L.Get("Cli.Scanning"), async context =>
         {
             foreach (var package in packages)
             {
+                context.Status(Markup.Escape(L.Format("Cli.ScanProgress", reviewResults.Count + 1, packages.Count, package.Name, package.Version)));
                 LicenseDeclarationReviewResult result =
                     await scanService.ScanAsync(package);
 

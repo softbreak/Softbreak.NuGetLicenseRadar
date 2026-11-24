@@ -186,4 +186,11 @@ NOTE: Results are not legal clearance or automatic purchase recommendations.</va
   <data name="Renderer.PathScope" xml:space="preserve"><value>Scope: Explicit path / directory tree</value></data>
   <data name="Renderer.LicensePage" xml:space="preserve"><value>NuGet license page</value></data>
   <data name="Renderer.PackagePage" xml:space="preserve"><value>NuGet package page</value></data>
+  <data name="Renderer.Purpose" xml:space="preserve"><value>Find license terms that need a closer look.</value></data>
+  <data name="Renderer.Overview" xml:space="preserve"><value>Scan summary</value></data>
+  <data name="Renderer.CountBasis" xml:space="preserve"><value>Counts are package/version/framework records, not unique package names.</value></data>
+  <data name="Renderer.References" xml:space="preserve"><value>License and package references</value></data>
+  <data name="Renderer.Actions" xml:space="preserve"><value>What to do next</value></data>
+  <data name="Renderer.Disclaimer" xml:space="preserve"><value>This report is not legal clearance or a purchase recommendation.</value></data>
+  <data name="Cli.ScanProgress" xml:space="preserve"><value>Scanning {0}/{1}: {2} {3}</value></data>
 </root>

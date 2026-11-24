@@ -85,13 +85,16 @@ public sealed class ConsoleReportRenderer
             _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.NoSignals"))}[/]");
         }
 
+        if (!_console.Profile.Capabilities.Links)
+            RenderReferences(isVerbose ? reviewResults : reviews.Concat(unknown).ToList());
         RenderNextSteps(reviews.Count, unknown.Count, isVerbose);
     }
 
     private void RenderHeader(string targetPath, IReadOnlyList<DiscoveredProject> projects, bool isVerbose, bool solutionScope)
     {
         _console.WriteLine();
-        _console.Write(new Rule("[bold]Softbreak NuGet License Radar[/]") { Justification = Justify.Left });
+        _console.MarkupLine("[bold cyan]Softbreak NuGet License Radar[/]");
+        _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.Purpose"))}[/]");
         _console.MarkupLine($"[grey]{L.Get("Renderer.Target")}[/] {Markup.Escape(targetPath)}");
 
         _console.MarkupLine($"[cyan]{Markup.Escape(L.Get(solutionScope ? "Renderer.SolutionScope" : "Renderer.PathScope"))}[/]");
@@ -133,8 +136,10 @@ public sealed class ConsoleReportRenderer
         int failures = results.Count(r => r.QueryResult.Status != LicenseDeclarationQueryStatus.Success);
 
         _console.WriteLine();
+        _console.MarkupLine($"[bold]{Markup.Escape(L.Get("Renderer.Overview"))}[/]");
         _console.MarkupLine($"[bold]{L.Format("Renderer.Total", packages.Count)}[/]  [grey]{L.Format("Renderer.Direct", direct)} · {L.Format("Renderer.Transitive", transitive)}[/]");
-        _console.MarkupLine($"[yellow]{L.Format("Renderer.ReviewCount", reviews)}[/]  [bold]{L.Format("Renderer.UnknownCount", unknown)}[/]  [grey]{L.Format("Renderer.MetadataCount", metadata)}[/]");
+        _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.CountBasis"))}[/]");
+        _console.MarkupLine($"[yellow]{L.Format("Renderer.ReviewCount", reviews)}[/]  [bold]{L.Format("Renderer.UnknownCount", unknown)}[/]  [cyan]{L.Format("Renderer.MetadataCount", metadata)}[/]");
         _console.MarkupLine(failures > 0
             ? $"[red]{L.Format("Renderer.QueryFailures", failures)}[/] [grey]{L.Get("Renderer.QueryFailuresIncluded")}[/]"
             : $"[grey]{L.Format("Renderer.QueryFailures", 0)}[/]");
@@ -197,9 +202,9 @@ public sealed class ConsoleReportRenderer
                     ? signal.EvidenceText
                     : Shorten(signal.EvidenceText, DefaultEvidenceLength);
                 _console.MarkupLine($"  [grey]{L.Format("Renderer.Evidence", SignalLabel(signal.Kind))}[/] \"{Markup.Escape(evidence)}\"");
-                if (isVerbose && !string.IsNullOrWhiteSpace(signal.EvidenceUrl))
+                if (isVerbose && IsWebLink(signal.EvidenceUrl))
                 {
-                    _console.MarkupLine($"  [grey]{L.Get("Renderer.Link")}[/] {Markup.Escape(signal.EvidenceUrl)}");
+                    _console.MarkupLine($"  [grey]{L.Get("Renderer.Link")}[/] {Markup.Escape(signal.EvidenceUrl!)}");
                 }
             }
 
@@ -209,8 +214,11 @@ public sealed class ConsoleReportRenderer
                 .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
             if (IsWebLink(link))
                 _console.MarkupLine($"  [grey]{L.Get("Renderer.Source")}[/] {Markup.Escape(link!)}");
-            var (url, license) = PackageReference(item);
-            _console.MarkupLine($"  [grey]{L.Get(license ? "Renderer.LicensePage" : "Renderer.PackagePage")}:[/] {Markup.Escape(url)}");
+            if (_console.Profile.Capabilities.Links)
+            {
+                var (url, license) = PackageReference(item);
+                _console.MarkupLine($"  [cyan link={url}]{Markup.Escape(L.Get(license ? "Renderer.LicensePage" : "Renderer.PackagePage"))}[/]");
+            }
             _console.WriteLine();
         }
 
@@ -268,6 +276,8 @@ public sealed class ConsoleReportRenderer
 
     private void RenderNextSteps(int reviewCount, int unknownCount, bool isVerbose)
     {
+        _console.WriteLine();
+        _console.MarkupLine($"[bold]{Markup.Escape(L.Get("Renderer.Actions"))}[/]");
         if (reviewCount > 0 || unknownCount > 0)
         {
             _console.MarkupLine($"[grey]{L.Get("Renderer.Next1")}[/]");
@@ -277,6 +287,7 @@ public sealed class ConsoleReportRenderer
         {
             _console.MarkupLine($"[grey]{L.Get("Renderer.Hint")}[/]");
         }
+        _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.Disclaimer"))}[/]");
     }
 
     private static bool IsWebLink(string? url) =>
@@ -288,7 +299,7 @@ public sealed class ConsoleReportRenderer
         var package = item.QueryResult.Package;
         string url = "https://www.nuget.org/packages/" +
             Uri.EscapeDataString(package.Name) + "/" + Uri.EscapeDataString(package.Version);
-        bool license = item.QueryResult.Declaration is { Kind: LicenseDeclarationKind.File or LicenseDeclarationKind.Expression };
+        bool license = item.QueryResult.Declaration is { Kind: LicenseDeclarationKind.File };
         return (license ? url + "/License" : url, license);
     }
 
@@ -298,10 +309,26 @@ public sealed class ConsoleReportRenderer
         string label = Markup.Escape($"{package.Name} {package.Version}");
         var (url, license) = PackageReference(item);
         // Only use hyperlink markup when the console explicitly supports it.
-        // Plain output retains a copyable URL for every row.
+        // Plain output lists copyable URLs separately to avoid wrapping table columns.
         return _console.Profile.Capabilities.Links
             ? $"[link={url}]{label}[/]"
-            : $"{label}\n{Markup.Escape(url)}";
+            : label;
+    }
+
+    private void RenderReferences(IEnumerable<LicenseDeclarationReviewResult> items)
+    {
+        var links = items.Select(item => (Item: item, Reference: PackageReference(item)))
+            .GroupBy(x => x.Reference.Url, StringComparer.OrdinalIgnoreCase)
+            .Select(g => g.First()).ToList();
+        if (links.Count == 0) return;
+        _console.WriteLine();
+        _console.MarkupLine($"[bold]{Markup.Escape(L.Get("Renderer.References"))}[/]");
+        foreach (var entry in links)
+        {
+            var pkg = entry.Item.QueryResult.Package;
+            _console.MarkupLine($"[bold]{Markup.Escape(pkg.Name)} {Markup.Escape(pkg.Version)}[/] — {Markup.Escape(L.Get(entry.Reference.License ? "Renderer.LicensePage" : "Renderer.PackagePage"))}");
+            _console.WriteLine(entry.Reference.Url);
+        }
     }
 
     private static string SourceLabel(DependencySourceKind kind) => kind == DependencySourceKind.LockFile
