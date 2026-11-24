@@ -92,4 +92,68 @@ NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.</value>
   <data name="Renderer.InvalidMetadata" xml:space="preserve"><value>Geçersiz metadata</value></data>
   <data name="Renderer.InvalidIdentity" xml:space="preserve"><value>Geçersiz paket kimliği</value></data>
   <data name="Renderer.UnverifiedQuery" xml:space="preserve"><value>Lisans sorgusu doğrulanamadı</value></data>
+  <data name="Eval.HttpFailure" xml:space="preserve"><value>Lisans sorgusu HTTP hatasıyla başarısız oldu; lisans koşulları değerlendirilemedi.</value></data>
+  <data name="Eval.Timeout" xml:space="preserve"><value>Lisans sorgusu zaman aşımına uğradı; lisans koşulları değerlendirilemedi.</value></data>
+  <data name="Eval.InvalidMetadata" xml:space="preserve"><value>NuGet metadata'sı geçersiz; lisans koşulları değerlendirilemedi.</value></data>
+  <data name="Eval.InvalidPackage" xml:space="preserve"><value>Paket kimliği veya sürümü geçersiz; lisans sorgusu yapılmadı.</value></data>
+  <data name="Eval.QueryFailed" xml:space="preserve"><value>Lisans sorgusu başarılı değil; lisans koşulları değerlendirilemedi.</value></data>
+  <data name="Eval.NoDeclaration" xml:space="preserve"><value>Sorgu başarılı olsa da lisans beyanı bulunamadı.</value></data>
+  <data name="Eval.Expression" xml:space="preserve"><value>Lisans ifadesi metadata'da bulundu; hukuki uyumluluk veya ücretsiz kullanım doğrulanmadı.</value></data>
+  <data name="Eval.File" xml:space="preserve"><value>Lisans dosyası bildirildi; dosya içeriği ve kullanım koşulları ayrıca incelenmeli. Bu karar, lisansın ücretli olduğu anlamına gelmez.</value></data>
+  <data name="Eval.Missing" xml:space="preserve"><value>NuGet metadata'sında lisans beyanı bulunamadı.</value></data>
+  <data name="Eval.Unsupported" xml:space="preserve"><value>NuGet metadata'sındaki lisans beyanı desteklenen bir türde değil.</value></data>
+  <data name="Eval.Unknown" xml:space="preserve"><value>Lisans beyanı tanınmayan bir türde.</value></data>
+  <data name="Review.AutoMapperVersion" xml:space="preserve"><value>AutoMapper sürümü değerlendirilemedi.</value></data>
+  <data name="Review.Preview" xml:space="preserve"><value>Önizleme sürümünün lisans koşulları ayrıca incelenmeli.</value></data>
+  <data name="Review.AutoMapper15" xml:space="preserve"><value>AutoMapper 15.0 ve sonrasında lisanslama koşulları değişti. Kullanım koşullarını kontrol edin.</value></data>
+  <data name="Review.Expression" xml:space="preserve"><value>Lisans ifadesi bulundu. Kullanım koşulları ayrıca doğrulanmadı.</value></data>
+  <data name="Review.NotFound" xml:space="preserve"><value>NuGet metadata'sında lisans ifadesi bulunamadı.</value></data>
+  <data name="Review.QueryFailed" xml:space="preserve"><value>Lisans bilgisi sorgulanamadı.</value></data>
+  <data name="Review.UnknownStatus" xml:space="preserve"><value>Bilinmeyen sorgu durumu.</value></data>
+  <data name="Scan.Reciprocal" xml:space="preserve"><value>karşılıklı lisans (reciprocal)</value></data>
+  <data name="Scan.Alternative" xml:space="preserve"><value>alternatif lisans sözleşmesi</value></data>
+  <data name="Scan.Paid" xml:space="preserve"><value>ücretli ticari lisans gereksinimi</value></data>
+  <data name="Scan.And" xml:space="preserve"><value> ve </value></data>
+  <data name="Scan.Reason" xml:space="preserve"><value>Lisans metninde {0} sinyali tespit edildi; kullanım koşulları ve lisans metni ayrıca incelenmeli.</value></data>
+  <data name="Locator.NotFound" xml:space="preserve"><value>Belirtilen yol bulunamadı: {0}</value></data>
+  <data name="Locator.ValidPath" xml:space="preserve"><value>Lütfen geçerli bir klasör veya dosya yolu belirtin.</value></data>
+  <data name="Locator.NotRestored" xml:space="preserve"><value>'{0}' projesinde ne 'packages.lock.json' ne de 'obj/project.assets.json' bulunamadı. Proje henüz restore edilmemiş.</value></data>
+  <data name="Locator.Unsupported" xml:space="preserve"><value>Desteklenmeyen dosya türü: '{0}'. Lütfen bir proje (.csproj), solution (.sln/.slnx), packages.lock.json veya klasör belirtin.</value></data>
+  <data name="Locator.UnrestoredCount" xml:space="preserve"><value>{0} .NET projesi restore edilmemiş veya bağımlılık verileri bulunamadı: {1}. Eksik projeler sessizce atlanmayacak.</value></data>
+  <data name="Locator.RestoreHint" xml:space="preserve"><value>Solution klasöründe 'dotnet restore --use-lock-file' çalıştırıp taramayı yeniden başlatın.</value></data>
+  <data name="Locator.AllUnrestored" xml:space="preserve"><value>{0} adet .NET projesi bulundu ancak hiçbirinde 'packages.lock.json' veya 'obj/project.assets.json' mevcut değil. Projeler henüz restore edilmemiş.</value></data>
+  <data name="Locator.EmptyDirectory" xml:space="preserve"><value>'{0}' dizininde herhangi bir .NET projesi veya bağımlılık dosyası ('packages.lock.json' / 'obj/project.assets.json') bulunamadı.</value></data>
+  <data name="Locator.ScanHint" xml:space="preserve"><value>Taramak istediğiniz .NET projesinin veya solution'ın bulunduğu klasöre geçip 'license-radar scan .' komutunu çalıştırın.</value></data>
+  <data name="Lock.MissingDependencies" xml:space="preserve"><value>packages.lock.json içinde geçerli bir 'dependencies' bölümü bulunamadı.</value></data>
+  <data name="Lock.InvalidTarget" xml:space="preserve"><value>packages.lock.json: '{0}' hedefindeki bağımlılıklar geçersiz.</value></data>
+  <data name="Lock.InvalidType" xml:space="preserve"><value>{0} için geçerli bir 'type' bulunamadı.</value></data>
+  <data name="Lock.UnsupportedType" xml:space="preserve"><value>{0} için desteklenmeyen bağımlılık türü: '{1}'. Tarama eksik gösterilmeyecek.</value></data>
+  <data name="Lock.InvalidVersion" xml:space="preserve"><value>{0} için geçerli bir 'resolved' NuGet sürümü bulunamadı.</value></data>
+  <data name="Assets.MissingFile" xml:space="preserve"><value>project.assets.json dosyası bulunamadı.</value></data>
+  <data name="Assets.MissingTargets" xml:space="preserve"><value>project.assets.json içinde 'targets' bölümü bulunamadı.</value></data>
+  <data name="Nuspec.MissingMetadata" xml:space="preserve"><value>NuGet metadata bölümü bulunamadı.</value></data>
+  <data name="Writer.Exists" xml:space="preserve"><value>JSON çıktı dosyası zaten mevcut.</value></data>
+  <data name="Writer.BadPath" xml:space="preserve"><value>Çıktı dosyası yolu geçersiz.</value></data>
+  <data name="Writer.NoFilename" xml:space="preserve"><value>Çıktı yolu bir dosya adı içermeli.</value></data>
+  <data name="Archive.InvalidPath" xml:space="preserve"><value>Lisans dosyası yolu geçersiz.</value></data>
+  <data name="Archive.UnreadableStream" xml:space="preserve"><value>Arşiv akışı okunabilir değil.</value></data>
+  <data name="Archive.InvalidEntry" xml:space="preserve"><value>Arşiv geçersiz bir ZIP giriş yolu içeriyor.</value></data>
+  <data name="Archive.DuplicatePath" xml:space="preserve"><value>Arşivde aynı lisans yolu birden fazla kez bulunuyor.</value></data>
+  <data name="Archive.FileNotFound" xml:space="preserve"><value>Bildirilen lisans dosyası arşivde bulunamadı.</value></data>
+  <data name="Archive.InvalidZip" xml:space="preserve"><value>Nupkg içeriği geçerli bir ZIP arşivi değil.</value></data>
+  <data name="Archive.IoFailure" xml:space="preserve"><value>ZIP arşivi okunurken giriş/çıkış hatası oluştu.</value></data>
+  <data name="Archive.InvalidLength" xml:space="preserve"><value>Lisans girdisinin boyut metadata'sı geçersiz.</value></data>
+  <data name="Archive.TooLarge" xml:space="preserve"><value>Lisans dosyası 1 MiB sınırını aşıyor.</value></data>
+  <data name="Archive.ExceededReading" xml:space="preserve"><value>Lisans dosyası okuma sırasında 1 MiB sınırını aşıyor.</value></data>
+  <data name="Archive.LengthMismatch" xml:space="preserve"><value>Lisans girdisinin okunan boyutu metadata ile uyuşmuyor.</value></data>
+  <data name="Archive.InvalidUtf8" xml:space="preserve"><value>Lisans dosyası geçerli UTF-8 metni değil.</value></data>
+  <data name="NuGet.InvalidIdentity" xml:space="preserve"><value>NuGet paket kimliği veya sürümü geçersiz.</value></data>
+  <data name="NuGet.InvalidArchiveIdentity" xml:space="preserve"><value>Paket kimliği veya sürümü geçersiz; arşiv isteği gönderilmedi.</value></data>
+  <data name="NuGet.UnexpectedUri" xml:space="preserve"><value>NuGet yanıtı beklenen Flat Container adresinden gelmedi.</value></data>
+  <data name="NuGet.HttpFailure" xml:space="preserve"><value>Arşiv isteği HTTP {0} ({1}) ile başarısız oldu.</value></data>
+  <data name="NuGet.TooLarge" xml:space="preserve"><value>Nupkg arşivi 50 MiB boyut sınırını aşıyor.</value></data>
+  <data name="NuGet.LengthMismatch" xml:space="preserve"><value>İndirilen arşiv boyutu Content-Length ile uyuşmuyor.</value></data>
+  <data name="NuGet.Timeout" xml:space="preserve"><value>Nupkg arşivi indirilirken zaman aşımı oluştu.</value></data>
+  <data name="NuGet.DownloadFailure" xml:space="preserve"><value>Nupkg arşivi indirilemedi: {0}</value></data>
+  <data name="NuGet.StreamFailure" xml:space="preserve"><value>Nupkg akışı okunamadı: {0}</value></data>
 </root>
