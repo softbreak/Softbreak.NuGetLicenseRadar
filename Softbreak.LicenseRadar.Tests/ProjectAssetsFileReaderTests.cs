@@ -88,6 +88,37 @@ public class ProjectAssetsFileReaderTests
         Assert.Equal("Direct", pkg.Type);
     }
 
+    [Theory]
+    [InlineData("net6.0")]
+    [InlineData("net7.0")]
+    [InlineData("net8.0")]
+    [InlineData("net9.0")]
+    [InlineData("net10.0")]
+    public void Parse_MultipleDotnetTargets_IdentifiesDirectAndTransitivePackages(string framework)
+    {
+        string json = $"""
+            {
+              "version": 3,
+              "targets": {
+                "{{framework}}": {
+                  "Example.Direct/1.2.3": { "type": "package" },
+                  "Example.Transitive/4.5.6": { "type": "package" },
+                  "Example.SourceProject/1.0.0": { "type": "project" }
+                }
+              },
+              "projectFileDependencyGroups": {
+                "{{framework}}": [ "Example.Direct >= 1.2.3" ]
+              }
+            }
+            """;
+
+        IReadOnlyList<PackageDependency> packages = _reader.Parse(json);
+        Assert.Equal(2, packages.Count);
+        Assert.Equal("Direct", Assert.Single(packages, p => p.Name == "Example.Direct").Type);
+        Assert.Equal("Transitive", Assert.Single(packages, p => p.Name == "Example.Transitive").Type);
+        Assert.All(packages, p => Assert.Equal(framework, p.Framework));
+    }
+
     [Fact]
     public void Parse_MissingTargets_ThrowsFormatException()
     {
