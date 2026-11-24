@@ -42,4 +42,4 @@ jobs:
 
       - name: Verify .NET 6–10 isolated tool installs and scans
         shell: pwsh
-        run: ./scripts/Test-MultiFramework-Tool.ps1 -PackageDirectory artifacts/nuget -Version 0.2.0
+        run: ./scripts/Test-MultiFramework-Tool.ps1 -PackageDirectory artifacts/nuget -Version 0.3.0

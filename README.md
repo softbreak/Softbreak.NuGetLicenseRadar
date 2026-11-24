@@ -51,9 +51,10 @@ Run `license-radar --help` to see available options. If the command is not recog
 | Version | Availability | Tool runtime |
 | --- | --- | --- |
 | **0.1.1** | Published on NuGet.org | .NET 10 |
-| **0.2.0** | Merged into `main`; **not yet published** | .NET 6, 7, 8, 9, and 10 |
+| **0.2.0** | Package submitted to NuGet.org; check availability | .NET 6, 7, 8, 9, and 10 |
+| **0.3.0** | Release candidate; not published | .NET 6, 7, 8, 9, and 10 |
 
-The `main` branch and the NuGet.org package **do not currently represent the same release**. Until 0.2.0 is published, installing from NuGet.org does not provide .NET 6–9 runtime support. The 0.2.0 release candidate has passed the [five-framework CI acceptance suite](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45419708989) and a real-project scan.
+Check [NuGet.org](https://www.nuget.org/packages/Softbreak.NuGetLicenseRadar) for published versions. The 0.3.0 candidate introduces solution-aware discovery and terminal UX improvements. The [pre-version-bump CI](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45435776249) passed 770 test executions across five frameworks; the final package requires its own acceptance run.
 
 The tool can inspect dependency files for .NET 6–10 projects regardless of the runtime used to run the tool. You need a compatible .NET SDK to install a global tool and a suitable runtime to execute it. **.NET 6–9 are out of Microsoft support** as of November 2026; compatibility here does not extend their security support. Use .NET 10 LTS for new projects.
 
@@ -106,7 +107,7 @@ For example, a package's license text may mention a paid commercial license outs
 - The scanner does not interpret every license, external vendor agreement, or commercial policy.
 - An `Unknown` result may reflect missing metadata or network failures.
 - `project.assets.json` reflects the last restore; update it yourself if project dependencies have changed.
-- This development branch scans C# solution members for explicit `.sln` / `.slnx` targets or a directory containing exactly one solution. With multiple solutions, specify one explicitly. With no solution, directory discovery remains recursive. Use `license-radar scan . --recursive` to scan the entire directory tree (subject to existing ignored directories). Missing dependency data in scope fails the scan.
+- Version 0.3.0 scans C# solution members for explicit `.sln` / `.slnx` targets or a directory containing exactly one solution. With multiple solutions, specify one explicitly. With no solution, directory discovery remains recursive. Use `license-radar scan . --recursive` to scan the entire directory tree (subject to existing ignored directories). Missing dependency data in scope fails the scan.
 - The tool is not a vulnerability scanner, a policy-enforcement gate, or a substitute for legal advice.
 
 NuGet requests go to `api.nuget.org` for package metadata and license content. **Project source code is not uploaded.**

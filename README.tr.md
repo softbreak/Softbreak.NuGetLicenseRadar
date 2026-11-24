@@ -49,9 +49,10 @@ Kullanılabilir seçenekleri görmek için `license-radar --help` çalıştırı
 | Sürüm | Yayın durumu | Aracın çalıştığı .NET sürümleri |
 | --- | --- | --- |
 | **0.1.1** | NuGet.org'da yayımlandı | .NET 10 |
-| **0.2.0** | `main` dalında hazır; **henüz yayımlanmadı** | .NET 6, 7, 8, 9 ve 10 |
+| **0.2.0** | NuGet.org'a gönderildi; erişilebilirliği kontrol edin | .NET 6, 7, 8, 9 ve 10 |
+| **0.3.0** | Yayın adayı; yayımlanmadı | .NET 6, 7, 8, 9 ve 10 |
 
-GitHub'daki `main` kodu ile NuGet.org'daki paket **şu anda aynı sürüm değildir**. 0.2.0 yayımlanana kadar NuGet.org üzerinden yapılan kurulumların .NET 6–9 çalışma zamanı desteği sağladığını varsaymayın. 0.2.0 yayın adayı [beş framework için CI kabul testlerini](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45419708989) ve gerçek proje taramasını geçmiştir.
+Yayımlanan sürümler için [NuGet.org](https://www.nuget.org/packages/Softbreak.NuGetLicenseRadar) sayfasını kontrol edin. 0.3.0 adayı solution-aware keşif ve terminal deneyimi iyileştirmeleri içerir. [Sürüm yükseltmesi öncesindeki CI](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45435776249) beş framework genelinde 770 test çalıştırmasını başarıyla tamamladı; final paket ayrıca doğrulanmalıdır.
 
 Aracın üzerinde çalıştığı .NET sürümünden bağımsız olarak .NET 6–10 projelerinin bağımlılık dosyaları taranabilir. Global araç kurulumu için uyumlu bir .NET SDK, çalıştırma için uygun .NET runtime gerekir. **Kasım 2026 itibarıyla .NET 6–9'un Microsoft desteği sona ermiştir.** Bu sürümlerde çalışabilmesi, güvenlik desteğinin devam ettiği anlamına gelmez. Yeni projelerde .NET 10 LTS kullanın.
 
@@ -104,7 +105,7 @@ license-radar scan ./src
 - Bütün lisanslar, üreticilerin harici sözleşmeleri veya ticari politikaları yorumlanamaz.
 - `Unknown` durumu eksik metadata veya ağ hatası nedeniyle oluşabilir.
 - `project.assets.json` son restore işleminin sonucudur; bağımlılıklar değiştiyse restore işlemini kendiniz yapmalısınız.
-- Bu geliştirme dalında `.sln` / `.slnx` hedefleri veya tek çözüm içeren dizinler yalnızca çözüm üyesi C# projelerini tarar. Birden fazla çözüm varsa açıkça birini belirtin. Çözüm yoksa dizin ağacı taranır. Tüm dizin ağacını taramak için `license-radar scan . --recursive` kullanın (mevcut dizin istisnaları geçerlidir). Kapsam içindeki eksik bağımlılık verileri taramayı durdurur.
+- 0.3.0 sürümünde `.sln` / `.slnx` hedefleri veya tek çözüm içeren dizinler yalnızca çözüm üyesi C# projelerini tarar. Birden fazla çözüm varsa açıkça birini belirtin. Çözüm yoksa dizin ağacı taranır. Tüm dizin ağacını taramak için `license-radar scan . --recursive` kullanın (mevcut dizin istisnaları geçerlidir). Kapsam içindeki eksik bağımlılık verileri taramayı durdurur.
 - Araç güvenlik açığı tarayıcısı, zorunlu politika denetimi veya hukuki danışmanlık hizmeti değildir.
 
 NuGet sorguları paket metadata'sı ve lisans içeriği için `api.nuget.org` adresine gönderilir. **Projenizin kaynak kodu yüklenmez.**
