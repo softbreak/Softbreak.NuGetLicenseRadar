@@ -1,4 +1,4 @@
-﻿# .NET Tool 0.1.1 yayın adayı için izole, global kuruluma dokunmayan Windows ön doğrulaması.
+﻿# .NET Tool 0.2.0 yayın adayı için izole, global kuruluma dokunmayan Windows ön doğrulaması.
 # Yalnızca dotnet test/pack ve geçici --tool-path install yapar. NuGet.org'a yüklemez.
 [CmdletBinding()]
 param()
@@ -8,7 +8,7 @@ $repo = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $solution = Join-Path $repo 'Softbreak.NuGetLicenseRadar.slnx'
 $project = Join-Path $repo 'Softbreak.LicenseRadar.Cli\Softbreak.LicenseRadar.Cli.csproj'
 $toolId = 'Softbreak.NuGetLicenseRadar'
-$version = '0.1.1'
+$version = '0.2.0'
 $work = Join-Path $repo ('.local-test\release-' + [guid]::NewGuid().ToString('N'))
 $packageDir = Join-Path $work 'packages'
 $toolDir = Join-Path $work 'tool'
@@ -39,9 +39,9 @@ if ($LASTEXITCODE -ne 0 -or -not (@($sdkList | Select-String '^10\.')).Count) {
 
 New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
 Write-Host '[1/4] Release testleri...' -ForegroundColor Cyan
-Invoke-DotNet test $solution '--configuration' 'Release'
+Invoke-DotNet test $solution '--configuration' 'Release' '--framework' 'net10.0'
 
-Write-Host '[2/4] 0.1.1 NuGet Tool paketleniyor...' -ForegroundColor Cyan
+Write-Host '[2/4] 0.2.0 NuGet Tool paketleniyor...' -ForegroundColor Cyan
 Invoke-DotNet pack $project '--configuration' 'Release' '--output' $packageDir '--no-restore'
 if (-not (Test-Path -LiteralPath $package)) {
     throw ('PACKAGE_NOT_FOUND: {0}' -f $package)
@@ -74,13 +74,20 @@ try {
     if (-not (@($archive.Entries | Where-Object { $_.FullName -eq 'README.md' }).Count)) {
         throw 'PACKAGE_README_NOT_EMBEDDED'
     }
+    # A multi-targeted tool must embed an entry point for each supported TFM.
+    foreach ($framework in @('net6.0', 'net7.0', 'net8.0', 'net9.0', 'net10.0')) {
+        $settings = "tools/$framework/any/DotnetToolSettings.xml"
+        if (-not (@($archive.Entries | Where-Object { $_.FullName -eq $settings }).Count)) {
+            throw ('TOOL_SETTINGS_MISSING: ' + $settings)
+        }
+    }
 }
 finally {
     $archive.Dispose()
 }
 
 Write-Host '[4/4] Global kurulum etkilenmeden izole tool kurulumu ve --help testi...' -ForegroundColor Cyan
-Invoke-DotNet tool install $toolId '--tool-path' $toolDir '--version' $version '--add-source' $packageDir
+Invoke-DotNet tool install $toolId '--tool-path' $toolDir '--version' $version '--framework' 'net10.0' '--add-source' $packageDir
 $toolExe = Join-Path $toolDir 'license-radar.exe'
 if (-not (Test-Path -LiteralPath $toolExe)) {
     throw ('ISOLATED_TOOL_NOT_FOUND: {0}' -f $toolExe)
@@ -90,10 +97,11 @@ if ($LASTEXITCODE -ne 0) { throw 'HELP_COMMAND_FAILED' }
 
 $hash = (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash
 $summary = @(
-    '=== LICENSE RADAR 0.1.1 RELEASE CANDIDATE ==='
+    '=== LICENSE RADAR 0.2.0 RELEASE CANDIDATE ==='
     'RELEASE_TESTS: PASS'
     'PACK: PASS'
     'METADATA: PASS'
+    'FRAMEWORK_PAYLOADS_6_TO_10: PASS'
     'ISOLATED_INSTALL: PASS'
     'GLOBAL_TOOL_MODIFIED: NO'
     'NUGET_ORG_PUBLISHED: NO'
