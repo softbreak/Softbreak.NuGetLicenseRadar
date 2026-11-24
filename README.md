@@ -2,20 +2,29 @@
 
 **.NET projenizde hangi NuGet paketlerinin lisans koşullarını ayrıca incelemeniz gerektiğini görün.**
 
-License Radar, NuGet bağımlılıklarının lisans bildirimlerini ve paket içindeki lisans dosyalarını inceleyen, anlaşılır kanıtlar sunan bir **.NET 10 komut satırı aracıdır**. [Spectre.Console](https://spectreconsole.net/) ile yüzlerce paketin bulunduğu projelerde bile öncelikle inceleme ve doğrulama gerektirenleri gösterir.
+License Radar, NuGet bağımlılıklarının lisans bildirimlerini ve paket içindeki lisans dosyalarını inceleyerek **hangi paketlerin ayrıca değerlendirilmesi gerektiğini** kanıtlarıyla gösteren açık kaynak bir .NET komut satırı aracıdır. [Spectre.Console](https://spectreconsole.net/) ile yüzlerce paketi tararken inceleme önceliklerini anlaşılır biçimde sunar.
 
 > [!IMPORTANT]
 > License Radar bir **hukuki uygunluk onay aracı değildir**. `İnceleme gerekli` ücretli lisansın kesin zorunlu olduğunu; `Metadata bulundu` ise ücretsiz kullanım veya hukuki uygunluk anlamına gelmez. Üretici koşullarını kendi kullanım senaryonuz için doğrulayın.
 
+## Sürümler ve .NET uyumluluğu
+
+| Sürüm | NuGet.org durumu | Aracı çalıştırabileceğiniz .NET sürümleri |
+| --- | --- | --- |
+| **0.1.1** | Yayımlanmış mevcut sürüm | .NET 10 |
+| **0.2.0** | **Kaynak kodu `main` üzerinde hazır; NuGet.org yayını bekliyor** | .NET 6, 7, 8, 9 ve 10 |
+
+**Önemli:** GitHub'daki `main` artık 0.2.0 kodunu içeriyor; ancak aşağıdaki `dotnet tool install` komutu **NuGet.org'da yayımlanmış sürümü** indirir. 0.2.0 yayımlanana kadar bu komutun .NET 6–9 uyumluluğu sağladığını varsaymayın.
+
+0.2.0 paketi `net6.0;net7.0;net8.0;net9.0;net10.0` için ayrı araç bileşenleri içerir. Aracı çalıştırmak için uygun .NET çalışma zamanı ve araç kurulumunu destekleyen bir .NET SDK gerekir. Kaynak koddan derleme ve katkı geliştirme için **.NET 10 SDK** kullanın.
+
+> **Destek notu (Kasım 2026):** Microsoft .NET 6, 7, 8 ve 9'un güvenlik ve bakım desteğini sonlandırmıştır. Geriye dönük çalışabilirlik, bu çalışma zamanlarını yeniden desteklenen sürümlere dönüştürmez. Yeni uygulamalarda .NET 10 LTS tercih edin.
+
+**Taranan projeler:** Aracın çalıştığı .NET sürümünden bağımsız olarak .NET 6–10 projelerinin `packages.lock.json` ve `obj/project.assets.json` dosyalarındaki NuGet bağımlılıkları incelenebilir. Tarama için projeyi derlemek gerekmez; araç otomatik `restore` yapmaz. İlk araç kurulumu ve canlı NuGet sorguları internet gerektirir.
+
 ## Başlangıç: iki komut
 
-**Çalıştırma uyumluluğu (v0.2.0 yayın adayı):** `.NET 6, 7, 8, 9 ve 10` çalışma zamanları için ayrı .NET Tool bileşenleri içerir. Bilgisayarda kullanılacak sürüme uygun bir .NET çalışma zamanı ve `dotnet tool` kurulumunu destekleyen .NET SDK bulunmalıdır. Kaynak koddan derleme ve katkı geliştirme için **.NET 10 SDK** kullanın. İlk kurulum ve canlı NuGet lisans sorguları için internet gerekir.
-
-> **Destek notu (Kasım 2026):** Microsoft .NET 6, 7, 8 ve 9 için güvenlik ve bakım desteğini sonlandırdı. Bu sürümlerle uyumluluk sağlamak, Microsoft tarafından desteklendikleri anlamına gelmez. Yeni ve üretim projelerinde .NET 10 LTS önerilir.
-
-**Taranan projeler:** Çalıştırdığınız aracın .NET sürümünden bağımsız olarak, `net6.0`–`net10.0` projelerine ait `packages.lock.json` veya `obj/project.assets.json` bağımlılık kayıtları okunabilir. Araç projeyi yeniden derlemez veya otomatik restore yapmaz.
-
-**1. Bir kez kurun** (PowerShell, CMD, Terminal):
+**1. NuGet.org'da bulunan sürümü kurun** (PowerShell, CMD, Terminal):
 
 ```sh
 dotnet tool install --global Softbreak.NuGetLicenseRadar
@@ -27,7 +36,7 @@ dotnet tool install --global Softbreak.NuGetLicenseRadar
 license-radar scan .
 ```
 
-Kaynak kodu indirmeniz, Visual Studio açmanız, `Install-Local.ps1` çalıştırmanız veya `packages.lock.json` dosyasını elle aramanız gerekmez.
+Yayımlanmış araç için kaynak kodu indirmeniz, Visual Studio açmanız, `Install-Local.ps1` çalıştırmanız veya `packages.lock.json` dosyasını elle aramanız gerekmez. **0.2.0 yayımlandıktan sonra** özellikle bu sürümü kurmak için `dotnet tool install --global Softbreak.NuGetLicenseRadar --version 0.2.0` komutunu kullanabilirsiniz. Daha önce araç kurduysanız `install` yerine `update` kullanın.
 
 
 ### Sık kullanılan komutlar
@@ -52,17 +61,22 @@ dotnet tool uninstall --global Softbreak.NuGetLicenseRadar
 
 `license-radar` komutu kurulumdan sonra bulunamazsa yeni terminal açın. Gerekirse global araçlar klasörünün (`%USERPROFILE%\.dotnet\tools` veya Linux/macOS'ta `$HOME/.dotnet/tools`) `PATH` üzerinde olduğundan emin olun.
 
-## Örnek: 152 paket içeren çözüm
+## Gerçek proje örneği: 157 bağımlılık
 
-Windows kabul testinde, 10 proje içeren bir .NET çözümünde 152 paket kaydı değerlendirildi:
+0.2.0 yayın adayı Windows üzerinde gerçek, çok projeli bir .NET çözümünde çalıştırıldı. Çıktı, 0.1.1 sürümünün aynı projedeki önceki bulgularıyla **birebir örtüştü**:
 
-| Sonuç | Sayı | Ne anlama gelir? |
+| Sonuç | Sayı | Açıklama |
 | --- | ---: | --- |
-| İnceleme gerekli | 1 | Lisans dosyası veya sinyal için ek inceleme gerekir. |
-| Doğrulanamadı | 1 | NuGet lisans bildirimi eksik veya sorgu sonuçlandırılamadı. |
-| Metadata seviyesinde | 150 | Lisans ifadesi bulundu; hukuki uygunluk doğrulanmadı. |
+| Keşfedilen proje | 7 | Yedi `packages.lock.json` dosyası kullanıldı. |
+| Benzersiz NuGet bağımlılığı | **157** | 34 doğrudan, 123 dolaylı bağımlılık. |
+| **İnceleme gerekli** | **1** | FluentAssertions **8.8.0** lisans metninde ücretli ticari lisans ifadesi tespit edildi. |
+| **Doğrulanamadı** | **5** | Paketlerin NuGet metadata'sında lisans beyanı bulunamadı. |
+| **Metadata bulundu** | **151** | Lisans bildirimi mevcut; hukuki uygunluk kararı verilmedi. |
+| Sorgu hatası | **0** | Canlı NuGet sorgularında hata oluşmadı. |
 
-Bu taramada **Fractions 7.3.0** paketinin `license.txt` dosyası inceleme gerektirdi; **xunit.abstractions 2.0.3** için lisans metadata'sı bulunamadı. Lisans dosyasının bulunması **otomatik ücretli lisans kararı değildir**.
+Tespit edilen örnek kanıt: `Any use outside of these parameters requires a paid Commercial License from Xceed.` Bu ifade **o kullanım için kesin ödeme zorunluluğu tespit edildiği anlamına gelmez**; lisans koşullarının ayrıca değerlendirilmesi gerektiğini gösterir.
+
+`Unknown` durumundaki bir paket de otomatik olarak ücretli veya hukuka aykırı sayılmaz.
 
 ## Tarama nasıl çalışır?
 
@@ -104,7 +118,21 @@ dotnet run --project Softbreak.LicenseRadar.Cli --framework net10.0 -- scan .
 
 Solution iki proje içerir: `Softbreak.LicenseRadar.Cli` ve `Softbreak.LicenseRadar.Tests`. Kaynak klasörü üzerinden yerel kurulum betiği `scripts/Install-Local.ps1` yalnızca geliştirme ve test senaryoları içindir; **son kullanıcı kurulumu için gerekmez**.
 
-Windows'ta beş çalışma zamanında izole kurulum ve tarama kabul testi, GitHub Actions içinde `scripts/Test-MultiFramework-Tool.ps1` ile yapılır. Yerel sistemde yalnızca kurulu .NET 10 çalışma zamanına bağlı Release testlerini, beş hedef framework'ün paket dosyalarını, NuGet metadata'sını ve global araç kurulumunu değiştirmeyen izole kurulumu doğrulamak için `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1` komutunu çalıştırın. Betik NuGet.org'a yayın yapmaz.
+### Uyumluluk kabul testleri
+
+[.NET 6–10 GitHub Actions kabul çalışması](https://github.com/softbreak/Softbreak.NuGetLicenseRadar/actions/runs/45419708989) başarılıdır:
+
+- **137 test × 5 hedef framework = 685 başarılı test** (0 başarısız).
+- Beş framework'ün tamamında NuGet Tool paket bileşenleri doğrulandı; izole araç kurulumu, `--help` ve örnek lockfile taraması **5/5 PASS**.
+- Windows üzerinde `scripts/Test-Release.ps1` ile paket manifesti, README, MIT lisansı ve global araç kurulumunu etkilemeyen izole kurulum doğrulandı. Gerçek projedeki 157 bağımlılığın sonuçları önceki sürümle karşılaştırıldı.
+
+Yerel yayın adayı kontrolü için PowerShell'de:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Test-Release.ps1
+```
+
+İzolasyonlu beş framework kabul testi `scripts/Test-MultiFramework-Tool.ps1` içindedir ve GitHub Actions tarafından çalıştırılır. Testlerin geçmesi NuGet.org'a otomatik yayın yapmaz. Sürüm etiketleme ve NuGet.org yüklemesi ayrı bir yayın adımıdır.
 
 ## Sınırlamalar, gizlilik ve güvenlik
 
