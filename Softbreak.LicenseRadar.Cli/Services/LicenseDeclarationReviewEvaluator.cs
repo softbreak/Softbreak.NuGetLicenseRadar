@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Softbreak.LicenseRadar.Cli.Models;
 
 namespace Softbreak.LicenseRadar.Cli.Services;
@@ -12,14 +13,14 @@ public sealed class LicenseDeclarationReviewEvaluator
             string reason = queryResult.Status switch
             {
                 LicenseDeclarationQueryStatus.HttpFailure =>
-                    "Lisans sorgusu HTTP hatasıyla başarısız oldu; lisans koşulları değerlendirilemedi.",
+                    L.Get("Eval.HttpFailure"),
                 LicenseDeclarationQueryStatus.Timeout =>
-                    "Lisans sorgusu zaman aşımına uğradı; lisans koşulları değerlendirilemedi.",
+                    L.Get("Eval.Timeout"),
                 LicenseDeclarationQueryStatus.InvalidMetadata =>
-                    "NuGet metadata'sı geçersiz; lisans koşulları değerlendirilemedi.",
+                    L.Get("Eval.InvalidMetadata"),
                 LicenseDeclarationQueryStatus.InvalidPackageIdentity =>
-                    "Paket kimliği veya sürümü geçersiz; lisans sorgusu yapılmadı.",
-                _ => "Lisans sorgusu başarılı değil; lisans koşulları değerlendirilemedi."
+                    L.Get("Eval.InvalidPackage"),
+                _ => L.Get("Eval.QueryFailed")
             };
 
             return CreateResult(queryResult, LicenseReviewStatus.Unknown, reason);
@@ -30,7 +31,7 @@ public sealed class LicenseDeclarationReviewEvaluator
             return CreateResult(
                 queryResult,
                 LicenseReviewStatus.Unknown,
-                "Sorgu başarılı olsa da lisans beyanı bulunamadı."
+                L.Get("Eval.NoDeclaration")
             );
         }
 
@@ -40,31 +41,31 @@ public sealed class LicenseDeclarationReviewEvaluator
                 CreateResult(
                     queryResult,
                     LicenseReviewStatus.MetadataOnly,
-                    "Lisans ifadesi metadata'da bulundu; hukuki uyumluluk veya ücretsiz kullanım doğrulanmadı."
+                    L.Get("Eval.Expression")
                 ),
             LicenseDeclarationKind.File =>
                 CreateResult(
                     queryResult,
                     LicenseReviewStatus.ReviewRequired,
-                    "Lisans dosyası bildirildi; dosya içeriği ve kullanım koşulları ayrıca incelenmeli. Bu karar, lisansın ücretli olduğu anlamına gelmez."
+                    L.Get("Eval.File")
                 ),
             LicenseDeclarationKind.Missing =>
                 CreateResult(
                     queryResult,
                     LicenseReviewStatus.Unknown,
-                    "NuGet metadata'sında lisans beyanı bulunamadı."
+                    L.Get("Eval.Missing")
                 ),
             LicenseDeclarationKind.Unsupported =>
                 CreateResult(
                     queryResult,
                     LicenseReviewStatus.Unknown,
-                    "NuGet metadata'sındaki lisans beyanı desteklenen bir türde değil."
+                    L.Get("Eval.Unsupported")
                 ),
             _ =>
                 CreateResult(
                     queryResult,
                     LicenseReviewStatus.Unknown,
-                    "Lisans beyanı tanınmayan bir türde."
+                    L.Get("Eval.Unknown")
                 )
         };
     }
