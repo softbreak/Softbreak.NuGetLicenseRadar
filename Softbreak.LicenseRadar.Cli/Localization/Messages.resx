@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Cli.InvalidArguments" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Cli.Usage" xml:space="preserve"><value>Usage: license-radar scan [directory-or-project] [--output &lt;file.json&gt;] [--verbose]</value></data>
+  <data name="Cli.InvalidOutputPath" xml:space="preserve"><value>Error: Invalid JSON output path: {0}</value></data>
+  <data name="Cli.OutputExists" xml:space="preserve"><value>Error: The JSON output file already exists.</value></data>
+  <data name="Cli.UnreadablePath" xml:space="preserve"><value>Error: Target path could not be read: {0}</value></data>
+  <data name="Cli.Error" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Cli.Suggestion" xml:space="preserve"><value>Suggestion: {0}</value></data>
+  <data name="Cli.UnreadableDependencies" xml:space="preserve"><value>Error: Unable to read dependencies for '{0}': {1}</value></data>
+  <data name="Cli.ReportWriteFailure" xml:space="preserve"><value>Error: Failed to write the JSON report: {0}</value></data>
+  <data name="Cli.ReportSaved" xml:space="preserve"><value>JSON report saved: {0}</value></data>
+  <data name="Cli.Scanning" xml:space="preserve"><value>Scanning package licenses...</value></data>
+  <data name="Cli.OutputDuplicate" xml:space="preserve"><value>--output cannot be specified more than once.</value></data>
+  <data name="Cli.OutputRequired" xml:space="preserve"><value>--output requires a file path.</value></data>
+  <data name="Cli.UnknownOption" xml:space="preserve"><value>Unknown option: {0}</value></data>
+  <data name="Cli.MultiplePaths" xml:space="preserve"><value>Only one target path can be specified.</value></data>
+  <data name="Cli.MissingTarget" xml:space="preserve"><value>Specify a project, lock file, or directory to scan.</value></data>
+  <data name="Cli.Help" xml:space="preserve"><value>Softbreak NuGet License Radar
+-----------------------------
+Review NuGet licenses with one command: license-radar scan .
+
+USAGE:
+  license-radar scan [target-path] [options]
+  license-radar &lt;file-or-directory&gt; [options]  (legacy syntax)
+
+DESCRIPTION:
+  Discovers NuGet dependencies in .NET projects and analyzes package license
+  declarations and embedded license files for evidence requiring review.
+
+ARGUMENTS:
+  scan [target]               Scan a directory, project (.csproj), or solution (.sln/.slnx)
+                              (default: current directory).
+  &lt;file-path&gt;                 Direct path to packages.lock.json or project.assets.json
+
+OPTIONS:
+  -o, --output &lt;file.json&gt;    Save results using JSON schema version 1.
+  -v, --verbose               Show all packages and detailed evidence.
+  -h, --help                  Display this help.
+
+EXAMPLES:
+  license-radar scan .
+  license-radar scan ./src/MyProject
+  license-radar scan . --output license-report.json
+  license-radar scan . --verbose
+  license-radar ./packages.lock.json --output report.json
+
+NOTE: Results are not legal clearance or automatic purchase recommendations.</value></data>
+  <data name="Renderer.Target" xml:space="preserve"><value>Target:</value></data>
+  <data name="Renderer.Project" xml:space="preserve"><value>Project:</value></data>
+  <data name="Renderer.ProjectsDiscovered" xml:space="preserve"><value>{0} projects found · Lock: {1} · Assets: {2}</value></data>
+  <data name="Renderer.AssetsNote" xml:space="preserve"><value>Note: project.assets.json reflects dependencies from the most recent restore.</value></data>
+  <data name="Renderer.Total" xml:space="preserve"><value>Total: {0}</value></data>
+  <data name="Renderer.Direct" xml:space="preserve"><value>Direct: {0}</value></data>
+  <data name="Renderer.Transitive" xml:space="preserve"><value>Transitive: {0}</value></data>
+  <data name="Renderer.ReviewCount" xml:space="preserve"><value>Review required: {0}</value></data>
+  <data name="Renderer.UnknownCount" xml:space="preserve"><value>Unknown: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.QueryFailures" xml:space="preserve"><value>Query failures: {0}</value></data>
+  <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(included in unknown results)</value></data>
+  <data name="Renderer.ReviewTable" xml:space="preserve"><value>Packages Requiring Review ({0})</value></data>
+  <data name="Renderer.PackageVersion" xml:space="preserve"><value>Package / version</value></data>
+  <data name="Renderer.Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Renderer.ReviewDetails" xml:space="preserve"><value>Review details</value></data>
+  <data name="Renderer.LicenseFile" xml:space="preserve"><value>License file:</value></data>
+  <data name="Renderer.Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="Renderer.FileRead" xml:space="preserve"><value>File read:</value></data>
+  <data name="Renderer.Error" xml:space="preserve"><value>Error:</value></data>
+  <data name="Renderer.Evidence" xml:space="preserve"><value>Evidence ({0}):</value></data>
+  <data name="Renderer.Link" xml:space="preserve"><value>Link:</value></data>
+  <data name="Renderer.Source" xml:space="preserve"><value>Source:</value></data>
+  <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>Use --verbose to view {0} additional review reasons.</value></data>
+  <data name="Renderer.UnknownTable" xml:space="preserve"><value>Unverified Packages ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages Reviewed by Metadata ({0})</value></data>
+  <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>License declaration</value></data>
+  <data name="Renderer.NoDeclaration" xml:space="preserve"><value>No declaration</value></data>
+  <data name="Renderer.MetadataWarning" xml:space="preserve"><value>License metadata does not establish legal permission to use the package.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License metadata was found for {0} other packages; legal compliance was not verified.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found; this is not legal clearance.</value></data>
+  <data name="Renderer.Next1" xml:space="preserve"><value>Next step: Compare the license terms with your intended use;</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>verify the publisher's official terms if needed. No purchase decision is made automatically.</value></data>
+  <data name="Renderer.Hint" xml:space="preserve"><value>Use [bold]--verbose[/] for details or [bold]--output report.json[/] to save JSON.</value></data>
+  <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>License file</value></data>
+  <data name="Renderer.SpecialReview" xml:space="preserve"><value>Special review</value></data>
+  <data name="Renderer.Reciprocal" xml:space="preserve"><value>Reciprocal license</value></data>
+  <data name="Renderer.Alternative" xml:space="preserve"><value>Alternative agreement</value></data>
+  <data name="Renderer.PaidCommercial" xml:space="preserve"><value>Paid commercial license wording</value></data>
+  <data name="Renderer.TextSignal" xml:space="preserve"><value>License text signal</value></data>
+  <data name="Renderer.HttpFailure" xml:space="preserve"><value>HTTP connection failure</value></data>
+  <data name="Renderer.Timeout" xml:space="preserve"><value>Timeout</value></data>
+  <data name="Renderer.InvalidMetadata" xml:space="preserve"><value>Invalid metadata</value></data>
+  <data name="Renderer.InvalidIdentity" xml:space="preserve"><value>Invalid package identity</value></data>
+  <data name="Renderer.UnverifiedQuery" xml:space="preserve"><value>License query could not be verified</value></data>
+</root>
