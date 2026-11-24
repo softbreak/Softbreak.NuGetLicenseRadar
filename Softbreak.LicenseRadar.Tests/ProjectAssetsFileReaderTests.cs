@@ -96,22 +96,23 @@ public class ProjectAssetsFileReaderTests
     [InlineData("net10.0")]
     public void Parse_MultipleDotnetTargets_IdentifiesDirectAndTransitivePackages(string framework)
     {
-        string json = $"""
+        string template = """
             {
               "version": 3,
               "targets": {
-                "{{framework}}": {
+                "__FRAMEWORK__": {
                   "Example.Direct/1.2.3": { "type": "package" },
                   "Example.Transitive/4.5.6": { "type": "package" },
                   "Example.SourceProject/1.0.0": { "type": "project" }
                 }
               },
               "projectFileDependencyGroups": {
-                "{{framework}}": [ "Example.Direct >= 1.2.3" ]
+                "__FRAMEWORK__": [ "Example.Direct >= 1.2.3" ]
               }
             }
             """;
 
+        string json = template.Replace("__FRAMEWORK__", framework, StringComparison.Ordinal);
         IReadOnlyList<PackageDependency> packages = _reader.Parse(json);
         Assert.Equal(2, packages.Count);
         Assert.Equal("Direct", Assert.Single(packages, p => p.Name == "Example.Direct").Type);
