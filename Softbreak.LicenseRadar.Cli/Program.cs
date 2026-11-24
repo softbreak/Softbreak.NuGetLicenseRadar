@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Spectre.Console;
 using Softbreak.LicenseRadar.Cli.Services;
 using Softbreak.LicenseRadar.Cli.Models;
@@ -16,8 +17,8 @@ if (!TryParseCommandLine(
     out bool showHelp,
     out string? argumentError))
 {
-    Console.Error.WriteLine($"Hata: {argumentError}");
-    Console.Error.WriteLine("Kullanım: license-radar scan [dizin-veya-proje] [--output <dosya.json>] [--verbose]");
+    Console.Error.WriteLine(L.Format("Cli.InvalidArguments", argumentError));
+    Console.Error.WriteLine(L.Get("Cli.Usage"));
     Console.Error.WriteLine("Yardım için: license-radar --help");
     Environment.ExitCode = 2;
     return;
@@ -42,14 +43,14 @@ if (outputPathArgument is not null)
             PathTooLongException or
             System.Security.SecurityException)
     {
-        Console.Error.WriteLine($"Hata: JSON çıktı yolu geçersiz: {exception.Message}");
+        Console.Error.WriteLine(L.Format("Cli.InvalidOutputPath", exception.Message));
         Environment.ExitCode = 2;
         return;
     }
 
     if (File.Exists(outputPath))
     {
-        Console.Error.WriteLine("Hata: JSON çıktı dosyası zaten mevcut.");
+        Console.Error.WriteLine(L.Get("Cli.OutputExists"));
         Environment.ExitCode = 1;
         return;
     }
@@ -69,17 +70,17 @@ catch (Exception exception) when (
         IOException or
         System.Security.SecurityException)
 {
-    Console.Error.WriteLine($"Hata: Hedef yol okunamadı: {exception.Message}");
+    Console.Error.WriteLine(L.Format("Cli.UnreadablePath", exception.Message));
     Environment.ExitCode = 1;
     return;
 }
 
 if (!discovery.IsSuccess)
 {
-    Console.Error.WriteLine($"Hata: {discovery.ErrorMessage}");
+    Console.Error.WriteLine(L.Format("Cli.Error", discovery.ErrorMessage));
     if (!string.IsNullOrWhiteSpace(discovery.SuggestedSolution))
     {
-        Console.Error.WriteLine($"Öneri: {discovery.SuggestedSolution}");
+        Console.Error.WriteLine(L.Format("Cli.Suggestion", discovery.SuggestedSolution));
     }
     Environment.ExitCode = 1;
     return;
@@ -101,7 +102,7 @@ foreach (DiscoveredProject proj in discovery.Projects)
     }
     catch (Exception ex)
     {
-        Console.Error.WriteLine($"Hata: '{proj.ProjectName}' bağımlılıkları okunamadı: {ex.Message}");
+        Console.Error.WriteLine(L.Format("Cli.UnreadableDependencies", proj.ProjectName, ex.Message));
         Environment.ExitCode = 1;
         return;
     }
@@ -139,7 +140,7 @@ if (isInteractive)
 {
     await AnsiConsole.Status()
         .Spinner(Spinner.Known.Dots)
-        .StartAsync("Paket lisansları taranıyor...", async _ =>
+        .StartAsync(L.Get("Cli.Scanning"), async _ =>
         {
             foreach (var package in packages)
             {
@@ -186,7 +187,7 @@ if (outputPath is not null)
             reviewResults,
             DateTimeOffset.UtcNow
         );
-        Console.WriteLine($"JSON raporu kaydedildi: {outputPath}");
+        Console.WriteLine(L.Format("Cli.ReportSaved", outputPath));
     }
     catch (Exception exception) when (
         exception is IOException or
@@ -196,7 +197,7 @@ if (outputPath is not null)
             System.Security.SecurityException or
             System.Text.Json.JsonException)
     {
-        Console.Error.WriteLine($"Hata: JSON raporu yazılamadı: {exception.Message}");
+        Console.Error.WriteLine(L.Format("Cli.ReportWriteFailure", exception.Message));
         Environment.ExitCode = 1;
     }
 }
@@ -241,7 +242,7 @@ static bool TryParseCommandLine(
         {
             if (outputPath is not null)
             {
-                error = "--output birden fazla kez verilemez.";
+                error = L.Get("Cli.OutputDuplicate");
                 return false;
             }
 
@@ -249,7 +250,7 @@ static bool TryParseCommandLine(
                 string.IsNullOrWhiteSpace(arguments[index + 1]) ||
                 arguments[index + 1].StartsWith("--", StringComparison.Ordinal))
             {
-                error = "--output için bir dosya yolu gerekli.";
+                error = L.Get("Cli.OutputRequired");
                 return false;
             }
 
@@ -259,7 +260,7 @@ static bool TryParseCommandLine(
 
         if (arg.StartsWith("--", StringComparison.Ordinal))
         {
-            error = $"Bilinmeyen seçenek: {arg}";
+            error = L.Format("Cli.UnknownOption", arg);
             return false;
         }
 
@@ -272,7 +273,7 @@ static bool TryParseCommandLine(
 
         if (targetPath.Length > 0)
         {
-            error = "Birden fazla hedef yolu verilemez.";
+            error = L.Get("Cli.MultiplePaths");
             return false;
         }
 
@@ -286,44 +287,11 @@ static bool TryParseCommandLine(
 
     if (targetPath.Length == 0)
     {
-        error = "Taranacak bir proje, lock dosyası veya klasör yolu belirtilmelidir.";
+        error = L.Get("Cli.MissingTarget");
         return false;
     }
 
     return true;
 }
 
-static void PrintHelp()
-{
-    Console.WriteLine("Softbreak NuGet License Radar");
-    Console.WriteLine("-----------------------------");
-    Console.WriteLine("Tek komutla NuGet lisanslarını inceleyin: license-radar scan .");
-    Console.WriteLine();
-    Console.WriteLine("KULLANIM:");
-    Console.WriteLine("  license-radar scan [hedef-yol] [seçenekler]");
-    Console.WriteLine("  license-radar <dosya-veya-klasör-yolu> [seçenekler]  (eski kullanım)");
-    Console.WriteLine();
-    Console.WriteLine("AÇIKLAMA:");
-    Console.WriteLine("  .NET projelerindeki NuGet bağımlılıklarını otomatik keşfeder, lisans");
-    Console.WriteLine("  dosyalarını ve bildirimlerini inceleyerek kanıta dayalı lisanslama");
-    Console.WriteLine("  sinyalleri (karşılıklı lisans, alternatif sözleşme, ücretli ticari) üretir.");
-    Console.WriteLine();
-    Console.WriteLine("ARGÜMANLAR:");
-    Console.WriteLine("  scan [hedef]                Belirtilen klasör, proje (.csproj) veya solution (.sln)");
-    Console.WriteLine("                              içindeki bağımlılıkları keşfeder (varsayılan: .)");
-    Console.WriteLine("  <dosya-yolu>                Doğrudan packages.lock.json veya project.assets.json yolu");
-    Console.WriteLine();
-    Console.WriteLine("SEÇENEKLER:");
-    Console.WriteLine("  -o, --output <dosya.json>   Tarama sonucunu v1 JSON formatında kaydeder.");
-    Console.WriteLine("  -v, --verbose               Tüm paketleri ve kanıt ayrıntılarını gösterir.");
-    Console.WriteLine("  -h, --help                  Bu yardım açıklamasını görüntüler.");
-    Console.WriteLine();
-    Console.WriteLine("ÖRNEKLER:");
-    Console.WriteLine("  license-radar scan .");
-    Console.WriteLine("  license-radar scan ./src/MyProject");
-    Console.WriteLine("  license-radar scan . --output lisans-raporu.json");
-    Console.WriteLine("  license-radar scan . --verbose");
-    Console.WriteLine("  license-radar ./packages.lock.json --output rapor.json");
-    Console.WriteLine();
-    Console.WriteLine("NOT: Sonuçlar hukuki onay veya otomatik satın alma önerisi değildir.");
-}
+static void PrintHelp() => Console.WriteLine(L.Get("Cli.Help"));
