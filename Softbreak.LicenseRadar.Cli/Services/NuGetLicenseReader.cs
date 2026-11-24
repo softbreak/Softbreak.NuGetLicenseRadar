@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 ﻿
 using System.Xml;
 using System.Xml.Linq;
@@ -37,7 +38,7 @@ public sealed class NuGetLicenseReader
             uri is null)
         {
             throw new ArgumentException(
-                "NuGet paket kimliği veya sürümü geçersiz."
+                L.Get("NuGet.InvalidIdentity")
             );
         }
 
@@ -67,7 +68,7 @@ public sealed class NuGetLicenseReader
             uri is null)
         {
             throw new ArgumentException(
-                "NuGet paket kimliği veya sürümü geçersiz."
+                L.Get("NuGet.InvalidIdentity")
             );
         }
 
@@ -162,7 +163,7 @@ public sealed class NuGetLicenseReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidPackageIdentity,
                 null,
-                "Paket kimliği veya sürümü geçersiz; arşiv isteği gönderilmedi."
+                L.Get("NuGet.InvalidArchiveIdentity")
             );
         }
 
@@ -186,7 +187,7 @@ public sealed class NuGetLicenseReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.DownloadFailure,
                     null,
-                    "NuGet yanıtı beklenen Flat Container adresinden gelmedi."
+                    L.Get("NuGet.UnexpectedUri")
                 );
             }
 
@@ -195,7 +196,7 @@ public sealed class NuGetLicenseReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.DownloadFailure,
                     null,
-                    $"Arşiv isteği HTTP {(int)response.StatusCode} ({response.StatusCode}) ile başarısız oldu."
+                    L.Format("NuGet.HttpFailure", (int)response.StatusCode, response.StatusCode)
                 );
             }
 
@@ -205,7 +206,7 @@ public sealed class NuGetLicenseReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.ArchiveTooLarge,
                     null,
-                    "Nupkg arşivi 50 MiB boyut sınırını aşıyor."
+                    L.Get("NuGet.TooLarge")
                 );
             }
 
@@ -237,7 +238,7 @@ public sealed class NuGetLicenseReader
                     return new LicenseFileReadResult(
                         LicenseFileReadStatus.ArchiveTooLarge,
                         null,
-                        "Nupkg arşivi 50 MiB boyut sınırını aşıyor."
+                        L.Get("NuGet.TooLarge")
                     );
                 }
 
@@ -249,7 +250,7 @@ public sealed class NuGetLicenseReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.DownloadFailure,
                     null,
-                    "İndirilen arşiv boyutu Content-Length ile uyuşmuyor."
+                    L.Get("NuGet.LengthMismatch")
                 );
             }
 
@@ -264,7 +265,7 @@ public sealed class NuGetLicenseReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.DownloadTimeout,
                 null,
-                "Nupkg arşivi indirilirken zaman aşımı oluştu."
+                L.Get("NuGet.Timeout")
             );
         }
         catch (TimeoutException)
@@ -272,7 +273,7 @@ public sealed class NuGetLicenseReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.DownloadTimeout,
                 null,
-                "Nupkg arşivi indirilirken zaman aşımı oluştu."
+                L.Get("NuGet.Timeout")
             );
         }
         catch (HttpRequestException exception)
@@ -280,7 +281,7 @@ public sealed class NuGetLicenseReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.DownloadFailure,
                 null,
-                $"Nupkg arşivi indirilemedi: {exception.Message}"
+                L.Format("NuGet.DownloadFailure", exception.Message)
             );
         }
         catch (IOException exception)
@@ -288,7 +289,7 @@ public sealed class NuGetLicenseReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.DownloadFailure,
                 null,
-                $"Nupkg akışı okunamadı: {exception.Message}"
+                L.Format("NuGet.StreamFailure", exception.Message)
             );
         }
     }

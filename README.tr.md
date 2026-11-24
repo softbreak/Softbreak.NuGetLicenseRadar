@@ -19,6 +19,15 @@ Softbreak NuGet License Radar, .NET projelerinde çözümlenmiş NuGet bağıml�
 - Kısa terminal özeti, `--verbose` ile ayrıntılı sonuçlar ve JSON raporu sunar.
 - Proje dosyalarını değiştirmeden, `dotnet restore` çalıştırmadan ve kaynak kodu yüklemeden tarama yapar.
 
+### Dil seçimi
+
+Komut satırı aracı, işletim sisteminin **kullanıcı arayüzü dilini** (`CultureInfo.CurrentUICulture`) otomatik algılar:
+
+- **Türkçe (`tr-*`)**: Yardım ekranı, tarama özeti, inceleme gerekçeleri, yönlendirmeler ve hatalar Türkçedir.
+- **İngilizce (`en-*`)** ve diğer diller: İngilizce çıktı kullanılır (varsayılan).
+
+Ek bir dil parametresi gerekmez. Üçüncü taraf lisans dosyalarından alınan orijinal kanıtlar çevrilmez; JSON alan adları, şema sürümü ve durum kodları (`ReviewRequired`, `Unknown`, `MetadataOnly`) sabit kalır. Kullanıcıya yönelik `reviewReason` metni seçilen dile göre değişir.
+
 ## Kurulum
 
 NuGet.org'da **yayımlanmış son sürümü** kurun:

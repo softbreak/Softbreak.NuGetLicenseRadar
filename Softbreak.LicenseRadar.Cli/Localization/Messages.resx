@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Cli.InvalidArguments" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Cli.Usage" xml:space="preserve"><value>Usage: license-radar scan [directory-or-project] [--output &lt;file.json&gt;] [--verbose]</value></data>
+  <data name="Cli.InvalidOutputPath" xml:space="preserve"><value>Error: Invalid JSON output path: {0}</value></data>
+  <data name="Cli.OutputExists" xml:space="preserve"><value>Error: The JSON output file already exists.</value></data>
+  <data name="Cli.UnreadablePath" xml:space="preserve"><value>Error: Target path could not be read: {0}</value></data>
+  <data name="Cli.Error" xml:space="preserve"><value>Error: {0}</value></data>
+  <data name="Cli.Suggestion" xml:space="preserve"><value>Suggestion: {0}</value></data>
+  <data name="Cli.UnreadableDependencies" xml:space="preserve"><value>Error: Unable to read dependencies for '{0}': {1}</value></data>
+  <data name="Cli.ReportWriteFailure" xml:space="preserve"><value>Error: Failed to write the JSON report: {0}</value></data>
+  <data name="Cli.ReportSaved" xml:space="preserve"><value>JSON report saved: {0}</value></data>
+  <data name="Cli.Scanning" xml:space="preserve"><value>Scanning package licenses...</value></data>
+  <data name="Cli.OutputDuplicate" xml:space="preserve"><value>--output cannot be specified more than once.</value></data>
+  <data name="Cli.OutputRequired" xml:space="preserve"><value>--output requires a file path.</value></data>
+  <data name="Cli.UnknownOption" xml:space="preserve"><value>Unknown option: {0}</value></data>
+  <data name="Cli.MultiplePaths" xml:space="preserve"><value>Only one target path can be specified.</value></data>
+  <data name="Cli.MissingTarget" xml:space="preserve"><value>Specify a project, lock file, or directory to scan.</value></data>
+  <data name="Cli.Help" xml:space="preserve"><value>Softbreak NuGet License Radar
+-----------------------------
+Review NuGet licenses with one command: license-radar scan .
+
+USAGE:
+  license-radar scan [target-path] [options]
+  license-radar &lt;file-or-directory&gt; [options]  (legacy syntax)
+
+DESCRIPTION:
+  Discovers NuGet dependencies in .NET projects and analyzes package license
+  declarations and embedded license files for evidence requiring review.
+
+ARGUMENTS:
+  scan [target]               Scan a directory, project (.csproj), or solution (.sln/.slnx)
+                              (default: current directory).
+  &lt;file-path&gt;                 Direct path to packages.lock.json or project.assets.json
+
+OPTIONS:
+  -o, --output &lt;file.json&gt;    Save results using JSON schema version 1.
+  -v, --verbose               Show all packages and detailed evidence.
+  -h, --help                  Display this help.
+
+EXAMPLES:
+  license-radar scan .
+  license-radar scan ./src/MyProject
+  license-radar scan . --output license-report.json
+  license-radar scan . --verbose
+  license-radar ./packages.lock.json --output report.json
+
+NOTE: Results are not legal clearance or automatic purchase recommendations.</value></data>
+  <data name="Renderer.Target" xml:space="preserve"><value>Target:</value></data>
+  <data name="Renderer.Project" xml:space="preserve"><value>Project:</value></data>
+  <data name="Renderer.ProjectsDiscovered" xml:space="preserve"><value>{0} projects found · Lock: {1} · Assets: {2}</value></data>
+  <data name="Renderer.AssetsNote" xml:space="preserve"><value>Note: project.assets.json reflects dependencies from the most recent restore.</value></data>
+  <data name="Renderer.Total" xml:space="preserve"><value>Total: {0}</value></data>
+  <data name="Renderer.Direct" xml:space="preserve"><value>Direct: {0}</value></data>
+  <data name="Renderer.Transitive" xml:space="preserve"><value>Transitive: {0}</value></data>
+  <data name="Renderer.ReviewCount" xml:space="preserve"><value>Review required: {0}</value></data>
+  <data name="Renderer.UnknownCount" xml:space="preserve"><value>Unknown: {0}</value></data>
+  <data name="Renderer.MetadataCount" xml:space="preserve"><value>Metadata: {0}</value></data>
+  <data name="Renderer.QueryFailures" xml:space="preserve"><value>Query failures: {0}</value></data>
+  <data name="Renderer.QueryFailuresIncluded" xml:space="preserve"><value>(included in unknown results)</value></data>
+  <data name="Renderer.ReviewTable" xml:space="preserve"><value>Packages Requiring Review ({0})</value></data>
+  <data name="Renderer.PackageVersion" xml:space="preserve"><value>Package / version</value></data>
+  <data name="Renderer.Reason" xml:space="preserve"><value>Reason</value></data>
+  <data name="Renderer.ReviewDetails" xml:space="preserve"><value>Review details</value></data>
+  <data name="Renderer.LicenseFile" xml:space="preserve"><value>License file:</value></data>
+  <data name="Renderer.Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="Renderer.FileRead" xml:space="preserve"><value>File read:</value></data>
+  <data name="Renderer.Error" xml:space="preserve"><value>Error:</value></data>
+  <data name="Renderer.Evidence" xml:space="preserve"><value>Evidence ({0}):</value></data>
+  <data name="Renderer.Link" xml:space="preserve"><value>Link:</value></data>
+  <data name="Renderer.Source" xml:space="preserve"><value>Source:</value></data>
+  <data name="Renderer.AdditionalReasons" xml:space="preserve"><value>Use --verbose to view {0} additional review reasons.</value></data>
+  <data name="Renderer.UnknownTable" xml:space="preserve"><value>Unverified Packages ({0})</value></data>
+  <data name="Renderer.MetadataTable" xml:space="preserve"><value>Packages Reviewed by Metadata ({0})</value></data>
+  <data name="Renderer.LicenseDeclaration" xml:space="preserve"><value>License declaration</value></data>
+  <data name="Renderer.NoDeclaration" xml:space="preserve"><value>No declaration</value></data>
+  <data name="Renderer.MetadataWarning" xml:space="preserve"><value>License metadata does not establish legal permission to use the package.</value></data>
+  <data name="Renderer.OtherMetadata" xml:space="preserve"><value>License metadata was found for {0} other packages; legal compliance was not verified.</value></data>
+  <data name="Renderer.NoSignals" xml:space="preserve"><value>No particular review signals were found; this is not legal clearance.</value></data>
+  <data name="Renderer.Next1" xml:space="preserve"><value>Next step: Compare the license terms with your intended use;</value></data>
+  <data name="Renderer.Next2" xml:space="preserve"><value>verify the publisher's official terms if needed. No purchase decision is made automatically.</value></data>
+  <data name="Renderer.Hint" xml:space="preserve"><value>Use [bold]--verbose[/] for details or [bold]--output report.json[/] to save JSON.</value></data>
+  <data name="Renderer.LicenseFileSignal" xml:space="preserve"><value>License file</value></data>
+  <data name="Renderer.SpecialReview" xml:space="preserve"><value>Special review</value></data>
+  <data name="Renderer.Reciprocal" xml:space="preserve"><value>Reciprocal license</value></data>
+  <data name="Renderer.Alternative" xml:space="preserve"><value>Alternative agreement</value></data>
+  <data name="Renderer.PaidCommercial" xml:space="preserve"><value>Paid commercial license wording</value></data>
+  <data name="Renderer.TextSignal" xml:space="preserve"><value>License text signal</value></data>
+  <data name="Renderer.HttpFailure" xml:space="preserve"><value>HTTP connection failure</value></data>
+  <data name="Renderer.Timeout" xml:space="preserve"><value>Timeout</value></data>
+  <data name="Renderer.InvalidMetadata" xml:space="preserve"><value>Invalid metadata</value></data>
+  <data name="Renderer.InvalidIdentity" xml:space="preserve"><value>Invalid package identity</value></data>
+  <data name="Renderer.UnverifiedQuery" xml:space="preserve"><value>License query could not be verified</value></data>
+  <data name="Eval.HttpFailure" xml:space="preserve"><value>License query failed with an HTTP error; license terms could not be evaluated.</value></data>
+  <data name="Eval.Timeout" xml:space="preserve"><value>License query timed out; license terms could not be evaluated.</value></data>
+  <data name="Eval.InvalidMetadata" xml:space="preserve"><value>NuGet metadata is invalid; license terms could not be evaluated.</value></data>
+  <data name="Eval.InvalidPackage" xml:space="preserve"><value>Package ID or version is invalid; the license was not queried.</value></data>
+  <data name="Eval.QueryFailed" xml:space="preserve"><value>License query was unsuccessful; license terms could not be evaluated.</value></data>
+  <data name="Eval.NoDeclaration" xml:space="preserve"><value>The query succeeded, but no license declaration was found.</value></data>
+  <data name="Eval.Expression" xml:space="preserve"><value>A license expression was found in metadata; compliance or free use has not been verified.</value></data>
+  <data name="Eval.File" xml:space="preserve"><value>A license file was declared; its contents and usage terms require review. This does not mean the license is paid.</value></data>
+  <data name="Eval.Missing" xml:space="preserve"><value>NuGet metadata does not contain a license declaration.</value></data>
+  <data name="Eval.Unsupported" xml:space="preserve"><value>The license declaration in NuGet metadata is not a supported type.</value></data>
+  <data name="Eval.Unknown" xml:space="preserve"><value>Unrecognized license declaration type.</value></data>
+  <data name="Review.AutoMapperVersion" xml:space="preserve"><value>Unable to evaluate the AutoMapper version.</value></data>
+  <data name="Review.Preview" xml:space="preserve"><value>The prerelease license terms must be reviewed separately.</value></data>
+  <data name="Review.AutoMapper15" xml:space="preserve"><value>AutoMapper licensing terms changed in version 15.0 and later. Review the terms of use.</value></data>
+  <data name="Review.Expression" xml:space="preserve"><value>License expression found. Terms of use have not been independently verified.</value></data>
+  <data name="Review.NotFound" xml:space="preserve"><value>No license expression was found in NuGet metadata.</value></data>
+  <data name="Review.QueryFailed" xml:space="preserve"><value>Unable to retrieve license information.</value></data>
+  <data name="Review.UnknownStatus" xml:space="preserve"><value>Unknown query status.</value></data>
+  <data name="Scan.Reciprocal" xml:space="preserve"><value>reciprocal license</value></data>
+  <data name="Scan.Alternative" xml:space="preserve"><value>alternative license agreement</value></data>
+  <data name="Scan.Paid" xml:space="preserve"><value>paid commercial license requirement</value></data>
+  <data name="Scan.And" xml:space="preserve"><value> and </value></data>
+  <data name="Scan.Reason" xml:space="preserve"><value>The license text contains a {0} signal; the license text and your intended use require further review.</value></data>
+  <data name="Locator.NotFound" xml:space="preserve"><value>The specified path does not exist: {0}</value></data>
+  <data name="Locator.ValidPath" xml:space="preserve"><value>Specify a valid directory or file path.</value></data>
+  <data name="Locator.NotRestored" xml:space="preserve"><value>Neither 'packages.lock.json' nor 'obj/project.assets.json' was found for project '{0}'. The project has not been restored.</value></data>
+  <data name="Locator.Unsupported" xml:space="preserve"><value>Unsupported file type: '{0}'. Specify a project (.csproj), solution (.sln/.slnx), packages.lock.json, or directory.</value></data>
+  <data name="Locator.UnrestoredCount" xml:space="preserve"><value>{0} .NET projects have not been restored or their dependency data is missing: {1}. Missing projects will not be silently skipped.</value></data>
+  <data name="Locator.RestoreHint" xml:space="preserve"><value>Run 'dotnet restore --use-lock-file' in the solution directory, then scan again.</value></data>
+  <data name="Locator.AllUnrestored" xml:space="preserve"><value>Found {0} .NET projects, but none contains 'packages.lock.json' or 'obj/project.assets.json'. Projects have not been restored.</value></data>
+  <data name="Locator.EmptyDirectory" xml:space="preserve"><value>No .NET project or dependency file ('packages.lock.json' / 'obj/project.assets.json') was found in '{0}'.</value></data>
+  <data name="Locator.ScanHint" xml:space="preserve"><value>Go to the directory containing the .NET project or solution and run 'license-radar scan .'.</value></data>
+  <data name="Lock.MissingDependencies" xml:space="preserve"><value>packages.lock.json is missing a valid 'dependencies' section.</value></data>
+  <data name="Lock.InvalidTarget" xml:space="preserve"><value>packages.lock.json: invalid dependencies under target '{0}'.</value></data>
+  <data name="Lock.InvalidType" xml:space="preserve"><value>{0} does not have a valid 'type'.</value></data>
+  <data name="Lock.UnsupportedType" xml:space="preserve"><value>Unsupported dependency type for {0}: '{1}'. The scan will not silently omit it.</value></data>
+  <data name="Lock.InvalidVersion" xml:space="preserve"><value>{0} does not have a valid resolved NuGet version.</value></data>
+  <data name="Assets.MissingFile" xml:space="preserve"><value>project.assets.json was not found.</value></data>
+  <data name="Assets.MissingTargets" xml:space="preserve"><value>project.assets.json is missing the 'targets' section.</value></data>
+  <data name="Nuspec.MissingMetadata" xml:space="preserve"><value>NuGet metadata section was not found.</value></data>
+  <data name="Writer.Exists" xml:space="preserve"><value>The JSON output file already exists.</value></data>
+  <data name="Writer.BadPath" xml:space="preserve"><value>Invalid output file path.</value></data>
+  <data name="Writer.NoFilename" xml:space="preserve"><value>The output path must include a file name.</value></data>
+  <data name="Archive.InvalidPath" xml:space="preserve"><value>Invalid license file path.</value></data>
+  <data name="Archive.UnreadableStream" xml:space="preserve"><value>The archive stream is not readable.</value></data>
+  <data name="Archive.InvalidEntry" xml:space="preserve"><value>The archive contains an invalid ZIP entry path.</value></data>
+  <data name="Archive.DuplicatePath" xml:space="preserve"><value>The license file path occurs more than once in the archive.</value></data>
+  <data name="Archive.FileNotFound" xml:space="preserve"><value>The declared license file was not found in the archive.</value></data>
+  <data name="Archive.InvalidZip" xml:space="preserve"><value>Nupkg content is not a valid ZIP archive.</value></data>
+  <data name="Archive.IoFailure" xml:space="preserve"><value>An I/O error occurred while reading the ZIP archive.</value></data>
+  <data name="Archive.InvalidLength" xml:space="preserve"><value>Invalid license entry size metadata.</value></data>
+  <data name="Archive.TooLarge" xml:space="preserve"><value>The license file exceeds the 1 MiB limit.</value></data>
+  <data name="Archive.ExceededReading" xml:space="preserve"><value>The license file exceeds the 1 MiB limit while reading.</value></data>
+  <data name="Archive.LengthMismatch" xml:space="preserve"><value>The license entry size does not match the metadata.</value></data>
+  <data name="Archive.InvalidUtf8" xml:space="preserve"><value>The license file is not valid UTF-8 text.</value></data>
+  <data name="NuGet.InvalidIdentity" xml:space="preserve"><value>Invalid NuGet package ID or version.</value></data>
+  <data name="NuGet.InvalidArchiveIdentity" xml:space="preserve"><value>Invalid package ID or version; the archive was not requested.</value></data>
+  <data name="NuGet.UnexpectedUri" xml:space="preserve"><value>The NuGet response did not come from the expected Flat Container endpoint.</value></data>
+  <data name="NuGet.HttpFailure" xml:space="preserve"><value>The archive request failed with HTTP {0} ({1}).</value></data>
+  <data name="NuGet.TooLarge" xml:space="preserve"><value>The Nupkg archive exceeds the 50 MiB limit.</value></data>
+  <data name="NuGet.LengthMismatch" xml:space="preserve"><value>The downloaded archive size does not match Content-Length.</value></data>
+  <data name="NuGet.Timeout" xml:space="preserve"><value>The Nupkg archive download timed out.</value></data>
+  <data name="NuGet.DownloadFailure" xml:space="preserve"><value>Unable to download the Nupkg archive: {0}</value></data>
+  <data name="NuGet.StreamFailure" xml:space="preserve"><value>Unable to read the Nupkg stream: {0}</value></data>
+  <data name="Cli.HelpTip" xml:space="preserve"><value>For help: license-radar --help</value></data>
+  <data name="Change.Duplicate" xml:space="preserve"><value>Unable to match multiple records for the same package and framework.</value></data>
+  <data name="Change.Version" xml:space="preserve"><value>The package version changed; this alone does not mean the license declaration changed.</value></data>
+  <data name="Change.InfoAdded" xml:space="preserve"><value>A license declaration was found in the new scan.</value></data>
+  <data name="Change.InfoRemoved" xml:space="preserve"><value>A license declaration existed previously, but the new scan reports Missing.</value></data>
+  <data name="Change.Type" xml:space="preserve"><value>License declaration type changed.</value></data>
+  <data name="Change.Value" xml:space="preserve"><value>License declaration value changed.</value></data>
+  <data name="Change.Added" xml:space="preserve"><value>The dependency was found in the new scan.</value></data>
+  <data name="Change.Removed" xml:space="preserve"><value>The dependency was not found in the new scan.</value></data>
+  <data name="Change.Unavailable" xml:space="preserve"><value>The license declaration query result could not be compared.</value></data>
+  <data name="Change.PreviousStatus" xml:space="preserve"><value>Previous query status: {0}.</value></data>
+  <data name="Change.CurrentStatus" xml:space="preserve"><value>Current query status: {0}.</value></data>
+  <data name="Change.PreviousMissing" xml:space="preserve"><value>No license declaration evidence in the previous scan.</value></data>
+  <data name="Change.CurrentMissing" xml:space="preserve"><value>No license declaration evidence in the current scan.</value></data>
+  <data name="Change.NotComparable" xml:space="preserve"><value>The license declaration change could not be compared.</value></data>
+</root>

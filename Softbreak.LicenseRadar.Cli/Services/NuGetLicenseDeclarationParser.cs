@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 ﻿
 using System.Xml.Linq;
 using Softbreak.LicenseRadar.Cli.Models;
@@ -20,7 +21,7 @@ public sealed class NuGetLicenseDeclarationParser
         if (metadata is null)
         {
             throw new FormatException(
-                "NuGet metadata bölümü bulunamadı.");
+                L.Get("Nuspec.MissingMetadata"));
         }
 
         // Lisans bildirimini bul

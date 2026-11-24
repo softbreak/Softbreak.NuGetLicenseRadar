@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using System.IO.Compression;
 using System.Text;
 using Softbreak.LicenseRadar.Cli.Models;
@@ -25,7 +26,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidPath,
                 null,
-                "Lisans dosyası yolu geçersiz."
+                L.Get("Archive.InvalidPath")
             );
         }
 
@@ -34,7 +35,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidArchive,
                 null,
-                "Arşiv akışı okunabilir değil."
+                L.Get("Archive.UnreadableStream")
             );
         }
 
@@ -58,7 +59,7 @@ public sealed class NuGetLicenseFileReader
                     return new LicenseFileReadResult(
                         LicenseFileReadStatus.InvalidArchive,
                         null,
-                        "Arşiv geçersiz bir ZIP giriş yolu içeriyor."
+                        L.Get("Archive.InvalidEntry")
                     );
                 }
 
@@ -73,7 +74,7 @@ public sealed class NuGetLicenseFileReader
                     return new LicenseFileReadResult(
                         LicenseFileReadStatus.InvalidArchive,
                         null,
-                        "Arşivde aynı lisans yolu birden fazla kez bulunuyor."
+                        L.Get("Archive.DuplicatePath")
                     );
                 }
 
@@ -85,7 +86,7 @@ public sealed class NuGetLicenseFileReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.NotFound,
                     null,
-                    "Bildirilen lisans dosyası arşivde bulunamadı."
+                    L.Get("Archive.FileNotFound")
                 );
             }
 
@@ -96,7 +97,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidArchive,
                 null,
-                "Nupkg içeriği geçerli bir ZIP arşivi değil."
+                L.Get("Archive.InvalidZip")
             );
         }
         catch (IOException)
@@ -104,7 +105,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidArchive,
                 null,
-                "ZIP arşivi okunurken giriş/çıkış hatası oluştu."
+                L.Get("Archive.IoFailure")
             );
         }
     }
@@ -117,7 +118,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidArchive,
                 null,
-                "Lisans girdisinin boyut metadata'sı geçersiz."
+                L.Get("Archive.InvalidLength")
             );
         }
 
@@ -126,7 +127,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.TooLarge,
                 null,
-                "Lisans dosyası 1 MiB sınırını aşıyor."
+                L.Get("Archive.TooLarge")
             );
         }
 
@@ -156,7 +157,7 @@ public sealed class NuGetLicenseFileReader
                 return new LicenseFileReadResult(
                     LicenseFileReadStatus.TooLarge,
                     null,
-                    "Lisans dosyası okuma sırasında 1 MiB sınırını aşıyor."
+                    L.Get("Archive.ExceededReading")
                 );
             }
 
@@ -168,7 +169,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidArchive,
                 null,
-                "Lisans girdisinin okunan boyutu metadata ile uyuşmuyor."
+                L.Get("Archive.LengthMismatch")
             );
         }
 
@@ -194,7 +195,7 @@ public sealed class NuGetLicenseFileReader
             return new LicenseFileReadResult(
                 LicenseFileReadStatus.InvalidText,
                 null,
-                "Lisans dosyası geçerli UTF-8 metni değil."
+                L.Get("Archive.InvalidUtf8")
             );
         }
     }

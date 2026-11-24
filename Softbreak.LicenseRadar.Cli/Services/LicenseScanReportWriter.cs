@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -71,15 +72,15 @@ public sealed class LicenseScanReportWriter
         string fullPath = Path.GetFullPath(outputPath);
         if (File.Exists(fullPath))
         {
-            throw new IOException("JSON çıktı dosyası zaten mevcut.");
+            throw new IOException(L.Get("Writer.Exists"));
         }
 
         string directory = Path.GetDirectoryName(fullPath)
-            ?? throw new ArgumentException("Çıktı dosyası yolu geçersiz.", nameof(outputPath));
+            ?? throw new ArgumentException(L.Get("Writer.BadPath"), nameof(outputPath));
         string fileName = Path.GetFileName(fullPath);
         if (string.IsNullOrWhiteSpace(fileName))
         {
-            throw new ArgumentException("Çıktı yolu bir dosya adı içermeli.", nameof(outputPath));
+            throw new ArgumentException(L.Get("Writer.NoFilename"), nameof(outputPath));
         }
 
         byte[] reportBytes = Encoding.UTF8.GetBytes(

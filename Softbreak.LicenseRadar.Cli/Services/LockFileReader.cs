@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using System.Text.Json;
 using Softbreak.LicenseRadar.Cli.Models;
 
@@ -13,7 +14,7 @@ public sealed class LockFileReader
         if (!document.RootElement.TryGetProperty("dependencies", out JsonElement frameworks) ||
             frameworks.ValueKind != JsonValueKind.Object)
         {
-            throw new FormatException("packages.lock.json içinde geçerli bir 'dependencies' bölümü bulunamadı.");
+            throw new FormatException(L.Get("Lock.MissingDependencies"));
         }
 
         var packages = new List<PackageDependency>();
@@ -23,7 +24,7 @@ public sealed class LockFileReader
             if (framework.Value.ValueKind != JsonValueKind.Object)
             {
                 throw new FormatException(
-                    $"packages.lock.json: '{framework.Name}' hedefindeki bağımlılıklar geçersiz.");
+                    L.Format("Lock.InvalidTarget", framework.Name));
             }
 
             foreach (JsonProperty package in framework.Value.EnumerateObject())
@@ -36,7 +37,7 @@ public sealed class LockFileReader
                     typeElement.ValueKind != JsonValueKind.String ||
                     string.IsNullOrWhiteSpace(typeElement.GetString()))
                 {
-                    throw new FormatException($"{context} için geçerli bir 'type' bulunamadı.");
+                    throw new FormatException(L.Format("Lock.InvalidType", context));
                 }
 
                 string type = typeElement.GetString()!;
@@ -62,7 +63,7 @@ public sealed class LockFileReader
                 else
                 {
                     throw new FormatException(
-                        $"{context} için desteklenmeyen bağımlılık türü: '{type}'. Tarama eksik gösterilmeyecek.");
+                        L.Format("Lock.UnsupportedType", context, type));
                 }
 
                 if (!metadata.TryGetProperty("resolved", out JsonElement versionElement) ||
@@ -70,7 +71,7 @@ public sealed class LockFileReader
                     string.IsNullOrWhiteSpace(versionElement.GetString()))
                 {
                     throw new FormatException(
-                        $"{context} için geçerli bir 'resolved' NuGet sürümü bulunamadı.");
+                        L.Format("Lock.InvalidVersion", context));
                 }
 
                 packages.Add(new PackageDependency(

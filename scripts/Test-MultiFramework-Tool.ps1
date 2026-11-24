@@ -20,7 +20,12 @@ try {
         if (-not @($archive.Entries | Where-Object { $_.FullName -eq $settings }).Count) {
             throw "TOOL_SETTINGS_MISSING: $settings"
         }
+        $turkishSatellite = "tools/$framework/any/tr/Softbreak.LicenseRadar.Cli.resources.dll"
+        if (-not @($archive.Entries | Where-Object { $_.FullName -eq $turkishSatellite }).Count) {
+            throw "TURKISH_RESOURCE_MISSING: $turkishSatellite"
+        }
         Write-Host "PACKAGE SETTINGS: PASS ($framework)"
+        Write-Host "PACKAGE TURKISH RESOURCES: PASS ($framework)"
     }
 }
 finally { $archive.Dispose() }
@@ -52,7 +57,7 @@ try {
         $lockJson = '{"version":2,"dependencies":{"' + $framework + '":{"Sample.Project":{"type":"Project"}}}}'
         [IO.File]::WriteAllText($lock, $lockJson, [Text.UTF8Encoding]::new($false))
         $output = & $exe scan $lock
-        if ($LASTEXITCODE -ne 0 -or -not ($output -join [Environment]::NewLine).Contains('Toplam: 0')) {
+        if ($LASTEXITCODE -ne 0 -or -not (($output -join [Environment]::NewLine) -match '(Total|Toplam): 0\b')) {
             throw "TOOL_SCAN_FAILED: $framework"
         }
         Write-Host "FRAMEWORK_SMOKE: PASS ($framework)"

@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Softbreak.LicenseRadar.Cli.Models;
 
 namespace Softbreak.LicenseRadar.Cli.Services;
@@ -60,8 +61,7 @@ public sealed class LicenseChangeDetector
 
             if (oldRecords.Count != 1 || newRecords.Count != 1)
             {
-                const string reason =
-                    "Aynı paket ve framework için birden fazla kayıt bulunduğundan eşleştirme yapılamadı.";
+                string reason = L.Get("Change.Duplicate");
 
                 foreach (PackageLicenseDeclarationResult record in oldRecords)
                 {
@@ -138,7 +138,7 @@ public sealed class LicenseChangeDetector
                 previous,
                 current,
                 LicenseChangeType.PackageVersionChanged,
-                "Paket sürümü değişti; bu tek başına lisans bildiriminin değiştiği anlamına gelmez."
+                L.Get("Change.Version")
             ));
         }
 
@@ -166,7 +166,7 @@ public sealed class LicenseChangeDetector
                 previous,
                 current,
                 LicenseChangeType.LicenseInformationAdded,
-                "Yeni taramada lisans bildirimi bulundu."
+                L.Get("Change.InfoAdded")
             ));
 
             return;
@@ -179,7 +179,7 @@ public sealed class LicenseChangeDetector
                 previous,
                 current,
                 LicenseChangeType.LicenseInformationRemoved,
-                "Önceki lisans bildirimi varken yeni taramada Missing bildirimi bulundu."
+                L.Get("Change.InfoRemoved")
             ));
 
             return;
@@ -191,7 +191,7 @@ public sealed class LicenseChangeDetector
                 previous,
                 current,
                 LicenseChangeType.DeclarationTypeChanged,
-                "Lisans bildirimi türü değişti."
+                L.Get("Change.Type")
             ));
         }
 
@@ -204,7 +204,7 @@ public sealed class LicenseChangeDetector
                 previous,
                 current,
                 LicenseChangeType.DeclarationValueChanged,
-                "Lisans bildirimi değeri değişti."
+                L.Get("Change.Value")
             ));
         }
     }
@@ -214,13 +214,13 @@ public sealed class LicenseChangeDetector
         bool wasAdded)
     {
         string presence = wasAdded
-            ? "Bağımlılık yeni taramada bulundu."
-            : "Bağımlılık yeni taramada bulunamadı.";
+            ? L.Get("Change.Added")
+            : L.Get("Change.Removed");
 
         return record.Status == LicenseDeclarationQueryStatus.Success &&
             record.Declaration is not null
                 ? presence
-                : $"{presence} Lisans bildirimi sorgu sonucu karşılaştırılamadı.";
+                : $"{presence} {L.Get("Change.Unavailable")}";
     }
 
     private static string GetNotComparableReason(
@@ -231,23 +231,23 @@ public sealed class LicenseChangeDetector
 
         if (previous.Status != LicenseDeclarationQueryStatus.Success)
         {
-            reasons.Add($"Önceki sorgu durumu: {previous.Status}.");
+            reasons.Add(L.Format("Change.PreviousStatus", previous.Status));
         }
         else if (previous.Declaration is null)
         {
-            reasons.Add("Önceki taramada lisans beyanı kanıtı yok.");
+            reasons.Add(L.Get("Change.PreviousMissing"));
         }
 
         if (current.Status != LicenseDeclarationQueryStatus.Success)
         {
-            reasons.Add($"Yeni sorgu durumu: {current.Status}.");
+            reasons.Add(L.Format("Change.CurrentStatus", current.Status));
         }
         else if (current.Declaration is null)
         {
-            reasons.Add("Yeni taramada lisans beyanı kanıtı yok.");
+            reasons.Add(L.Get("Change.CurrentMissing"));
         }
 
-        reasons.Add("Lisans bildirimi değişikliği karşılaştırılamadı.");
+        reasons.Add(L.Get("Change.NotComparable"));
         return string.Join(" ", reasons);
     }
 

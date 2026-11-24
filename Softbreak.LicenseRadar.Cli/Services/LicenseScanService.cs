@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Softbreak.LicenseRadar.Cli.Models;
 
 namespace Softbreak.LicenseRadar.Cli.Services;
@@ -89,17 +90,17 @@ public sealed class LicenseScanService
             string desc = signal.Kind switch
             {
                 LicenseTextSignalKind.ReciprocalLicenseMention =>
-                    "karşılıklı lisans (reciprocal)",
+                    L.Get("Scan.Reciprocal"),
                 LicenseTextSignalKind.AlternativeLicenseAgreement =>
-                    "alternatif lisans sözleşmesi",
+                    L.Get("Scan.Alternative"),
                 LicenseTextSignalKind.PaidCommercialLicenseMention =>
-                    "ücretli ticari lisans gereksinimi",
+                    L.Get("Scan.Paid"),
                 _ => signal.Kind.ToString()
             };
             descriptions.Add(desc);
         }
 
-        string joined = string.Join(" ve ", descriptions);
-        return $"Lisans metninde {joined} sinyali tespit edildi; kullanım koşulları ve lisans metni ayrıca incelenmeli.";
+        string joined = string.Join(L.Get("Scan.And"), descriptions);
+        return L.Format("Scan.Reason", joined);
     }
 }
