@@ -33,7 +33,11 @@
 
   <ItemGroup>
     <PackageReference Include="NuGet.Versioning" Version="6.14.3" />
-    <PackageReference Include="Spectre.Console" Version="0.57.2" />
+    <!-- v0.57.x depends on Microsoft.Bcl.TimeProvider 10.x for net6/net7,
+         which is unsupported on those runtimes. Use the proven netstandard2.0
+         dependency branch for the legacy targets. -->
+    <PackageReference Include="Spectre.Console" Version="0.54.0" Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'" />
+    <PackageReference Include="Spectre.Console" Version="0.57.2" Condition="'$(TargetFramework)' != 'net6.0' And '$(TargetFramework)' != 'net7.0'" />
   </ItemGroup>
 
 </Project>
