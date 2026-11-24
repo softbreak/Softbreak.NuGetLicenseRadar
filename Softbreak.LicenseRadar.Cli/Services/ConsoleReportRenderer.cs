@@ -85,7 +85,7 @@ public sealed class ConsoleReportRenderer
             _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.NoSignals"))}[/]");
         }
 
-        if (!_console.Profile.Capabilities.Links)
+        if (!SupportsLinks)
             RenderReferences(isVerbose ? reviewResults : reviews.Concat(unknown).ToList());
         RenderNextSteps(reviews.Count, unknown.Count, isVerbose);
     }
@@ -148,6 +148,11 @@ public sealed class ConsoleReportRenderer
 
     private void RenderReviewTable(IReadOnlyList<LicenseDeclarationReviewResult> items)
     {
+        if (_console.Profile.Width < 80)
+        {
+            RenderCompactList(L.Format("Renderer.ReviewTable", items.Count), items, FormatSignalSummary);
+            return;
+        }
         var table = new Table
         {
             Border = TableBorder.Simple,
@@ -214,7 +219,7 @@ public sealed class ConsoleReportRenderer
                 .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
             if (IsWebLink(link))
                 _console.MarkupLine($"  [grey]{L.Get("Renderer.Source")}[/] {Markup.Escape(link!)}");
-            if (_console.Profile.Capabilities.Links)
+            if (SupportsLinks)
             {
                 var (url, license) = PackageReference(item);
                 _console.MarkupLine($"  [cyan link={url}]{Markup.Escape(L.Get(license ? "Renderer.LicensePage" : "Renderer.PackagePage"))}[/]");
@@ -230,6 +235,11 @@ public sealed class ConsoleReportRenderer
 
     private void RenderUnknownTable(IReadOnlyList<LicenseDeclarationReviewResult> items)
     {
+        if (_console.Profile.Width < 80)
+        {
+            RenderCompactList(L.Format("Renderer.UnknownTable", items.Count), items, item => Markup.Escape(UnknownReason(item)));
+            return;
+        }
         var table = new Table
         {
             Border = TableBorder.Simple,
@@ -242,9 +252,7 @@ public sealed class ConsoleReportRenderer
         foreach (var item in items)
         {
             var pkg = item.QueryResult.Package;
-            string reason = item.QueryResult.Status == LicenseDeclarationQueryStatus.Success
-                ? item.Reason
-                : $"{QueryFailureLabel(item.QueryResult.Status)}: {item.Reason}";
+            string reason = UnknownReason(item);
             table.AddRow(PackageLabel(item), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(reason));
         }
 
@@ -254,6 +262,12 @@ public sealed class ConsoleReportRenderer
 
     private void RenderMetadataTable(IReadOnlyList<LicenseDeclarationReviewResult> items)
     {
+        if (_console.Profile.Width < 80)
+        {
+            RenderCompactList(L.Format("Renderer.MetadataTable", items.Count), items, item => Markup.Escape(DeclarationLabel(item)));
+            _console.MarkupLine($"[grey]{L.Get("Renderer.MetadataWarning")}[/]");
+            return;
+        }
         var table = new Table
         {
             Border = TableBorder.Simple,
@@ -265,13 +279,36 @@ public sealed class ConsoleReportRenderer
         foreach (var item in items)
         {
             var pkg = item.QueryResult.Package;
-            var decl = item.QueryResult.Declaration;
-            string declaration = decl is null ? L.Get("Renderer.NoDeclaration") : $"{decl.Kind}: {decl.Value}";
+            string declaration = DeclarationLabel(item);
             table.AddRow(PackageLabel(item), Markup.Escape(pkg.Framework ?? "-"), Markup.Escape(declaration));
         }
         _console.Write(table);
         _console.WriteLine();
         _console.MarkupLine($"[grey]{L.Get("Renderer.MetadataWarning")}[/]");
+    }
+
+    private void RenderCompactList(string title, IReadOnlyList<LicenseDeclarationReviewResult> items,
+        Func<LicenseDeclarationReviewResult, string> description)
+    {
+        _console.MarkupLine($"[bold]{Markup.Escape(title)}[/]");
+        foreach (var item in items)
+        {
+            var pkg = item.QueryResult.Package;
+            _console.MarkupLine($"[bold]{PackageLabel(item)}[/]");
+            _console.MarkupLine($"  [grey]{Markup.Escape(pkg.Framework ?? "-")}[/] · {description(item)}");
+        }
+        _console.WriteLine();
+    }
+
+    private static string UnknownReason(LicenseDeclarationReviewResult item) =>
+        item.QueryResult.Status == LicenseDeclarationQueryStatus.Success
+            ? item.Reason
+            : $"{QueryFailureLabel(item.QueryResult.Status)}: {item.Reason}";
+
+    private static string DeclarationLabel(LicenseDeclarationReviewResult item)
+    {
+        var decl = item.QueryResult.Declaration;
+        return decl is null ? L.Get("Renderer.NoDeclaration") : $"{decl.Kind}: {decl.Value}";
     }
 
     private void RenderNextSteps(int reviewCount, int unknownCount, bool isVerbose)
@@ -289,6 +326,8 @@ public sealed class ConsoleReportRenderer
         }
         _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.Disclaimer"))}[/]");
     }
+
+    private bool SupportsLinks => _console.Profile.Capabilities.Ansi && _console.Profile.Capabilities.Links;
 
     private static bool IsWebLink(string? url) =>
         Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
@@ -310,7 +349,7 @@ public sealed class ConsoleReportRenderer
         var (url, license) = PackageReference(item);
         // Only use hyperlink markup when the console explicitly supports it.
         // Plain output lists copyable URLs separately to avoid wrapping table columns.
-        return _console.Profile.Capabilities.Links
+        return SupportsLinks
             ? $"[link={url}]{label}[/]"
             : label;
     }

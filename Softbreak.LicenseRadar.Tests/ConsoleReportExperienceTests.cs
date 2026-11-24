@@ -111,6 +111,43 @@ public class ConsoleReportExperienceTests
         Assert.Contains("3 ek inceleme gerekçesi", text);
     }
 
+    [Theory]
+    [InlineData(60)]
+    [InlineData(120)]
+    public void Report_PlainTerminal_PreservesFrameworksAndVersionedReferences(int width)
+    {
+        using var output = new StringWriter();
+        var console = AnsiConsole.Create(new AnsiConsoleSettings
+        {
+            Out = new AnsiConsoleOutput(output),
+            ColorSystem = ColorSystemSupport.NoColors,
+            Ansi = AnsiSupport.No,
+            Enrichment = new ProfileEnrichment { UseDefaultEnrichers = false }
+        });
+        console.Profile.Width = width;
+        var packages = new[]
+        {
+            new PackageDependency("Vendor.Pkg", "1.2.3", "Direct", "net8.0"),
+            new PackageDependency("Vendor.Pkg", "1.2.3", "Direct", "net10.0"),
+            new PackageDependency("Unknown.Pkg", "2.0.0", "Transitive", "net8.0")
+        };
+        var results = new[]
+        {
+            Review(packages[0], LicenseReviewStatus.ReviewRequired, "Lisans dosyası", LicenseDeclarationKind.File, "LICENSE"),
+            Review(packages[1], LicenseReviewStatus.ReviewRequired, "Lisans dosyası", LicenseDeclarationKind.File, "LICENSE"),
+            Review(packages[2], LicenseReviewStatus.Unknown, "Bildirim yok")
+        };
+        new ConsoleReportRenderer(console).Render("App.slnx", [], packages, results, false, true);
+        string text = output.ToString();
+        Assert.Contains("App.slnx", text);
+        Assert.Contains("net8.0", text);
+        Assert.Contains("net10.0", text);
+        Assert.Contains("https://www.nuget.org/packages/Vendor.Pkg/1.2.3/License", text);
+        Assert.Contains("https://www.nuget.org/packages/Unknown.Pkg/2.0.0", text);
+        Assert.DoesNotContain("https://www.nuget.org/packages/Unknown.Pkg/2.0.0/License", text);
+        Assert.DoesNotContain("\u001b", text);
+    }
+
     private static ConsoleReportRenderer CreateRenderer(StringWriter output)
     {
         var console = AnsiConsole.Create(new AnsiConsoleSettings
