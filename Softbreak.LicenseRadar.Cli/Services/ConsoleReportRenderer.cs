@@ -1,3 +1,4 @@
+using L = Softbreak.LicenseRadar.Cli.Localization.UiText;
 using Spectre.Console;
 using Softbreak.LicenseRadar.Cli.Models;
 
@@ -72,7 +73,7 @@ public sealed class ConsoleReportRenderer
         // MetadataOnly, Unknown ve ReviewRequired birbirinden kesin biçimde ayrılır.
         if (!isVerbose && metadata.Count > 0)
         {
-            _console.MarkupLine($"[grey]Diğer {metadata.Count} pakette lisans metadata'sı bulundu; hukuki uygunluk doğrulanmadı.[/]");
+            _console.MarkupLine($"[grey]{Markup.Escape(L.Format("Renderer.OtherMetadata", metadata.Count))}[/]");
         }
         else if (isVerbose && metadata.Count > 0)
         {
@@ -81,7 +82,7 @@ public sealed class ConsoleReportRenderer
 
         if (reviews.Count == 0 && unknown.Count == 0)
         {
-            _console.MarkupLine("[grey]Özel bir inceleme sinyali bulunmadı; bu sonuç hukuki onay anlamına gelmez.[/]");
+            _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.NoSignals"))}[/]");
         }
 
         RenderNextSteps(reviews.Count, unknown.Count, isVerbose);
@@ -91,18 +92,18 @@ public sealed class ConsoleReportRenderer
     {
         _console.WriteLine();
         _console.Write(new Rule("[bold]Softbreak NuGet License Radar[/]") { Justification = Justify.Left });
-        _console.MarkupLine($"[grey]Hedef:[/] {Markup.Escape(targetPath)}");
+        _console.MarkupLine($"[grey]{L.Get("Renderer.Target")}[/] {Markup.Escape(targetPath)}");
 
         if (projects.Count == 1)
         {
             var p = projects[0];
-            _console.MarkupLine($"[grey]Proje:[/] {Markup.Escape(p.ProjectName)} [grey]({SourceLabel(p.SourceKind)})[/]");
+            _console.MarkupLine($"[grey]{L.Get("Renderer.Project")}[/] {Markup.Escape(p.ProjectName)} [grey]({SourceLabel(p.SourceKind)})[/]");
         }
         else if (projects.Count > 1)
         {
             int lockCount = projects.Count(p => p.SourceKind == DependencySourceKind.LockFile);
             int assetsCount = projects.Count - lockCount;
-            _console.MarkupLine($"[grey]{projects.Count} proje keşfedildi · Lock: {lockCount} · Assets: {assetsCount}[/]");
+            _console.MarkupLine($"[grey]{Markup.Escape(L.Format("Renderer.ProjectsDiscovered", projects.Count, lockCount, assetsCount))}[/]");
             if (isVerbose)
             {
                 foreach (var p in projects)
@@ -114,7 +115,7 @@ public sealed class ConsoleReportRenderer
 
         if (projects.Any(p => p.SourceKind == DependencySourceKind.ProjectAssets))
         {
-            _console.MarkupLine("[grey]Not: project.assets.json son restore sırasında çözümlenen bağımlılıkları yansıtır.[/]");
+            _console.MarkupLine($"[grey]{Markup.Escape(L.Get("Renderer.AssetsNote"))}[/]");
         }
     }
 
@@ -130,11 +131,11 @@ public sealed class ConsoleReportRenderer
         int failures = results.Count(r => r.QueryResult.Status != LicenseDeclarationQueryStatus.Success);
 
         _console.WriteLine();
-        _console.MarkupLine($"[bold]Toplam: {packages.Count}[/]  [grey]Doğrudan: {direct} · Dolaylı: {transitive}[/]");
-        _console.MarkupLine($"[yellow]İnceleme gerekli: {reviews}[/]  [bold]Doğrulanamadı: {unknown}[/]  [grey]Metadata: {metadata}[/]");
+        _console.MarkupLine($"[bold]{L.Format("Renderer.Total", packages.Count)}[/]  [grey]{L.Format("Renderer.Direct", direct)} · {L.Format("Renderer.Transitive", transitive)}[/]");
+        _console.MarkupLine($"[yellow]{L.Format("Renderer.ReviewCount", reviews)}[/]  [bold]{L.Format("Renderer.UnknownCount", unknown)}[/]  [grey]{L.Format("Renderer.MetadataCount", metadata)}[/]");
         _console.MarkupLine(failures > 0
-            ? $"[red]Sorgu hatası: {failures}[/] [grey](doğrulanamayan sonuçlara dahildir)[/]"
-            : "[grey]Sorgu hatası: 0[/]");
+            ? $"[red]{L.Format("Renderer.QueryFailures", failures)}[/] [grey]{L.Get("Renderer.QueryFailuresIncluded")}[/]"
+            : $"[grey]{L.Format("Renderer.QueryFailures", 0)}[/]");
         _console.WriteLine();
     }
 
@@ -143,10 +144,10 @@ public sealed class ConsoleReportRenderer
         var table = new Table
         {
             Border = TableBorder.Simple,
-            Title = new TableTitle($"[bold yellow]İnceleme Gerektiren Paketler ({items.Count})[/]")
+            Title = new TableTitle($"[bold yellow]{L.Format("Renderer.ReviewTable", items.Count)}[/]")
         };
-        table.AddColumn("[bold]Paket / sürüm[/]");
-        table.AddColumn("[bold]Neden[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.Reason")}[/]");
 
         foreach (var item in items)
         {
@@ -162,27 +163,27 @@ public sealed class ConsoleReportRenderer
 
     private void RenderReviewDetails(IReadOnlyList<LicenseDeclarationReviewResult> items, bool isVerbose)
     {
-        _console.MarkupLine("[bold]İnceleme gerekçeleri[/]");
+        _console.MarkupLine($"[bold]{L.Get("Renderer.ReviewDetails")}[/]");
         int limit = isVerbose ? items.Count : Math.Min(items.Count, DefaultDetailsLimit);
 
         foreach (var item in items.Take(limit))
         {
             var pkg = item.QueryResult.Package;
             _console.MarkupLine($"[yellow]•[/] [bold]{Markup.Escape(pkg.Name)} {Markup.Escape(pkg.Version)}[/]");
-            _console.MarkupLine($"  [grey]Neden:[/] {Markup.Escape(item.Reason)}");
+            _console.MarkupLine($"  [grey]{L.Get("Renderer.Reason")}:[/] {Markup.Escape(item.Reason)}");
 
             var decl = item.QueryResult.Declaration;
             if (decl?.Kind == LicenseDeclarationKind.File)
             {
-                _console.MarkupLine($"  [grey]Lisans dosyası:[/] {Markup.Escape(decl.Value ?? "Bilinmiyor")}");
+                _console.MarkupLine($"  [grey]{L.Get("Renderer.LicenseFile")}[/] {Markup.Escape(decl.Value ?? L.Get("Renderer.Unknown"))}");
             }
 
             if (item.LicenseFileResult is { Status: not LicenseFileReadStatus.Found } fileResult)
             {
-                _console.MarkupLine($"  [grey]Dosya okuma:[/] {Markup.Escape(fileResult.Status.ToString())}");
+                _console.MarkupLine($"  [grey]{L.Get("Renderer.FileRead")}[/] {Markup.Escape(fileResult.Status.ToString())}");
                 if (isVerbose && !string.IsNullOrWhiteSpace(fileResult.FailureReason))
                 {
-                    _console.MarkupLine($"  [grey]Hata:[/] {Markup.Escape(fileResult.FailureReason)}");
+                    _console.MarkupLine($"  [grey]{L.Get("Renderer.Error")}[/] {Markup.Escape(fileResult.FailureReason)}");
                 }
             }
 
@@ -192,10 +193,10 @@ public sealed class ConsoleReportRenderer
                 string evidence = isVerbose
                     ? signal.EvidenceText
                     : Shorten(signal.EvidenceText, DefaultEvidenceLength);
-                _console.MarkupLine($"  [grey]Kanıt ({SignalLabel(signal.Kind)}):[/] \"{Markup.Escape(evidence)}\"");
+                _console.MarkupLine($"  [grey]{L.Format("Renderer.Evidence", SignalLabel(signal.Kind))}[/] \"{Markup.Escape(evidence)}\"");
                 if (isVerbose && !string.IsNullOrWhiteSpace(signal.EvidenceUrl))
                 {
-                    _console.MarkupLine($"  [grey]Bağlantı:[/] {Markup.Escape(signal.EvidenceUrl)}");
+                    _console.MarkupLine($"  [grey]{L.Get("Renderer.Link")}[/] {Markup.Escape(signal.EvidenceUrl)}");
                 }
             }
 
@@ -205,14 +206,14 @@ public sealed class ConsoleReportRenderer
                 .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
             if (!string.IsNullOrWhiteSpace(link))
             {
-                _console.MarkupLine($"  [grey]Kaynak:[/] {Markup.Escape(link)}");
+                _console.MarkupLine($"  [grey]{L.Get("Renderer.Source")}[/] {Markup.Escape(link)}");
             }
             _console.WriteLine();
         }
 
         if (limit < items.Count)
         {
-            _console.MarkupLine($"[grey]{items.Count - limit} ek inceleme gerekçesi için --verbose kullanın.[/]");
+            _console.MarkupLine($"[grey]{L.Format("Renderer.AdditionalReasons", items.Count - limit)}[/]");
         }
     }
 
@@ -221,10 +222,10 @@ public sealed class ConsoleReportRenderer
         var table = new Table
         {
             Border = TableBorder.Simple,
-            Title = new TableTitle($"[bold]Doğrulanamayan Paketler ({items.Count})[/]")
+            Title = new TableTitle($"[bold]{L.Format("Renderer.UnknownTable", items.Count)}[/]")
         };
-        table.AddColumn("[bold]Paket / sürüm[/]");
-        table.AddColumn("[bold]Neden[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.Reason")}[/]");
 
         foreach (var item in items)
         {
@@ -244,32 +245,32 @@ public sealed class ConsoleReportRenderer
         var table = new Table
         {
             Border = TableBorder.Simple,
-            Title = new TableTitle($"[bold]Metadata Seviyesinde İncelenen Paketler ({items.Count})[/]")
+            Title = new TableTitle($"[bold]{L.Format("Renderer.MetadataTable", items.Count)}[/]")
         };
-        table.AddColumn("[bold]Paket / sürüm[/]");
-        table.AddColumn("[bold]Lisans bildirimi[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.PackageVersion")}[/]");
+        table.AddColumn($"[bold]{L.Get("Renderer.LicenseDeclaration")}[/]");
         foreach (var item in items)
         {
             var pkg = item.QueryResult.Package;
             var decl = item.QueryResult.Declaration;
-            string declaration = decl is null ? "Bildirim yok" : $"{decl.Kind}: {decl.Value}";
+            string declaration = decl is null ? L.Get("Renderer.NoDeclaration") : $"{decl.Kind}: {decl.Value}";
             table.AddRow(Markup.Escape($"{pkg.Name} {pkg.Version}"), Markup.Escape(declaration));
         }
         _console.Write(table);
         _console.WriteLine();
-        _console.MarkupLine("[grey]Metadata bulunması, kullanım için hukuki onay anlamına gelmez.[/]");
+        _console.MarkupLine($"[grey]{L.Get("Renderer.MetadataWarning")}[/]");
     }
 
     private void RenderNextSteps(int reviewCount, int unknownCount, bool isVerbose)
     {
         if (reviewCount > 0 || unknownCount > 0)
         {
-            _console.MarkupLine("[grey]Sonraki adım: İlgili lisans metnini ve kullanım koşullarınızı karşılaştırın;[/]");
-            _console.MarkupLine("[grey]gerekirse üreticinin resmî koşullarını doğrulayın. Satın alma kararı otomatik verilmez.[/]");
+            _console.MarkupLine($"[grey]{L.Get("Renderer.Next1")}[/]");
+            _console.MarkupLine($"[grey]{L.Get("Renderer.Next2")}[/]");
         }
         if (!isVerbose)
         {
-            _console.MarkupLine("[grey]Ayrıntılar için komutunuza [bold]--verbose[/], JSON raporu için [bold]--output rapor.json[/] ekleyin.[/]");
+            _console.MarkupLine($"[grey]{L.Get("Renderer.Hint")}[/]");
         }
     }
 
@@ -282,8 +283,8 @@ public sealed class ConsoleReportRenderer
         if (item.Signals.Count == 0)
         {
             return item.QueryResult.Declaration?.Kind == LicenseDeclarationKind.File
-                ? "[grey]Lisans dosyası[/]"
-                : "[grey]Özel inceleme[/]";
+                ? $"[grey]{L.Get("Renderer.LicenseFileSignal")}[/]"
+                : $"[grey]{L.Get("Renderer.SpecialReview")}[/]";
         }
 
         var parts = item.Signals.Select(s => SignalLabel(s.Kind)).Distinct();
@@ -292,19 +293,19 @@ public sealed class ConsoleReportRenderer
 
     private static string SignalLabel(LicenseTextSignalKind kind) => kind switch
     {
-        LicenseTextSignalKind.ReciprocalLicenseMention => "Karşılıklı lisans",
-        LicenseTextSignalKind.AlternativeLicenseAgreement => "Alternatif sözleşme",
-        LicenseTextSignalKind.PaidCommercialLicenseMention => "Ücretli ticari lisans ifadesi",
-        _ => "Lisans metni sinyali"
+        LicenseTextSignalKind.ReciprocalLicenseMention => L.Get("Renderer.Reciprocal"),
+        LicenseTextSignalKind.AlternativeLicenseAgreement => L.Get("Renderer.Alternative"),
+        LicenseTextSignalKind.PaidCommercialLicenseMention => L.Get("Renderer.PaidCommercial"),
+        _ => L.Get("Renderer.TextSignal")
     };
 
     private static string QueryFailureLabel(LicenseDeclarationQueryStatus status) => status switch
     {
-        LicenseDeclarationQueryStatus.HttpFailure => "HTTP bağlantı hatası",
-        LicenseDeclarationQueryStatus.Timeout => "Zaman aşımı",
-        LicenseDeclarationQueryStatus.InvalidMetadata => "Geçersiz metadata",
-        LicenseDeclarationQueryStatus.InvalidPackageIdentity => "Geçersiz paket kimliği",
-        _ => "Lisans sorgusu doğrulanamadı"
+        LicenseDeclarationQueryStatus.HttpFailure => L.Get("Renderer.HttpFailure"),
+        LicenseDeclarationQueryStatus.Timeout => L.Get("Renderer.Timeout"),
+        LicenseDeclarationQueryStatus.InvalidMetadata => L.Get("Renderer.InvalidMetadata"),
+        LicenseDeclarationQueryStatus.InvalidPackageIdentity => L.Get("Renderer.InvalidIdentity"),
+        _ => L.Get("Renderer.UnverifiedQuery")
     };
 
     private static string Shorten(string text, int maxLength)
