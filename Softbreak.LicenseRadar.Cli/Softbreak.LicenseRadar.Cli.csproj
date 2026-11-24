@@ -21,7 +21,7 @@
     <PackageTags>nuget license license-scanner dotnet-tool dotnet6 dotnet7 dotnet8 dotnet9 dotnet10 cli</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>0.2.0: Add .NET 6, 7, 8, 9 and 10 runtime compatibility. Multi-targeted .NET tool packaging and project dependency-file support; preserves explicit review and unknown statuses.</PackageReleaseNotes>
+    <PackageReleaseNotes>0.2.0: Support .NET 6–10 runtimes and automatically localize CLI messages, reports, and review reasons to Turkish or English based on the operating system UI culture. Preserve license evidence and the JSON schema.</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</RepositoryUrl>
     <PackageProjectUrl>https://github.com/softbreak/Softbreak.NuGetLicenseRadar</PackageProjectUrl>
