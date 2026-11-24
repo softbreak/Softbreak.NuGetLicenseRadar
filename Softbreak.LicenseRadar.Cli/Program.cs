@@ -19,7 +19,7 @@ if (!TryParseCommandLine(
 {
     Console.Error.WriteLine(L.Format("Cli.InvalidArguments", argumentError));
     Console.Error.WriteLine(L.Get("Cli.Usage"));
-    Console.Error.WriteLine("Yardım için: license-radar --help");
+    Console.Error.WriteLine(L.Get("Cli.HelpTip"));
     Environment.ExitCode = 2;
     return;
 }
