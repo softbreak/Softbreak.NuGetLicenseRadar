@@ -9,7 +9,7 @@ $solution = Join-Path $repo 'Softbreak.NuGetLicenseRadar.slnx'
 $project = Join-Path $repo 'Softbreak.LicenseRadar.Cli\Softbreak.LicenseRadar.Cli.csproj'
 $localSource = Join-Path $repo '.local-test\packages'
 $toolId = 'Softbreak.NuGetLicenseRadar'
-$toolVersion = '0.1.1'
+$toolVersion = '0.2.0'
 
 function Invoke-DotNet {
     param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Arguments)
@@ -38,7 +38,7 @@ if ($installed.Count -gt 0 -and -not $Update) {
 }
 
 Write-Host '[1/3] Release testleri...' -ForegroundColor Cyan
-Invoke-DotNet test $solution '--configuration' 'Release'
+Invoke-DotNet test $solution '--configuration' 'Release' '--framework' 'net10.0'
 
 Write-Host '[2/3] Yerel .NET Tool paketi oluşturuluyor...' -ForegroundColor Cyan
 New-Item -ItemType Directory -Path $localSource -Force | Out-Null
@@ -51,10 +51,10 @@ if (-not (Test-Path -LiteralPath $package)) {
 
 if ($installed.Count -gt 0) {
     Write-Host '[3/3] Mevcut global araç -Update onayıyla güncelleniyor...' -ForegroundColor Cyan
-    Invoke-DotNet tool update '--global' $toolId '--version' $toolVersion '--add-source' $localSource
+    Invoke-DotNet tool update '--global' $toolId '--version' $toolVersion '--framework' 'net10.0' '--add-source' $localSource
 } else {
     Write-Host '[3/3] Yeni global araç kuruluyor...' -ForegroundColor Cyan
-    Invoke-DotNet tool install '--global' $toolId '--version' $toolVersion '--add-source' $localSource
+    Invoke-DotNet tool install '--global' $toolId '--version' $toolVersion '--framework' 'net10.0' '--add-source' $localSource
 }
 
 $installedCommand = Join-Path $HOME '.dotnet\tools\license-radar.exe'
